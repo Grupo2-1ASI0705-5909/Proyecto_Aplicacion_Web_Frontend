@@ -1,0 +1,80 @@
+<div class="container" style="padding: 20px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <h2>Mis Planes de Pago</h2>
+    <button mat-raised-button color="primary" routerLink="/planes/nuevo">
+      <mat-icon>add</mat-icon> Crear Plan Manual
+    </button>
+  </div>
+
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>Buscar plan...</mat-label>
+    <input matInput (keyup)="filtrar($event)" placeholder="Ej. 35.00, Fecha..." #input>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    
+    <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let plan"> #{{ plan.planPagoId }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaInicio">
+        <th mat-header-cell *matHeaderCellDef> Inicio </th>
+        <td mat-cell *matCellDef="let plan"> {{ plan.fechaInicio | date:'dd/MM/yyyy' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaFin">
+        <th mat-header-cell *matHeaderCellDef> Fin </th>
+        <td mat-cell *matCellDef="let plan"> {{ plan.fechaFin | date:'dd/MM/yyyy' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="monto">
+        <th mat-header-cell *matHeaderCellDef> Monto/Cuota </th>
+        <td mat-cell *matCellDef="let plan"> 
+          <strong>S/. {{ plan.montoPorCuota | number:'1.2-2' }}</strong>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="interes">
+        <th mat-header-cell *matHeaderCellDef> Interés </th>
+        <td mat-cell *matCellDef="let plan"> {{ plan.interes }}% </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cuotas">
+        <th mat-header-cell *matHeaderCellDef> Cuotas </th>
+        <td mat-cell *matCellDef="let plan"> {{ plan.numeroCuotas }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Detalle </th>
+        <td mat-cell *matCellDef="let plan">
+          <button mat-raised-button color="primary" (click)="verCuotas(plan)">
+            <mat-icon>visibility</mat-icon> Ver
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="7" style="text-align: center; padding: 20px;">
+          No se encontraron datos que coincidan con "{{input.value}}"
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Seleccionar página de planes"></mat-paginator>
+
+  </div>
+
+  <div *ngIf="dataSource.data.length === 0" style="padding: 20px; text-align: center; color: gray; margin-top: 10px;">
+    <mat-icon style="font-size: 40px; height: 40px; width: 40px;">info</mat-icon>
+    <p>No tienes planes de pago registrados aún.</p>
+  </div>
+
+</div>

@@ -1,0 +1,48 @@
+<div class="container" style="padding: 20px; max-width: 600px;">
+  <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Usuario</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Apellido</mat-label>
+      <input matInput formControlName="apellido">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;" *ngIf="!esEdicion">
+      <mat-label>Contraseña</mat-label>
+      <input matInput formControlName="passwordHash" type="password">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="rolId">
+        <mat-option *ngFor="let rol of roles" [value]="rol.rolId">
+          {{ rol.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button mat-button type="button" routerLink="/usuarios">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Guardar
+      </button>
+    </div>
+
+  </form>
+</div>

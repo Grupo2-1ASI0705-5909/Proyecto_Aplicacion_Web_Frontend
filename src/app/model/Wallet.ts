@@ -5,10 +5,10 @@ export interface Wallet {
   walletId?: number;
   usuarioId: number;
   criptoId: number;
+  usuario?: Usuario;
+  criptomoneda?: Criptomoneda;
   direccion: string;
   saldo: number;
   estado: boolean;
-  ultimaActualizacion?: string;
-  usuario?: Usuario;
-  criptomoneda?: Criptomoneda;
+  ultimaActualizacion?: string; 
 }

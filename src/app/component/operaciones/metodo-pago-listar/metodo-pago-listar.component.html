@@ -1,0 +1,66 @@
+<div class="container" style="padding: 20px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Métodos de Pago</h2>
+    <button mat-raised-button color="primary" routerLink="/metodos-pago/nuevo">
+      <mat-icon>add</mat-icon> Nuevo Método
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let m"> {{ m.metodoPagoId }} </td>
+    </ng-container>
+
+   <ng-container matColumnDef="nombre">
+  <th mat-header-cell *matHeaderCellDef> Nombre </th>
+  <td mat-cell *matCellDef="let m">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      
+      <mat-icon class="icono-metodo" [ngClass]="{
+        'blue-icon': m.nombre.includes('Transferencia'),
+        'purple-icon': m.nombre.includes('Tarjeta'),
+        'orange-icon': m.nombre.includes('QR')
+      }">
+        {{ m.nombre.includes('Transferencia') ? 'account_balance' : 
+           m.nombre.includes('Tarjeta') ? 'credit_card' : 'qr_code' }}
+      </mat-icon>
+
+      <span style="font-weight: 500;">{{ m.nombre }}</span>
+    </div>
+  </td>
+</ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let m"> {{ m.descripcion }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let m">
+  <mat-chip [class.estado-activo]="m.estado" 
+            [class.estado-inactivo]="!m.estado">
+      {{ m.estado ? 'Activo' : 'Inactivo' }}
+  </mat-chip>
+</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let m">
+        <button mat-icon-button color="primary" [routerLink]="['/metodos-pago/editar', m.metodoPagoId]">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminar(m.metodoPagoId!)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

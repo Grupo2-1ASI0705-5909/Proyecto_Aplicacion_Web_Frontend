@@ -1,0 +1,38 @@
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Criptomoneda</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Código (Símbolo)</mat-label>
+      <input matInput formControlName="codigo" placeholder="Ej. BTC, ETH" style="text-transform: uppercase;">
+      <mat-error *ngIf="form.get('codigo')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" placeholder="Ej. Bitcoin">
+      <mat-error *ngIf="form.get('nombre')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Decimales</mat-label>
+      <input matInput type="number" formControlName="decimales">
+      <mat-hint>Usualmente 8 para Bitcoin, 18 para Ethereum</mat-hint>
+    </mat-form-field>
+
+    <div style="margin-top: 15px; margin-bottom: 25px;">
+      <mat-slide-toggle formControlName="activa" color="primary">
+        {{ form.get('activa')?.value ? 'Moneda Activa' : 'Moneda Inactiva' }}
+      </mat-slide-toggle>
+    </div>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button mat-button type="button" routerLink="/criptomonedas">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

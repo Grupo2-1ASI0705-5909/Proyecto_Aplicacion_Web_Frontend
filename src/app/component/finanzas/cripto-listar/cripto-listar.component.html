@@ -1,0 +1,58 @@
+<div class="container" style="padding: 20px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Gestión de Criptomonedas</h2>
+    <button mat-raised-button color="primary" routerLink="/criptomonedas/nueva">
+      <mat-icon>add</mat-icon> Nueva Cripto
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let c"> {{ c.criptoId }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codigo">
+      <th mat-header-cell *matHeaderCellDef> Código </th>
+      <td mat-cell *matCellDef="let c"> 
+        <span style="font-weight: bold; font-family: monospace;">{{ c.codigo }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let c"> {{ c.nombre }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="decimales">
+      <th mat-header-cell *matHeaderCellDef> Decimales </th>
+      <td mat-cell *matCellDef="let c"> {{ c.decimales }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let c">
+        <mat-chip [color]="c.activa ? 'accent' : 'warn'" selected>
+          {{ c.activa ? 'Activa' : 'Inactiva' }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let c">
+        <button mat-icon-button color="primary" [routerLink]="['/criptomonedas/editar', c.criptoId]">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminar(c.criptoId!)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

@@ -1,0 +1,34 @@
+.estado-activo {
+  background-color: #e8f5e9 !important; /* Fondo verde suave */
+  color: #2e7d32 !important;            /* Texto verde oscuro */
+  border: 1px solid #a5d6a7;             /* Borde sutil */
+  font-weight: 500;
+}
+
+/* Estilo para ESTADO INACTIVO (Rojo suave) */
+.estado-inactivo {
+  background-color: #ffebee !important; /* Fondo rojo suave */
+  color: #c62828 !important;            /* Texto rojo oscuro */
+  border: 1px solid #ef9a9a;
+  font-weight: 500;
+}
+
+/* Cabecera de la tabla con color */
+.mat-mdc-header-row {
+  background-color: #f5f7fa; /* Gris azulado muy suave */
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.mat-mdc-header-cell {
+  color: #37474f;       /* Texto gris oscuro */
+  font-weight: bold;    /* Negrita */
+  font-size: 14px;
+  text-transform: uppercase; /* Opcional: MAYÚSCULAS */
+}
+
+/* Efecto al pasar el mouse por una fila */
+.mat-mdc-row:hover {
+  background-color: #e3f2fd; /* Azulito muy claro */
+  cursor: pointer;           /* Manito */
+  transition: background-color 0.2s ease;
+}

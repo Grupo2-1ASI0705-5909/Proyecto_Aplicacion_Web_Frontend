@@ -1,0 +1,31 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5;">
+  <mat-card style="width: 350px; padding: 20px;">
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h2 style="color: #3f51b5;">Gestion App</h2>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+      
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="nombre@correo.com">
+        <mat-error *ngIf="form.get('email')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Correo inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password">
+        <mat-error *ngIf="form.get('password')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" style="width: 100%; padding: 25px 0;" 
+              [disabled]="form.invalid">
+        INGRESAR
+      </button>
+
+    </form>
+  </mat-card>
+</div>

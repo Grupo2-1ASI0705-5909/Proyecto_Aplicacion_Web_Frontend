@@ -1,0 +1,60 @@
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>Nueva Transacción</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Comercio Destino</mat-label>
+      <mat-select formControlName="comercioId">
+        <mat-option *ngFor="let c of comercios" [value]="c.comercioId">
+          {{ c.nombreComercial }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Criptomoneda a usar</mat-label>
+      <mat-select formControlName="criptoId" (selectionChange)="calcularConversion()">
+        <mat-option *ngFor="let cry of criptos" [value]="cry.criptoId">
+          {{ cry.nombre }} ({{ cry.codigo }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Método de Pago</mat-label>
+      <mat-select formControlName="metodoPagoId">
+        <mat-option *ngFor="let m of metodos" [value]="m.metodoPagoId">
+          {{ m.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Monto a Pagar (Fiat)</mat-label>
+      <input matInput type="number" formControlName="montoTotalFiat" (keyup)="calcularConversion()">
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        
+        <mat-form-field appearance="fill" style="flex: 1;">
+            <mat-label>Tasa de Cambio</mat-label>
+            <input matInput type="number" formControlName="tasaAplicada" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1;">
+            <mat-label>Total Cripto (Estimado)</mat-label>
+            <input matInput type="number" formControlName="montoTotalCripto" readonly>
+            <span matTextSuffix>&nbsp;{{ form.get('codigoMoneda')?.value }}</span>
+        </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button mat-button type="button" routerLink="/transacciones">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Procesar Pago
+      </button>
+    </div>
+
+  </form>
+</div>

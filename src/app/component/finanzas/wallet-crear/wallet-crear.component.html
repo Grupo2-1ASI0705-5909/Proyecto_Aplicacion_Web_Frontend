@@ -1,0 +1,44 @@
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Wallet</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Criptomoneda</mat-label>
+      <mat-select formControlName="criptoId">
+        <mat-option *ngFor="let c of criptos" [value]="c.criptoId">
+          <span>{{ c.nombre }}</span>
+          <span style="color: gray; font-size: 0.8em;"> ({{ c.codigo }})</span>
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('criptoId')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Dirección de la Wallet</mat-label>
+      <input matInput formControlName="direccion" placeholder="Ej. 0x123abc...">
+      <mat-icon matSuffix>qr_code</mat-icon>
+      <mat-error *ngIf="form.get('direccion')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Saldo Actual</mat-label>
+      <input matInput type="number" formControlName="saldo">
+      <mat-error *ngIf="form.get('saldo')?.hasError('min')">No puede ser negativo</mat-error>
+    </mat-form-field>
+
+    <div style="margin-bottom: 20px;" *ngIf="esEdicion">
+      <mat-slide-toggle formControlName="estado" color="primary">
+        {{ form.get('estado')?.value ? 'Activa' : 'Bloqueada' }}
+      </mat-slide-toggle>
+    </div>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button mat-button type="button" routerLink="/wallets">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

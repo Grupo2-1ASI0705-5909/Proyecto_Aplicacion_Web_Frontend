@@ -1,0 +1,41 @@
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>Registrar Nueva Tasa de Cambio</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>De (Origen)</mat-label>
+        <input matInput formControlName="desdeCodigo" placeholder="Ej. BTC" style="text-transform: uppercase;">
+        <mat-error *ngIf="form.get('desdeCodigo')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>A (Destino)</mat-label>
+        <input matInput formControlName="hastaCodigo" placeholder="Ej. USD" style="text-transform: uppercase;">
+        <mat-error *ngIf="form.get('hastaCodigo')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Valor de la Tasa</mat-label>
+      <input matInput type="number" formControlName="tasa" placeholder="0.00">
+      <mat-hint>Ej: 1 BTC = 95000.50 USD</mat-hint>
+      <mat-error *ngIf="form.get('tasa')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%; margin-top: 20px;">
+      <mat-label>Fuente / Mercado</mat-label>
+      <input matInput formControlName="fuente" placeholder="Ej. Binance, Banco Central, etc.">
+      <mat-error *ngIf="form.get('fuente')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+      <button mat-button type="button" routerLink="/tipos-cambio">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Registrar Tasa
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Detalle de Transacción #{{data.transaccionId}}</h2>
+<mat-dialog-content>
+  <p><strong>Fecha:</strong> {{data.fechaTransaccion | date:'medium'}}</p>
+  <p><strong>Comercio:</strong> {{data.comercio?.nombreComercial}}</p>
+  <p><strong>Monto Fiat:</strong> $ {{data.montoTotalFiat}}</p>
+  <p><strong>Monto Cripto:</strong> {{data.montoTotalCripto}} {{data.codigoMoneda}}</p>
+  <p><strong>Tasa Aplicada:</strong> {{data.tasaAplicada}}</p>
+  <p><strong>Tx Hash:</strong> <span style="font-family: monospace;">{{data.txHash}}</span></p>
+  <p><strong>Estado:</strong> {{data.estado}}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
