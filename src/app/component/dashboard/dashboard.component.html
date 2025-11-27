@@ -1,1 +1,69 @@
-<p>dashboard works!</p>
+<div class="container" style="padding: 20px;">
+  <h1 style="margin-bottom: 20px;">Bienvenido al Dashboard</h1>
+
+  <div class="dashboard-grid">
+
+    <mat-card class="kpi-card" style="border-left-color: #4caf50;">
+      <mat-card-header>
+        <mat-card-title>Mi Patrimonio</mat-card-title>
+        <mat-card-subtitle>Valor estimado</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content style="margin-top: 15px;">
+        <div style="font-size: 2rem; font-weight: bold; color: #2e7d32;">
+          $ {{ saldoTotal | number:'1.2-2' }}
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary" routerLink="/wallets">VER WALLETS</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="kpi-card" style="border-left-color: #3f51b5;">
+      <mat-card-header>
+        <mat-card-title>Usuarios Activos</mat-card-title>
+        <mat-card-subtitle>En la plataforma</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content style="margin-top: 15px;">
+        <div style="font-size: 2rem; font-weight: bold; color: #3f51b5;">
+          {{ totalUsuarios }}
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary" routerLink="/usuarios">GESTIONAR</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="kpi-card" style="border-left-color: #ff9800; background-color: #fff3e0;">
+      <mat-card-header>
+        <mat-card-title>Acciones Rápidas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <button mat-raised-button color="primary" routerLink="/transacciones/nueva">
+          <mat-icon>payment</mat-icon> Pagar
+        </button>
+        <button mat-stroked-button color="accent" routerLink="/notificaciones">
+          <mat-icon>notifications</mat-icon> Ver Avisos
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <h2 style="margin-top: 30px;">Actividad Reciente Global</h2>
+  <mat-card>
+    <ul class="recent-list">
+      <li class="recent-item" *ngFor="let t of transaccionesRecientes">
+        <div>
+          <strong>{{ t.usuario?.nombre }}</strong> pagó en
+          <span style="color: #555;">{{ t.comercio?.nombreComercial }}</span>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-weight: bold;">$ {{ t.montoTotalFiat | number:'1.2-2' }}</div>
+          <small style="color: gray;">{{ t.fechaTransaccion | date:'short' }}</small>
+        </div>
+      </li>
+      <li *ngIf="transaccionesRecientes.length === 0" style="padding: 20px; text-align: center; color: gray;">
+        No hay actividad reciente.
+      </li>
+    </ul>
+  </mat-card>
+</div>
