@@ -16,6 +16,10 @@ import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
 import { Autenticador } from './autenticador/autenticador';
 import { seguridadGuard } from './guard/seguridad-guard';
+import { ComercioListarComponent } from './component/comercio/comercio-listar/comercio-listar.component';
+import { ComercioCrearComponent } from './component/comercio/comercio-crear/comercio-crear.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { PerfilComponent } from './component/usuario/perfil/perfil.component';
 
 export const routes: Routes = [
   // Ruta inicial (Login)
@@ -62,4 +66,12 @@ export const routes: Routes = [
 
   // NOTIFICACIONES
   { path: 'notificaciones', component: NotificacionListarComponent, canActivate: [seguridadGuard] },
+
+  { path: 'comercios', component: ComercioListarComponent },
+  { path: 'comercios/nuevo', component: ComercioCrearComponent },
+  { path: 'comercios/editar/:id', component: ComercioCrearComponent },
+
+  
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'perfil', component: PerfilComponent },
 ];
