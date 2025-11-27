@@ -1,142 +1,148 @@
-<mat-sidenav-container style="height: 100vh;">
+<mat-sidenav-container class="pulsepay-container">
 
-  <!-- Solo mostrar el sidebar si el usuario está logueado -->
-  <mat-sidenav *ngIf="isLoggedIn" #sidenav mode="side" opened style="width: 250px; background: #f5f5f5; border-right: 1px solid #ddd;">
+  <!-- Sidebar PulsePay - Solo visible si está logueado -->
+  <mat-sidenav *ngIf="isLoggedIn" #sidenav mode="side" opened class="pulsepay-sidebar">
 
-    <div style="padding: 20px; text-align: center; background: #3f51b5; color: white;">
-      <mat-icon style="font-size: 40px; height: 40px; width: 40px;">account_balance_wallet</mat-icon>
-      <h3>Gestion App</h3>
-      <small *ngIf="usuarioEmail">{{ usuarioEmail }}</small>
-      <small *ngIf="isAdmin">Administrador</small>
-      <small *ngIf="isCliente && !isAdmin">Cliente</small>
+    <!-- Header del Sidebar -->
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <mat-icon class="logo-icon">account_balance_wallet</mat-icon>
+        <h2 class="logo-text">PulsePay</h2>
+      </div>
+      <div class="user-info" *ngIf="usuarioEmail">
+        <div class="user-avatar">
+          {{ usuarioEmail.charAt(0).toUpperCase() }}
+        </div>
+        <div class="user-details">
+          <p class="user-email">{{ usuarioEmail }}</p>
+          <span class="user-role">{{ isAdmin ? 'Administrador' : 'Cliente' }}</span>
+        </div>
+      </div>
     </div>
 
-    <mat-nav-list>
+    <!-- Navegación -->
+    <nav class="sidebar-nav">
 
-      @if (isAdmin) {
-        <div mat-subheader style="font-weight: bold; color: gray;">ADMINISTRACIÓN</div>
-        <a mat-list-item routerLink="/dashboard">
-          <mat-icon matListItemIcon>dashboard</mat-icon> <span matListItemTitle>Dashboard</span>
-        </a>
-        <a mat-list-item routerLink="/usuarios">
-          <mat-icon matListItemIcon>group</mat-icon> <span matListItemTitle>Usuarios</span>
-        </a>
-        <a mat-list-item routerLink="/comercios">
-          <mat-icon matListItemIcon>store</mat-icon> <span matListItemTitle>Comercios</span>
-        </a>
-      }
+      <!-- Menú Admin -->
+      <div *ngIf="isAdmin" class="nav-section">
+        <p class="nav-section-title">ADMINISTRACIÓN</p>
 
-      @if (isCliente || !isAdmin) {
-
-        <a mat-list-item routerLink="/dashboard">
-          <mat-icon matListItemIcon>home</mat-icon>
-          <span matListItemTitle>Inicio</span>
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
         </a>
 
-        <a mat-list-item routerLink="/perfil">
-          <mat-icon matListItemIcon>person</mat-icon> <span matListItemTitle>Mi Perfil</span>
+        <a routerLink="/usuarios" routerLinkActive="active" class="nav-link">
+          <mat-icon>group</mat-icon>
+          <span>Usuarios</span>
         </a>
 
-        <a mat-list-item (click)="toggleOperaciones()" style="cursor: pointer; background-color: #fafafa;">
-          <mat-icon matListItemIcon>paid</mat-icon>
-          <span matListItemTitle>Operaciones</span>
+        <a routerLink="/comercios" routerLinkActive="active" class="nav-link">
+          <mat-icon>store</mat-icon>
+          <span>Comercios</span>
+        </a>
+      </div>
 
-          <mat-icon matListItemMeta>
-            {{ showOperacionesMenu ? 'expand_less' : 'expand_more' }}
-          </mat-icon>
+      <!-- Menú Cliente -->
+      <div *ngIf="isCliente || !isAdmin" class="nav-section">
+
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <mat-icon>home</mat-icon>
+          <span>Inicio</span>
         </a>
 
-        @if (showOperacionesMenu) {
-
-          <a mat-list-item routerLink="/transacciones" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">receipt_long</mat-icon>
-            <span matListItemTitle>Transacciones</span>
-          </a>
-
-          <a mat-list-item routerLink="/planes" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">event_note</mat-icon>
-            <span matListItemTitle>Planes de Pago</span>
-          </a>
-
-          <a mat-list-item routerLink="/metodos-pago" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">credit_card</mat-icon>
-            <span matListItemTitle>Métodos de Pago</span>
-          </a>
-
-          <a mat-list-item routerLink="/comercios" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">store</mat-icon>
-            <span matListItemTitle>Comercios</span>
-          </a>
-        }
-
-        <a mat-list-item (click)="toggleFinanzas()" style="cursor: pointer; background-color: #fafafa;">
-          <mat-icon matListItemIcon>savings</mat-icon>
-          <span matListItemTitle>Finanzas & Cripto</span>
-
-          <mat-icon matListItemMeta>
-            {{ showFinanzasMenu ? 'expand_less' : 'expand_more' }}
-          </mat-icon>
+        <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
+          <mat-icon>person</mat-icon>
+          <span>Mi Perfil</span>
         </a>
 
-        @if (showFinanzasMenu) {
-
-          <a mat-list-item routerLink="/wallets" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">account_balance_wallet</mat-icon>
-            <span matListItemTitle>Wallets</span>
+        <!-- Operaciones (Expandible) -->
+        <div class="nav-group">
+          <a (click)="toggleOperaciones()" class="nav-link nav-group-header">
+            <mat-icon>paid</mat-icon>
+            <span>Operaciones</span>
+            <mat-icon class="expand-icon">{{ showOperacionesMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
 
-          <a mat-list-item routerLink="/criptomonedas" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">currency_bitcoin</mat-icon>
-            <span matListItemTitle>Criptomonedas</span>
+          <div *ngIf="showOperacionesMenu" class="nav-submenu">
+            <a routerLink="/transacciones" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>receipt_long</mat-icon>
+              <span>Transacciones</span>
+            </a>
+            <a routerLink="/planes" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>event_note</mat-icon>
+              <span>Planes de Pago</span>
+            </a>
+            <a routerLink="/metodos-pago" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>credit_card</mat-icon>
+              <span>Métodos de Pago</span>
+            </a>
+            <a routerLink="/comercios" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>store</mat-icon>
+              <span>Comercios</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Finanzas & Cripto (Expandible) -->
+        <div class="nav-group">
+          <a (click)="toggleFinanzas()" class="nav-link nav-group-header">
+            <mat-icon>savings</mat-icon>
+            <span>Finanzas & Cripto</span>
+            <mat-icon class="expand-icon">{{ showFinanzasMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
 
-          <a mat-list-item routerLink="/tipos-cambio" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">currency_exchange</mat-icon>
-            <span matListItemTitle>Tipos de Cambio</span>
+          <div *ngIf="showFinanzasMenu" class="nav-submenu">
+            <a routerLink="/wallets" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>account_balance_wallet</mat-icon>
+              <span>Wallets</span>
+            </a>
+            <a routerLink="/criptomonedas" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>currency_bitcoin</mat-icon>
+              <span>Criptomonedas</span>
+            </a>
+            <a routerLink="/tipos-cambio" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>currency_exchange</mat-icon>
+              <span>Tipos de Cambio</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sistema (Expandible) -->
+        <div class="nav-group">
+          <a (click)="toggleSistema()" class="nav-link nav-group-header">
+            <mat-icon>settings_suggest</mat-icon>
+            <span>Sistema</span>
+            <mat-icon class="expand-icon">{{ showSistemaMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
-        }
 
-        <a mat-list-item (click)="toggleSistema()" style="cursor: pointer; background-color: #fafafa;">
-          <mat-icon matListItemIcon>settings_suggest</mat-icon>
-          <span matListItemTitle>Sistema</span>
+          <div *ngIf="showSistemaMenu" class="nav-submenu">
+            <a routerLink="/notificaciones" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>notifications</mat-icon>
+              <span>Notificaciones</span>
+            </a>
+          </div>
+        </div>
 
-          <mat-icon matListItemMeta>
-            {{ showSistemaMenu ? 'expand_less' : 'expand_more' }}
-          </mat-icon>
+      </div>
+
+      <!-- Logout -->
+      <div class="nav-section nav-footer">
+        <a (click)="logout()" class="nav-link logout-link">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar Sesión</span>
         </a>
+      </div>
 
-        @if (showSistemaMenu) {
+    </nav>
 
-          <a mat-list-item routerLink="/notificaciones" style="padding-left: 3rem; font-size: 0.9em;">
-            <mat-icon matListItemIcon style="font-size: 20px;">notifications</mat-icon>
-            <span matListItemTitle>Notificaciones</span>
-          </a>
-
-        }
-
-      }
-
-      <mat-divider style="margin-top: 20px;"></mat-divider>
-
-      <a mat-list-item (click)="logout()" style="color: #d32f2f; cursor: pointer;">
-        <mat-icon matListItemIcon style="color: #d32f2f;">logout</mat-icon>
-        <span matListItemTitle>Cerrar Sesión</span>
-      </a>
-
-    </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <!-- Contenido Principal -->
+  <mat-sidenav-content class="pulsepay-content">
 
-    <!-- Solo mostrar toolbar si está logueado -->
-    <mat-toolbar *ngIf="isLoggedIn" color="primary">
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Gestión Financiera</span>
-    </mat-toolbar>
-
-    <div [style.padding]="isLoggedIn ? '20px' : '0'">
+    <!-- Sin toolbar superior - el contenido maneja su propio header -->
+    <div class="content-wrapper" [class.no-sidebar]="!isLoggedIn">
       <router-outlet></router-outlet>
     </div>
 

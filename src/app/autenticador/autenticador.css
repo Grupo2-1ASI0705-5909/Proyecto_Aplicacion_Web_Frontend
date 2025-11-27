@@ -1,0 +1,237 @@
+/* ========================================
+   LOGIN COMPONENT - PULSEPAY STYLES
+   ======================================== */
+
+.login-split-screen {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* ========================================
+   PANEL IZQUIERDO - BRANDING
+   ======================================== */
+
+.login-branding {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-branding::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.branding-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    max-width: 500px;
+}
+
+.brand-icon {
+    font-size: 100px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--spacing-lg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.brand-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0 0 var(--spacing-md) 0;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.brand-subtitle {
+    font-size: 18px;
+    margin: 0 0 var(--spacing-xl) 0;
+    opacity: 0.95;
+    font-weight: 400;
+}
+
+.brand-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.feature-item mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+/* ========================================
+   PANEL DERECHO - FORMULARIO
+   ======================================== */
+
+.login-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: var(--spacing-xl);
+}
+
+.form-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.form-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.form-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.form-header p {
+    font-size: 16px;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.form-field {
+    width: 100%;
+}
+
+.btn-login {
+    width: 100%;
+    height: 56px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.btn-login mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+}
+
+.link-secondary {
+    color: var(--primary-orange);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.link-secondary:hover {
+    color: var(--primary-orange-dark);
+    text-decoration: underline;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 968px) {
+    .login-split-screen {
+        flex-direction: column;
+    }
+
+    .login-branding {
+        flex: 0 0 auto;
+        min-height: 300px;
+        padding: var(--spacing-lg);
+    }
+
+    .brand-title {
+        font-size: 36px;
+    }
+
+    .brand-features {
+        display: none;
+    }
+
+    .login-form-panel {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-branding {
+        min-height: 200px;
+    }
+
+    .brand-icon {
+        font-size: 60px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .brand-title {
+        font-size: 28px;
+    }
+
+    .brand-subtitle {
+        font-size: 14px;
+    }
+
+    .form-header h2 {
+        font-size: 24px;
+    }
+
+    .form-container {
+        padding: var(--spacing-md);
+    }
+}

@@ -1,7 +1,400 @@
-/* You can add global styles to this file, and also import other style files */
+/* ========================================
+   PULSEPAY - ESTILOS GLOBALES
+   ======================================== */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Variables CSS Globales */
+:root {
+  /* Colores Corporativos */
+  --primary-orange: #FF8000;
+  --primary-orange-dark: #E67300;
+  --primary-orange-light: #FFA040;
+  
+  /* Fondos */
+  --bg-dark: #1a1a1a;
+  --bg-light: #f8f9fa;
+  --bg-white: #ffffff;
+  --bg-gray: #e9ecef;
+  
+  /* Textos */
+  --text-dark: #1a1a1a;
+  --text-light: #6c757d;
+  --text-white: #ffffff;
+  
+  /* Bordes */
+  --border-radius: 16px;
+  --border-radius-lg: 20px;
+  --border-radius-sm: 12px;
+  --border-color: #dee2e6;
+  
+  /* Sombras Suaves */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  
+  /* Espaciado */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Reset y Base */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Sobrescribir Material Design */
+
+/* Eliminar sombras duras de Material */
+.mat-elevation-z1,
+.mat-elevation-z2,
+.mat-elevation-z3,
+.mat-elevation-z4,
+.mat-elevation-z5,
+.mat-elevation-z6,
+.mat-elevation-z7,
+.mat-elevation-z8 {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Botones Material - Estilo PulsePay */
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  border-radius: var(--border-radius) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  padding: 12px 24px !important;
+  box-shadow: none !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.mat-mdc-raised-button:hover,
+.mat-mdc-unelevated-button:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Primario */
+.mat-primary {
+  background-color: var(--primary-orange) !important;
+  color: var(--text-white) !important;
+}
+
+.mat-primary:hover {
+  background-color: var(--primary-orange-dark) !important;
+}
+
+/* Inputs Material - Estilo PulsePay */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: var(--bg-white) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  padding: 4px 12px !important;
+}
+
+.mat-mdc-text-field-wrapper:hover {
+  border-color: var(--primary-orange-light) !important;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+/* Eliminar línea inferior de Material */
+.mat-mdc-form-field-underline,
+.mdc-line-ripple {
+  display: none !important;
+}
+
+/* Cards Material - Estilo PulsePay */
+.mat-mdc-card {
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: none !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.mat-mdc-card:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-4px);
+}
+
+/* Tabla Material - Estilo PulsePay */
+.mat-mdc-table {
+  background-color: var(--bg-white) !important;
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+}
+
+.mat-mdc-header-row {
+  background-color: var(--bg-gray) !important;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-dark) !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.mat-mdc-row {
+  border-bottom: 1px solid var(--bg-gray) !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.mat-mdc-row:hover {
+  background-color: var(--bg-light) !important;
+}
+
+.mat-mdc-cell {
+  border: none !important;
+  padding: var(--spacing-md) !important;
+}
+
+/* Chips/Badges - Estilo PulsePay */
+.mat-mdc-chip {
+  border-radius: var(--border-radius-sm) !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+}
+
+.mat-mdc-chip.mat-primary {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+}
+
+.mat-mdc-chip.mat-warn {
+  background-color: #fff3e0 !important;
+  color: #f57c00 !important;
+}
+
+.mat-mdc-chip.mat-accent {
+  background-color: #f3e5f5 !important;
+  color: #7b1fa2 !important;
+}
+
+/* Snackbar - Estilo PulsePay */
+.mat-mdc-snack-bar-container {
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Dialog - Estilo PulsePay */
+.mat-mdc-dialog-container {
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Clases Utilitarias PulsePay */
+
+/* Tarjetas Personalizadas */
+.card-pulsepay {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card-pulsepay:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* Botones Personalizados */
+.btn-pulsepay {
+  background: var(--primary-orange);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: none;
+}
+
+.btn-pulsepay:hover {
+  background: var(--primary-orange-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.btn-pulsepay:active {
+  transform: translateY(0);
+}
+
+.btn-pulsepay-outline {
+  background: transparent;
+  color: var(--primary-orange);
+  border: 2px solid var(--primary-orange);
+  border-radius: var(--border-radius);
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-pulsepay-outline:hover {
+  background: var(--primary-orange);
+  color: var(--text-white);
+}
+
+/* Badges de Estado */
+.badge-pulsepay {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+/* Gradiente Naranja */
+.gradient-orange {
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-dark) 100%);
+}
+
+/* Contenedor Principal */
+.container-pulsepay {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Grid Asimétrico */
+.grid-pulsepay {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Scrollbar Personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-light);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-normal);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :root {
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+  }
+  
+  .container-pulsepay {
+    padding: var(--spacing-md);
+  }
+  
+  .grid-pulsepay {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Utilidades de Texto */
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-light {
+  color: var(--text-light);
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+/* Espaciado */
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+
+.p-1 { padding: var(--spacing-xs); }
+.p-2 { padding: var(--spacing-sm); }
+.p-3 { padding: var(--spacing-md); }
+.p-4 { padding: var(--spacing-lg); }

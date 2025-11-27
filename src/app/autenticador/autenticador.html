@@ -1,37 +1,67 @@
-<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5;">
-  <mat-card style="width: 350px; padding: 20px;">
-    
-    <div style="text-align: center; margin-bottom: 20px;">
-      <h2 style="color: #3f51b5;">Mina App - Login</h2>
-      <p>Inicia sesión con tu correo y contraseña</p>
+<div class="login-split-screen">
+
+  <!-- Panel Izquierdo - Branding -->
+  <div class="login-branding gradient-orange">
+    <div class="branding-content fade-in">
+      <mat-icon class="brand-icon">account_balance_wallet</mat-icon>
+      <h1 class="brand-title">PulsePay</h1>
+      <p class="brand-subtitle">Tu plataforma de pagos con criptomonedas</p>
+      <div class="brand-features">
+        <div class="feature-item">
+          <mat-icon>check_circle</mat-icon>
+          <span>Transacciones seguras</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>check_circle</mat-icon>
+          <span>Múltiples criptomonedas</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>check_circle</mat-icon>
+          <span>Planes de pago flexibles</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- El formulario completo -->
-    <!-- El evento ngSubmit llama a la función login() -->
-    <form (ngSubmit)="ingresar()"> 
-      
-      <!-- Campo Correo/Email -->
-      <mat-form-field appearance="outline" style="width: 100%;">
-        <mat-label>Correo Electrónico</mat-label>
-        <!-- [(ngModel)] conecta el input a la variable 'email' -->
-        <input matInput type="email" placeholder="nombre@correo.com" 
-               name="email" [(ngModel)]="email" required>
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
+  <!-- Panel Derecho - Formulario -->
+  <div class="login-form-panel">
+    <div class="form-container fade-in">
 
-      <!-- Campo Contraseña -->
-      <mat-form-field appearance="outline" style="width: 100%;">
-        <mat-label>Contraseña</mat-label>
-        <!-- [(ngModel)] conecta el input a la variable 'contrasena' -->
-        <input matInput type="password" placeholder="••••••••" 
-               name="password" [(ngModel)]="passwordHash" required>
-        <mat-icon matSuffix>lock</mat-icon>
-      </mat-form-field>
+      <div class="form-header">
+        <h2>Bienvenido</h2>
+        <p>Inicia sesión para continuar</p>
+      </div>
 
-      <button mat-raised-button color="primary" style="width: 100%; padding: 25px 0;" type="submit">
-        INGRESAR
-      </button>
+      <form (ngSubmit)="ingresar()" class="login-form">
 
-    </form>
-  </mat-card>
+        <!-- Campo Email -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" placeholder="nombre@correo.com" name="email" [(ngModel)]="email" required>
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <!-- Campo Contraseña -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" placeholder="••••••••" name="password" [(ngModel)]="passwordHash" required>
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <!-- Botón Ingresar -->
+        <button mat-raised-button color="primary" class="btn-login" type="submit">
+          <mat-icon>login</mat-icon>
+          INGRESAR
+        </button>
+
+        <!-- Links adicionales -->
+        <div class="form-footer">
+          <a href="#" class="link-secondary">¿Olvidaste tu contraseña?</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
 </div>

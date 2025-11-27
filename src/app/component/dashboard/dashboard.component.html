@@ -1,69 +1,110 @@
-<div class="container" style="padding: 20px;">
-  <h1 style="margin-bottom: 20px;">Bienvenido al Dashboard</h1>
+<div class="dashboard-pulsepay">
 
-  <div class="dashboard-grid">
-
-    <mat-card class="kpi-card" style="border-left-color: #4caf50;">
-      <mat-card-header>
-        <mat-card-title>Mi Patrimonio</mat-card-title>
-        <mat-card-subtitle>Valor estimado</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content style="margin-top: 15px;">
-        <div style="font-size: 2rem; font-weight: bold; color: #2e7d32;">
-          $ {{ saldoTotal | number:'1.2-2' }}
-        </div>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-button color="primary" routerLink="/wallets">VER WALLETS</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="kpi-card" style="border-left-color: #3f51b5;">
-      <mat-card-header>
-        <mat-card-title>Usuarios Activos</mat-card-title>
-        <mat-card-subtitle>En la plataforma</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content style="margin-top: 15px;">
-        <div style="font-size: 2rem; font-weight: bold; color: #3f51b5;">
-          {{ totalUsuarios }}
-        </div>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-button color="primary" routerLink="/usuarios">GESTIONAR</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="kpi-card" style="border-left-color: #ff9800; background-color: #fff3e0;">
-      <mat-card-header>
-        <mat-card-title>Acciones Rápidas</mat-card-title>
-      </mat-card-header>
-      <mat-card-content style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-        <button mat-raised-button color="primary" routerLink="/transacciones/nueva">
-          <mat-icon>payment</mat-icon> Pagar
-        </button>
-        <button mat-stroked-button color="accent" routerLink="/notificaciones">
-          <mat-icon>notifications</mat-icon> Ver Avisos
-        </button>
-      </mat-card-content>
-    </mat-card>
+  <!-- Header del Dashboard -->
+  <div class="dashboard-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Bienvenido a tu panel de control</p>
+    </div>
+    <button mat-raised-button color="primary" routerLink="/transacciones/nueva">
+      <mat-icon>add</mat-icon>
+      Nueva Transacción
+    </button>
   </div>
 
-  <h2 style="margin-top: 30px;">Actividad Reciente</h2>
-  <mat-card>
-    <ul class="recent-list">
-      <li class="recent-item" *ngFor="let t of transaccionesRecientes">
-        <div>
-          <strong>Transacción #{{ t.transaccionId }}</strong>
-          <span *ngIf="t.comercio"> - {{ t.comercio.nombreComercial }}</span>
+  <!-- Grid de KPIs -->
+  <div class="kpi-grid">
+
+    <!-- KPI: Patrimonio -->
+    <div class="kpi-card card-pulsepay">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <p class="kpi-label">Mi Patrimonio</p>
+        <h2 class="kpi-value">$ {{ saldoTotal | number:'1.2-2' }}</h2>
+        <p class="kpi-subtitle">Valor estimado</p>
+      </div>
+      <button mat-button class="kpi-action" routerLink="/wallets">
+        Ver Wallets
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- KPI: Usuarios Activos -->
+    <div class="kpi-card card-pulsepay">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);">
+        <mat-icon>group</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <p class="kpi-label">Usuarios Activos</p>
+        <h2 class="kpi-value">{{ totalUsuarios }}</h2>
+        <p class="kpi-subtitle">En la plataforma</p>
+      </div>
+      <button mat-button class="kpi-action" routerLink="/usuarios">
+        Gestionar
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="quick-actions card-pulsepay">
+      <h3 class="section-title">Acciones Rápidas</h3>
+      <div class="actions-grid">
+        <button mat-raised-button color="primary" routerLink="/transacciones/nueva" class="action-btn">
+          <mat-icon>payment</mat-icon>
+          <span>Pagar</span>
+        </button>
+        <button mat-stroked-button routerLink="/wallets/nueva" class="action-btn">
+          <mat-icon>add_card</mat-icon>
+          <span>Nueva Wallet</span>
+        </button>
+        <button mat-stroked-button routerLink="/planes" class="action-btn">
+          <mat-icon>event_note</mat-icon>
+          <span>Planes</span>
+        </button>
+        <button mat-stroked-button routerLink="/notificaciones" class="action-btn">
+          <mat-icon>notifications</mat-icon>
+          <span>Avisos</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Actividad Reciente -->
+  <div class="recent-activity">
+    <div class="section-header">
+      <h2 class="section-title">Actividad Reciente</h2>
+      <button mat-button routerLink="/transacciones">
+        Ver todo
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <div class="activity-card card-pulsepay">
+      <div class="activity-list" *ngIf="transaccionesRecientes.length > 0">
+        <div class="activity-item" *ngFor="let t of transaccionesRecientes">
+          <div class="activity-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+          <div class="activity-details">
+            <p class="activity-title">Transacción #{{ t.transaccionId }}</p>
+            <p class="activity-subtitle" *ngIf="t.comercio">{{ t.comercio.nombreComercial }}</p>
+            <p class="activity-date">{{ t.fechaTransaccion | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="activity-amount">
+            <p class="amount-value">$ {{ t.montoTotalFiat | number:'1.2-2' }}</p>
+            <span class="badge-pulsepay badge-success">Completada</span>
+          </div>
         </div>
-        <div style="text-align: right;">
-          <div style="font-weight: bold;">$ {{ t.montoTotalFiat | number:'1.2-2' }}</div>
-          <small style="color: gray;">{{ t.fechaTransaccion | date:'short' }}</small>
-        </div>
-      </li>
-      <li *ngIf="transaccionesRecientes.length === 0" style="padding: 20px; text-align: center; color: gray;">
-        No hay actividad reciente.
-      </li>
-    </ul>
-  </mat-card>
+      </div>
+
+      <div class="empty-state" *ngIf="transaccionesRecientes.length === 0">
+        <mat-icon>inbox</mat-icon>
+        <p>No hay actividad reciente</p>
+      </div>
+    </div>
+  </div>
+
 </div>
