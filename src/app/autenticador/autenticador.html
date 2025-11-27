@@ -1,0 +1,37 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5;">
+  <mat-card style="width: 350px; padding: 20px;">
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h2 style="color: #3f51b5;">Mina App - Login</h2>
+      <p>Inicia sesión con tu correo y contraseña</p>
+    </div>
+
+    <!-- El formulario completo -->
+    <!-- El evento ngSubmit llama a la función login() -->
+    <form (ngSubmit)="ingresar()"> 
+      
+      <!-- Campo Correo/Email -->
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Correo Electrónico</mat-label>
+        <!-- [(ngModel)] conecta el input a la variable 'email' -->
+        <input matInput type="email" placeholder="nombre@correo.com" 
+               name="email" [(ngModel)]="email" required>
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <!-- Campo Contraseña -->
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Contraseña</mat-label>
+        <!-- [(ngModel)] conecta el input a la variable 'contrasena' -->
+        <input matInput type="password" placeholder="••••••••" 
+               name="password" [(ngModel)]="passwordHash" required>
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" style="width: 100%; padding: 25px 0;" type="submit">
+        INGRESAR
+      </button>
+
+    </form>
+  </mat-card>
+</div>

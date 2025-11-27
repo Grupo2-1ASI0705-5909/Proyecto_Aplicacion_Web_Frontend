@@ -14,28 +14,52 @@ import { CriptoCrearComponent } from './component/finanzas/cripto-crear/cripto-c
 import { TipoCambioListarComponent } from './component/finanzas/tipo-cambio-listar/tipo-cambio-listar.component';
 import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear/tipo-cambio-crear.component';
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
-import { LoginComponent } from './auth/login/login.component';
+import { Autenticador } from './autenticador/autenticador';
+import { seguridadGuard } from './guard/seguridad-guard';
 
 export const routes: Routes = [
-  { path: 'usuarios', component: UsuarioListarComponent },
-  { path: 'usuarios/nuevo', component: UsuarioCrearComponent },
-  { path: 'usuarios/editar/:id', component: UsuarioCrearComponent },
-  { path: 'transacciones', component: TransaccionListarComponent },
-  { path: 'transacciones/nueva', component: TransaccionCrearComponent },
-  { path: 'planes', component: PlanPagoListarComponent },
-  { path: 'planes/nuevo', component: PlanPagoCrearComponent },
-  { path: 'metodos-pago', component: MetodoPagoListarComponent },
-  { path: 'metodos-pago/nuevo', component: MetodoPagoCrearComponent },
-  { path: 'metodos-pago/editar/:id', component: MetodoPagoCrearComponent },
-  { path: 'wallets', component: WalletListarComponent },
-  { path: 'wallets/nueva', component: WalletCrearComponent },
-  { path: 'wallets/editar/:id', component: WalletCrearComponent },
-  { path: 'criptomonedas', component: CriptoListarComponent },
-  { path: 'criptomonedas/nueva', component: CriptoCrearComponent },
-  { path: 'criptomonedas/editar/:id', component: CriptoCrearComponent },
-  { path: 'tipos-cambio', component: TipoCambioListarComponent },
-  { path: 'tipos-cambio/nuevo', component: TipoCambioCrearComponent },
-  { path: 'notificaciones', component: NotificacionListarComponent },
-  //{ path: 'login', component: LoginComponent },
-  //{ path: '', redirectTo: 'login', pathMatch: 'full' },
+  // Ruta inicial (Login)
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  
+  // Login (Público)
+  { path: 'login', component: Autenticador },
+
+  // -------------------------------------------------------------------
+  // RUTAS PROTEGIDAS (Todo lo de abajo requiere estar logueado)
+  // -------------------------------------------------------------------
+
+  // USUARIOS
+  { path: 'usuarios', component: UsuarioListarComponent, canActivate: [seguridadGuard] },
+  { path: 'usuarios/nuevo', component: UsuarioCrearComponent, canActivate: [seguridadGuard] },
+  { path: 'usuarios/editar/:id', component: UsuarioCrearComponent, canActivate: [seguridadGuard] },
+
+  // TRANSACCIONES
+  { path: 'transacciones', component: TransaccionListarComponent, canActivate: [seguridadGuard] },
+  { path: 'transacciones/nueva', component: TransaccionCrearComponent, canActivate: [seguridadGuard] },
+
+  // PLANES DE PAGO
+  { path: 'planes', component: PlanPagoListarComponent, canActivate: [seguridadGuard] },
+  { path: 'planes/nuevo', component: PlanPagoCrearComponent, canActivate: [seguridadGuard] },
+
+  // MÉTODOS DE PAGO
+  { path: 'metodos-pago', component: MetodoPagoListarComponent, canActivate: [seguridadGuard] },
+  { path: 'metodos-pago/nuevo', component: MetodoPagoCrearComponent, canActivate: [seguridadGuard] },
+  { path: 'metodos-pago/editar/:id', component: MetodoPagoCrearComponent, canActivate: [seguridadGuard] },
+
+  // WALLETS (BILLETERAS)
+  { path: 'wallets', component: WalletListarComponent, canActivate: [seguridadGuard] },
+  { path: 'wallets/nueva', component: WalletCrearComponent, canActivate: [seguridadGuard] },
+  { path: 'wallets/editar/:id', component: WalletCrearComponent, canActivate: [seguridadGuard] },
+
+  // CRIPTOMONEDAS
+  { path: 'criptomonedas', component: CriptoListarComponent, canActivate: [seguridadGuard] },
+  { path: 'criptomonedas/nueva', component: CriptoCrearComponent, canActivate: [seguridadGuard] },
+  { path: 'criptomonedas/editar/:id', component: CriptoCrearComponent, canActivate: [seguridadGuard] },
+
+  // TIPOS DE CAMBIO
+  { path: 'tipos-cambio', component: TipoCambioListarComponent, canActivate: [seguridadGuard] },
+  { path: 'tipos-cambio/nuevo', component: TipoCambioCrearComponent, canActivate: [seguridadGuard] },
+
+  // NOTIFICACIONES
+  { path: 'notificaciones', component: NotificacionListarComponent, canActivate: [seguridadGuard] },
 ];
