@@ -12,6 +12,7 @@ import { CriptomonedaService } from '../../../service/criptomoneda.service';
 import { MetodoPagoService } from '../../../service/metodo-pago.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TipoCambioService } from '../../../service/tipo-cambio.service';
+import { LoginService } from '../../../service/login-service';
 
 @Component({
   selector: 'app-transaccion-crear',
@@ -21,13 +22,14 @@ import { TipoCambioService } from '../../../service/tipo-cambio.service';
   templateUrl: './transaccion-crear.component.html',
   styleUrl: './transaccion-crear.component.css'
 })
-export class TransaccionCrearComponent implements OnInit{
-form: FormGroup;
+export class TransaccionCrearComponent implements OnInit {
+  form: FormGroup;
   comercios: any[] = [];
   criptos: any[] = [];
   metodos: any[] = [];
-  
-  usuarioIdActual = 1; 
+
+  usuarioIdActual: number | null = null;
+  guardando = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +39,8 @@ form: FormGroup;
     private metodoPagoService: MetodoPagoService,
     private tipoCambioService: TipoCambioService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loginService: LoginService
   ) {
     this.form = this.fb.group({
       comercioId: ['', Validators.required],
@@ -46,8 +49,8 @@ form: FormGroup;
       montoTotalFiat: [0, [Validators.required, Validators.min(1)]],
 
 
-      codigoMoneda: [''], 
-      montoTotalCripto: [0], 
+      codigoMoneda: [''],
+      montoTotalCripto: [0],
       tasaAplicada: [1],
       tipoCambioId: [null, Validators.required],
 
@@ -58,6 +61,13 @@ form: FormGroup;
   }
 
   ngOnInit(): void {
+    // Obtener ID del usuario logueado
+    this.usuarioIdActual = this.loginService.getUsuarioId();
+
+    if (this.usuarioIdActual) {
+      this.form.patchValue({ usuarioId: this.usuarioIdActual });
+    }
+
     this.comercioService.obtenerTodos().subscribe(data => this.comercios = data);
     this.criptoService.obtenerActivas().subscribe(data => this.criptos = data);
     this.metodoPagoService.obtenerActivos().subscribe(data => this.metodos = data);
@@ -80,13 +90,13 @@ form: FormGroup;
                   tasaAplicada: tipoCambio.tasa
                 });
                 if (tipoCambio.tasa > 0) {
-                   const totalCripto = montoFiat / tipoCambio.tasa;
-                   this.form.patchValue({ montoTotalCripto: totalCripto });
+                  const totalCripto = montoFiat / tipoCambio.tasa;
+                  this.form.patchValue({ montoTotalCripto: totalCripto });
                 }
               }
             },
             error: () => {
-               console.warn("No se encontró tasa de cambio para esta moneda");
+              console.warn("No se encontró tasa de cambio para esta moneda");
             }
           });
       }
@@ -98,14 +108,18 @@ form: FormGroup;
       this.snackBar.open('Faltan datos o tasa de cambio no encontrada', 'Cerrar', { duration: 3000 });
       return;
     }
+
+    this.guardando = true;
     this.transaccionService.crear(this.form.value).subscribe({
       next: () => {
         this.snackBar.open('Transacción realizada con éxito', 'Cerrar', { duration: 3000 });
         this.router.navigate(['/transacciones']);
+        this.guardando = false;
       },
       error: (err) => {
         console.error(err);
         this.snackBar.open('Error al procesar', 'Cerrar', { duration: 3000 });
+        this.guardando = false;
       }
     });
   }

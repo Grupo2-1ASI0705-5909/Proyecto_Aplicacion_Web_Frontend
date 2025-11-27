@@ -22,20 +22,27 @@ export class DashboardComponent implements OnInit {
   saldoTotal: number = 0;
   transaccionesRecientes: Transaccion[] = [];
 
-  usuarioIdActual = 1; // ID temporal para simular sesión
+  usuarioIdActual: number | null = null;
 
   constructor(
     private loginService: LoginService,
     private transaccionService: TransaccionService,
     private walletService: WalletService,
     private usuarioService: UsuarioService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.cargarKPIs();
+    // Obtener el ID del usuario logueado
+    this.usuarioIdActual = this.loginService.getUsuarioId();
+
+    if (this.usuarioIdActual) {
+      this.cargarKPIs();
+    }
   }
 
   cargarKPIs() {
+    if (!this.usuarioIdActual) return;
+
     // 1. Contar usuarios activos (KPI Administrativo)
     this.usuarioService.contarUsuariosActivos().subscribe(count => {
       this.totalUsuarios = count;
@@ -47,17 +54,17 @@ export class DashboardComponent implements OnInit {
     });
 
     // 3. Obtener últimas transacciones (Globales o del usuario)
-    // Nota: Usamos obtenerRecientes del backend (requiere rol ADMIN en tu controlador,
-    // si falla por permisos, podrías usar obtenerPorUsuario)
     this.transaccionService.obtenerRecientes().subscribe({
       next: (data) => {
-        this.transaccionesRecientes = data.slice(0, 5); // Mostrar solo las 5 últimas
+        this.transaccionesRecientes = data.slice(0, 5);
       },
       error: () => {
         // Fallback si no es admin: cargar las del usuario
-        this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
-          this.transaccionesRecientes = data.slice(0, 5);
-        });
+        if (this.usuarioIdActual) {
+          this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
+            this.transaccionesRecientes = data.slice(0, 5);
+          });
+        }
       }
     });
   }

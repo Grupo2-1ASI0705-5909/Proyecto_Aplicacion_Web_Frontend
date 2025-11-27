@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UsuarioService } from '../../../service/usuario.service';
 import { Usuario } from '../../../model/Usuario';
+import { LoginService } from '../../../service/login-service';
 
 @Component({
   selector: 'app-perfil',
@@ -21,17 +22,18 @@ import { Usuario } from '../../../model/Usuario';
 export class PerfilComponent implements OnInit {
   form: FormGroup;
   usuario: Usuario | null = null;
-  usuarioIdActual = 1; // En un sistema real vendría del AuthService
+  usuarioIdActual: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loginService: LoginService
   ) {
     this.form = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      email: [{value: '', disabled: true}, Validators.required], // Email suele ser ID, readonly
+      email: [{ value: '', disabled: true }, Validators.required],
       telefono: ['', Validators.required],
       // Campos ocultos necesarios para el update
       rolId: [''],
@@ -41,10 +43,17 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cargarPerfil();
+    // Obtener ID del usuario logueado
+    this.usuarioIdActual = this.loginService.getUsuarioId();
+
+    if (this.usuarioIdActual) {
+      this.cargarPerfil();
+    }
   }
 
   cargarPerfil() {
+    if (!this.usuarioIdActual) return;
+
     this.usuarioService.obtenerPorId(this.usuarioIdActual).subscribe(data => {
       this.usuario = data;
       this.form.patchValue({
@@ -60,7 +69,7 @@ export class PerfilComponent implements OnInit {
   }
 
   actualizar() {
-    if (this.form.invalid || !this.usuario) return;
+    if (this.form.invalid || !this.usuario || !this.usuarioIdActual) return;
 
     // Fusionamos los datos del formulario con el objeto original
     const datosActualizados: Usuario = {
