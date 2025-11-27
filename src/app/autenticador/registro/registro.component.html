@@ -1,0 +1,144 @@
+<div class="login-split-screen">
+
+    <!-- Panel Izquierdo - Branding -->
+    <div class="login-branding gradient-orange">
+        <div class="branding-content fade-in">
+            <mat-icon class="brand-icon">account_balance_wallet</mat-icon>
+            <h1 class="brand-title">PulsePay</h1>
+            <p class="brand-subtitle">Únete a la revolución de los pagos con criptomonedas</p>
+            <div class="brand-features">
+                <div class="feature-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Registro gratuito</span>
+                </div>
+                <div class="feature-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Seguridad garantizada</span>
+                </div>
+                <div class="feature-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Soporte 24/7</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel Derecho - Formulario de Registro -->
+    <div class="login-form-panel">
+        <div class="form-container fade-in">
+
+            <div class="form-header">
+                <h2>Crear Cuenta</h2>
+                <p>Completa tus datos para registrarte</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="registrar()" class="login-form">
+
+                <!-- Nombre -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" placeholder="Juan">
+                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+                        El nombre es requerido
+                    </mat-error>
+                    <mat-error *ngIf="form.get('nombre')?.hasError('minlength')">
+                        Mínimo 2 caracteres
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Apellido -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput formControlName="apellido" placeholder="Pérez">
+                    <mat-icon matSuffix>person_outline</mat-icon>
+                    <mat-error *ngIf="form.get('apellido')?.hasError('required')">
+                        El apellido es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Email -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Correo Electrónico</mat-label>
+                    <input matInput type="email" formControlName="email" placeholder="nombre@correo.com">
+                    <mat-icon matSuffix>email</mat-icon>
+
+                    <mat-spinner *ngIf="form.get('email')?.pending" diameter="20" matSuffix></mat-spinner>
+
+                    <mat-error *ngIf="form.get('email')?.hasError('required')">
+                        El email es requerido
+                    </mat-error>
+                    <mat-error *ngIf="form.get('email')?.hasError('email')">
+                        Email inválido
+                    </mat-error>
+                    <mat-error *ngIf="form.get('email')?.hasError('emailEnUso')">
+                        ⚠️ Este email ya está registrado
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Teléfono -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput formControlName="telefono" placeholder="987654321">
+                    <mat-icon matSuffix>phone</mat-icon>
+                    <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+                        El teléfono es requerido
+                    </mat-error>
+                    <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">
+                        Debe tener 9 dígitos
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Contraseña -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="passwordHash"
+                        placeholder="••••••••">
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="form.get('passwordHash')?.hasError('required')">
+                        La contraseña es requerida
+                    </mat-error>
+                    <mat-error *ngIf="form.get('passwordHash')?.hasError('minlength')">
+                        Mínimo 6 caracteres
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Confirmar Contraseña -->
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Confirmar Contraseña</mat-label>
+                    <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword"
+                        placeholder="••••••••">
+                    <button mat-icon-button matSuffix type="button"
+                        (click)="hideConfirmPassword = !hideConfirmPassword">
+                        <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+                        Confirma tu contraseña
+                    </mat-error>
+                    <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+                        Las contraseñas no coinciden
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Botón Registrar -->
+                <button mat-raised-button color="primary" class="btn-login" type="submit"
+                    [disabled]="form.invalid || registrando">
+                    <mat-spinner *ngIf="registrando" diameter="20"
+                        style="display: inline-block; margin-right: 8px;"></mat-spinner>
+                    <mat-icon *ngIf="!registrando">person_add</mat-icon>
+                    {{ registrando ? 'REGISTRANDO...' : 'CREAR CUENTA' }}
+                </button>
+
+                <!-- Link a Login -->
+                <div class="form-footer">
+                    <p>¿Ya tienes cuenta? <a routerLink="/login" class="link-secondary">Inicia sesión aquí</a></p>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

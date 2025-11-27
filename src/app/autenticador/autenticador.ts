@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { JwtRequest } from '../model/jwtRequest';
 import { LoginService } from '../service/login-service';
 
@@ -17,7 +17,7 @@ import { LoginService } from '../service/login-service';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule,
+    RouterLink,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -42,7 +42,7 @@ export class Autenticador implements OnInit {
 
   ngOnInit(): void {
     if (this.loginService.verificar()) {
-      this.router.navigate(['/wallets']);
+      this.router.navigate(['/dashboard']);
     }
   }
 

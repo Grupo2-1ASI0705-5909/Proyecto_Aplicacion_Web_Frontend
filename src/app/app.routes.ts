@@ -16,6 +16,7 @@ import { TipoCambioListarComponent } from './component/finanzas/tipo-cambio-list
 import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear/tipo-cambio-crear.component';
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
 import { Autenticador } from './autenticador/autenticador';
+import { RegistroComponent } from './autenticador/registro/registro.component';
 import { seguridadGuard } from './guard/seguridad-guard';
 import { roleGuard } from './guard/role.guard';
 import { ComercioListarComponent } from './component/comercio/comercio-listar/comercio-listar.component';
@@ -29,6 +30,9 @@ export const routes: Routes = [
 
   // Login (Público)
   { path: 'login', component: Autenticador },
+
+  // Registro (Público)
+  { path: 'registro', component: RegistroComponent },
 
   // -------------------------------------------------------------------
   // RUTAS PROTEGIDAS (Todo lo de abajo requiere estar logueado)
