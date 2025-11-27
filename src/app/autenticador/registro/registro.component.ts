@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UsuarioService } from '../../service/usuario.service';
 import { emailUnicoValidator } from '../../validators/email-async.validator';
 
@@ -23,7 +24,8 @@ import { emailUnicoValidator } from '../../validators/email-async.validator';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSlideToggleModule
   ],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
@@ -33,6 +35,8 @@ export class RegistroComponent {
   registrando = false;
   hidePassword = true;
   hideConfirmPassword = true;
+
+  isComercio = false;
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +53,8 @@ export class RegistroComponent {
       ],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
       passwordHash: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['', Validators.required],
+      esComercio: [false] // Control del toggle
     }, {
       validators: this.passwordMatchValidator
     });
@@ -77,12 +82,17 @@ export class RegistroComponent {
 
     this.registrando = true;
 
+    // Determinar rol: 3 = Comercio, 2 = Cliente (por defecto)
+    const rolIdAsignado = this.form.get('esComercio')?.value ? 3 : 2;
+
     const usuario = {
       ...this.form.value,
-      rolId: 2, // Rol "CLIENTE" por defecto
+      rolId: rolIdAsignado,
       estado: true
     };
 
+    // Eliminar campo auxiliar del objeto final
+    delete usuario.esComercio;
     delete usuario.confirmPassword;
 
     this.usuarioService.crear(usuario).subscribe({

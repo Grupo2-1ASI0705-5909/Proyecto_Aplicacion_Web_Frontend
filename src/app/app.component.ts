@@ -35,12 +35,14 @@ export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
   isCliente: boolean = false;
+  isComercio: boolean = false;
   usuarioEmail: string | null = null;
 
   // Estado de menús desplegables
   showFinanzasMenu: boolean = false;
   showSistemaMenu: boolean = false;
   showOperacionesMenu: boolean = false;
+  showComercioMenu: boolean = false;
 
   constructor(
     private loginService: LoginService,
@@ -66,10 +68,12 @@ export class AppComponent implements OnInit {
     if (this.isLoggedIn) {
       this.isAdmin = this.loginService.isAdmin();
       this.isCliente = this.loginService.isCliente();
+      this.isComercio = this.loginService.isComercio();
       this.usuarioEmail = this.loginService.getUsuarioActual();
     } else {
       this.isAdmin = false;
       this.isCliente = false;
+      this.isComercio = false;
       this.usuarioEmail = null;
     }
   }
@@ -84,6 +88,10 @@ export class AppComponent implements OnInit {
 
   toggleSistema() {
     this.showSistemaMenu = !this.showSistemaMenu;
+  }
+
+  toggleComercio() {
+    this.showComercioMenu = !this.showComercioMenu;
   }
 
   logout() {

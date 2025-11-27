@@ -17,6 +17,7 @@ import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
 import { Autenticador } from './autenticador/autenticador';
 import { RegistroComponent } from './autenticador/registro/registro.component';
+import { RecuperarPasswordComponent } from './autenticador/recuperar-password/recuperar-password.component';
 import { seguridadGuard } from './guard/seguridad-guard';
 import { roleGuard } from './guard/role.guard';
 import { ComercioListarComponent } from './component/comercio/comercio-listar/comercio-listar.component';
@@ -33,6 +34,9 @@ export const routes: Routes = [
 
   // Registro (Público)
   { path: 'registro', component: RegistroComponent },
+
+  // Recuperar Contraseña (Público)
+  { path: 'recuperar-password', component: RecuperarPasswordComponent },
 
   // -------------------------------------------------------------------
   // RUTAS PROTEGIDAS (Todo lo de abajo requiere estar logueado)
@@ -101,4 +105,3 @@ export const routes: Routes = [
   // Ruta 404 - Redirigir al dashboard si está logueado, sino al login
   { path: '**', redirectTo: 'login' }
 ];
-

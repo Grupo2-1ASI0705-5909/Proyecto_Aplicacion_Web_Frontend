@@ -19,13 +19,11 @@ export class LoginService {
     private router: Router
   ) { }
 
-  // 1. LOGIN: Recibe el DTO (email, passwordHash)
+  // 1. LOGIN
   login(request: JwtRequest): Observable<any> {
     return this.http.post<any>(this.url, request).pipe(
       tap((response) => {
-        // Intentamos capturar el token con varios nombres posibles
         const token = response.jwttoken || response.token || response.jwtToken;
-
         if (token) {
           sessionStorage.setItem('token', token);
         }
@@ -33,58 +31,55 @@ export class LoginService {
     );
   }
 
-  // 2. VERIFICAR: Revisa si existe el token y si no ha expirado
+  // 2. VERIFICAR
   verificar(): boolean {
     const token = sessionStorage.getItem('token');
+    if (!token) return false;
 
-    if (!token) {
-      return false;
-    }
-
-    // Verificar si el token ha expirado
     if (this.helper.isTokenExpired(token)) {
-      this.logout(); // Limpiar sesión si el token expiró
+      this.logout();
       return false;
     }
-
     return true;
   }
 
-  // 3. MOSTRAR ROL: Decodifica el token para saber quién es (Admin/Usuario/Cliente)
+  // 3. MOSTRAR ROL
   showRole(): string | string[] | null {
     const token = sessionStorage.getItem('token');
-    if (!token) {
-      return null;
-    }
+    if (!token) return null;
 
     try {
       const decodedToken = this.helper.decodeToken(token);
+      let roles = decodedToken?.roles || decodedToken?.role || decodedToken?.authorities || null;
 
-      // Devuelve el rol (o roles) que vienen dentro del token
-      // Soporta múltiples formatos: 'role', 'roles', 'authorities'
-      return decodedToken?.roles || decodedToken?.role || decodedToken?.authorities || null;
+      if (!roles) return null;
+
+      // Normalizar roles
+      if (Array.isArray(roles)) {
+        return roles.map((r: string) => r.replace(/^ROLE_/, ''));
+      } else {
+        return (roles as string).replace(/^ROLE_/, '');
+      }
     } catch (error) {
       console.error('Error al decodificar token:', error);
       return null;
     }
   }
 
-  // 4. OBTENER USUARIO ACTUAL: Email o username del token
+  // 4. OBTENER USUARIO ACTUAL
   getUsuarioActual(): string | null {
     const token = sessionStorage.getItem('token');
     if (!token) return null;
 
     try {
       const decodedToken = this.helper.decodeToken(token);
-      // Soporta 'sub', 'email', 'username'
       return decodedToken?.sub || decodedToken?.email || decodedToken?.username || null;
     } catch (error) {
-      console.error('Error al obtener usuario:', error);
       return null;
     }
   }
 
-  // 5. OBTENER ID DEL USUARIO: Para consultas específicas
+  // 5. OBTENER ID
   getUsuarioId(): number | null {
     const token = sessionStorage.getItem('token');
     if (!token) return null;
@@ -93,7 +88,6 @@ export class LoginService {
       const decodedToken = this.helper.decodeToken(token);
       return decodedToken?.userId || decodedToken?.id || null;
     } catch (error) {
-      console.error('Error al obtener ID de usuario:', error);
       return null;
     }
   }
@@ -103,11 +97,11 @@ export class LoginService {
     const role = this.showRole();
     if (!role) return false;
 
-    if (Array.isArray(role)) {
-      return role.some(r => r.toUpperCase() === 'ADMIN' || r.toUpperCase() === 'ADMINISTRADOR');
-    }
-
-    return role.toUpperCase() === 'ADMIN' || role.toUpperCase() === 'ADMINISTRADOR';
+    const rolesToCheck = Array.isArray(role) ? role : [role];
+    return rolesToCheck.some(r => {
+      const normalized = r.toUpperCase().replace(/^ROLE_/, '');
+      return normalized === 'ADMIN' || normalized === 'ADMINISTRADOR';
+    });
   }
 
   // 7. VERIFICAR SI ES CLIENTE
@@ -115,39 +109,49 @@ export class LoginService {
     const role = this.showRole();
     if (!role) return false;
 
-    if (Array.isArray(role)) {
-      return role.some(r => r.toUpperCase() === 'CLIENTE' || r.toUpperCase() === 'USER');
-    }
-
-    return role.toUpperCase() === 'CLIENTE' || role.toUpperCase() === 'USER';
+    const rolesToCheck = Array.isArray(role) ? role : [role];
+    return rolesToCheck.some(r => {
+      const normalized = r.toUpperCase().replace(/^ROLE_/, '');
+      return normalized === 'CLIENTE' || normalized === 'USER' || normalized === 'USUARIO';
+    });
   }
 
-  // 8. LOGOUT: Cierra sesión
+  // 8. VERIFICAR SI ES COMERCIO
+  isComercio(): boolean {
+    const role = this.showRole();
+    if (!role) return false;
+
+    const rolesToCheck = Array.isArray(role) ? role : [role];
+    return rolesToCheck.some(r => {
+      const normalized = r.toUpperCase().replace(/^ROLE_/, '');
+      return normalized === 'COMERCIO' || normalized === 'VENDEDOR';
+    });
+  }
+
+  // 9. LOGOUT
   logout() {
     sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 
-  // 9. VERIFICAR EXPIRACIÓN DEL TOKEN (para mostrar advertencias)
+  // 10. EXPIRACIÓN
   getTokenExpirationTime(): Date | null {
     const token = sessionStorage.getItem('token');
     if (!token) return null;
-
     try {
-      const expirationDate = this.helper.getTokenExpirationDate(token);
-      return expirationDate;
+      return this.helper.getTokenExpirationDate(token);
     } catch (error) {
       return null;
     }
   }
 
-  // 10. TIEMPO RESTANTE HASTA LA EXPIRACIÓN (en minutos)
+  // 11. MINUTOS RESTANTES
   getMinutesUntilExpiration(): number | null {
     const expirationDate = this.getTokenExpirationTime();
     if (!expirationDate) return null;
 
     const now = new Date();
     const diff = expirationDate.getTime() - now.getTime();
-    return Math.floor(diff / 60000); // Convertir a minutos
+    return Math.floor(diff / 60000);
   }
 }

@@ -15,7 +15,7 @@
         </div>
         <div class="user-details">
           <p class="user-email">{{ usuarioEmail }}</p>
-          <span class="user-role">{{ isAdmin ? 'Administrador' : 'Cliente' }}</span>
+          <span class="user-role">{{ isAdmin ? 'Administrador' : (isComercio ? 'Comercio' : 'Cliente') }}</span>
         </div>
       </div>
     </div>
@@ -43,8 +43,8 @@
         </a>
       </div>
 
-      <!-- Menú Cliente -->
-      <div *ngIf="isCliente || !isAdmin" class="nav-section">
+      <!-- Menú Cliente / Comercio -->
+      <div *ngIf="isCliente || isComercio || (!isAdmin && !isCliente && !isComercio)" class="nav-section">
 
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
           <mat-icon>home</mat-icon>
@@ -55,6 +55,26 @@
           <mat-icon>person</mat-icon>
           <span>Mi Perfil</span>
         </a>
+
+        <!-- Menú Comercio (Solo para Rol Comercio) -->
+        <div *ngIf="isComercio" class="nav-group">
+          <a (click)="toggleComercio()" class="nav-link nav-group-header">
+            <mat-icon>storefront</mat-icon>
+            <span>Mi Comercio</span>
+            <mat-icon class="expand-icon">{{ showComercioMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </a>
+
+          <div *ngIf="showComercioMenu" class="nav-submenu">
+            <a routerLink="/dashboard" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>dashboard</mat-icon>
+              <span>Resumen Ventas</span>
+            </a>
+            <a routerLink="/transacciones" routerLinkActive="active" class="nav-sublink">
+              <mat-icon>receipt_long</mat-icon>
+              <span>Historial Ventas</span>
+            </a>
+          </div>
+        </div>
 
         <!-- Operaciones (Expandible) -->
         <div class="nav-group">

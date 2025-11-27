@@ -122,6 +122,19 @@
                     </mat-error>
                 </mat-form-field>
 
+                <!-- Toggle Comercio -->
+                <div class="form-field toggle-container" style="grid-column: span 2; margin-bottom: 15px;">
+                    <mat-slide-toggle formControlName="esComercio" color="primary">
+                        Registrarme como Comercio / Vendedor
+                    </mat-slide-toggle>
+                    <p class="toggle-hint" *ngIf="form.get('esComercio')?.value"
+                        style="font-size: 13px; color: #666; margin-top: 5px;">
+                        <mat-icon
+                            style="font-size: 14px; height: 14px; width: 14px; vertical-align: middle;">store</mat-icon>
+                        Podrás publicar productos y recibir pagos.
+                    </p>
+                </div>
+
                 <!-- Botón Registrar -->
                 <button mat-raised-button color="primary" class="btn-login" type="submit"
                     [disabled]="form.invalid || registrando">

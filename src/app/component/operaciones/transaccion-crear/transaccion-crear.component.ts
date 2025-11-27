@@ -13,6 +13,7 @@ import { MetodoPagoService } from '../../../service/metodo-pago.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TipoCambioService } from '../../../service/tipo-cambio.service';
 import { LoginService } from '../../../service/login-service';
+import { WalletService } from '../../../service/wallet.service';
 
 @Component({
   selector: 'app-transaccion-crear',
@@ -30,6 +31,8 @@ export class TransaccionCrearComponent implements OnInit {
 
   usuarioIdActual: number | null = null;
   guardando = false;
+  saldoInsuficiente = false;
+  saldoActualWallet = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +41,7 @@ export class TransaccionCrearComponent implements OnInit {
     private criptoService: CriptomonedaService,
     private metodoPagoService: MetodoPagoService,
     private tipoCambioService: TipoCambioService,
+    private walletService: WalletService,
     private router: Router,
     private snackBar: MatSnackBar,
     private loginService: LoginService
@@ -47,13 +51,10 @@ export class TransaccionCrearComponent implements OnInit {
       criptoId: ['', Validators.required],
       metodoPagoId: ['', Validators.required],
       montoTotalFiat: [0, [Validators.required, Validators.min(1)]],
-
-
       codigoMoneda: [''],
       montoTotalCripto: [0],
       tasaAplicada: [1],
       tipoCambioId: [null, Validators.required],
-
       usuarioId: [this.usuarioIdActual],
       estado: ['PENDIENTE'],
       txHash: ['GENERATED_BY_FRONT']
@@ -81,6 +82,11 @@ export class TransaccionCrearComponent implements OnInit {
       const criptoSeleccionada = this.criptos.find(c => c.criptoId === criptoId);
       if (criptoSeleccionada) {
         this.form.patchValue({ codigoMoneda: criptoSeleccionada.codigo });
+
+        // ⚠️ SECURITY WARNING: 
+        // Actualmente el frontend calcula la tasa y el monto cripto.
+        // Esto es vulnerable a manipulación. El backend debería recibir solo montoFiat y criptoId,
+        // y realizar estos cálculos internamente. Se mantiene así por compatibilidad con el backend actual.
         this.tipoCambioService.obtenerTasaMasReciente(criptoSeleccionada.codigo, 'USD')
           .subscribe({
             next: (tipoCambio) => {
@@ -89,9 +95,38 @@ export class TransaccionCrearComponent implements OnInit {
                   tipoCambioId: tipoCambio.tipoCambioId,
                   tasaAplicada: tipoCambio.tasa
                 });
+
                 if (tipoCambio.tasa > 0) {
                   const totalCripto = montoFiat / tipoCambio.tasa;
                   this.form.patchValue({ montoTotalCripto: totalCripto });
+
+                  // VALIDAR SALDO
+                  if (this.usuarioIdActual) {
+                    this.walletService.obtenerPorUsuarioYCripto(this.usuarioIdActual, criptoId).subscribe({
+                      next: (wallet) => {
+                        if (wallet) {
+                          this.saldoActualWallet = wallet.saldo;
+                          if (totalCripto > wallet.saldo) {
+                            this.saldoInsuficiente = true;
+                            this.form.setErrors({ saldoInsuficiente: true });
+                            this.snackBar.open(`Saldo insuficiente. Tienes ${wallet.saldo} ${criptoSeleccionada.codigo}`, 'Cerrar', { duration: 3000 });
+                          } else {
+                            this.saldoInsuficiente = false;
+                            // Si no hay otros errores, limpiar el error de saldo
+                            if (this.form.hasError('saldoInsuficiente')) {
+                              this.form.setErrors(null);
+                            }
+                          }
+                        }
+                      },
+                      error: () => {
+                        console.warn('No se encontró wallet para esta cripto');
+                        // Si no tiene wallet, no puede pagar con cripto
+                        this.saldoInsuficiente = true;
+                        this.form.setErrors({ noWallet: true });
+                      }
+                    });
+                  }
                 }
               }
             },
@@ -105,7 +140,7 @@ export class TransaccionCrearComponent implements OnInit {
 
   guardar() {
     if (this.form.invalid) {
-      this.snackBar.open('Faltan datos o tasa de cambio no encontrada', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('Faltan datos, tasa no encontrada o saldo insuficiente', 'Cerrar', { duration: 3000 });
       return;
     }
 

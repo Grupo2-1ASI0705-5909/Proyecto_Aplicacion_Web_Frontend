@@ -15,24 +15,8 @@
   <!-- Grid de KPIs -->
   <div class="kpi-grid">
 
-    <!-- KPI: Patrimonio -->
-    <div class="kpi-card card-pulsepay">
-      <div class="kpi-icon" style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);">
-        <mat-icon>account_balance_wallet</mat-icon>
-      </div>
-      <div class="kpi-content">
-        <p class="kpi-label">Mi Patrimonio</p>
-        <h2 class="kpi-value">$ {{ saldoTotal | number:'1.2-2' }}</h2>
-        <p class="kpi-subtitle">Valor estimado</p>
-      </div>
-      <button mat-button class="kpi-action" routerLink="/wallets">
-        Ver Wallets
-        <mat-icon>arrow_forward</mat-icon>
-      </button>
-    </div>
-
-    <!-- KPI: Usuarios Activos -->
-    <div class="kpi-card card-pulsepay">
+    <!-- KPI 1: Usuarios Activos (Solo Admin) -->
+    <div class="kpi-card card-pulsepay" *ngIf="isAdmin">
       <div class="kpi-icon" style="background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);">
         <mat-icon>group</mat-icon>
       </div>
@@ -43,6 +27,38 @@
       </div>
       <button mat-button class="kpi-action" routerLink="/usuarios">
         Gestionar
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- KPI 2: Ventas Totales (Solo Comercio) -->
+    <div class="kpi-card card-pulsepay" *ngIf="isComercio">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);">
+        <mat-icon>store</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <p class="kpi-label">Ventas Totales</p>
+        <h2 class="kpi-value">{{ ventasTotales | currency:'USD' }}</h2>
+        <p class="kpi-subtitle">Acumulado histórico</p>
+      </div>
+      <button mat-button class="kpi-action" routerLink="/transacciones">
+        Ver Detalle
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- KPI 3: Mi Patrimonio (Solo Cliente) -->
+    <div class="kpi-card card-pulsepay" *ngIf="!isAdmin && !isComercio">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <p class="kpi-label">Mi Patrimonio</p>
+        <h2 class="kpi-value">{{ saldoTotal | currency:'USD' }}</h2>
+        <p class="kpi-subtitle">Valor estimado</p>
+      </div>
+      <button mat-button class="kpi-action" routerLink="/wallets">
+        Ver Wallets
         <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
