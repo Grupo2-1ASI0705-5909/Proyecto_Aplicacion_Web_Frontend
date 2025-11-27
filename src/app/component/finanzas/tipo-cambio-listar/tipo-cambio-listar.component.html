@@ -2,9 +2,9 @@
   
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2>Historial de Tipos de Cambio</h2>
-    <button mat-raised-button color="primary" routerLink="/tipos-cambio/nuevo">
-      <mat-icon>add</mat-icon> Nueva Tasa
-    </button>
+    <button mat-raised-button color="primary" routerLink="/tipos-cambio/nuevo" *ngIf="isAdmin">
+  <mat-icon>add</mat-icon> Nueva Tasa
+</button>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

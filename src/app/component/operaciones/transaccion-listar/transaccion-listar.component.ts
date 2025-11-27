@@ -12,6 +12,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TransaccionDetalleDialogComponent } from '../transaccion-detalle-dialog/transaccion-detalle-dialog.component';
+import { LoginService } from '../../../service/login-service';
+import { UsuarioService } from '../../../service/usuario.service';
+
 
 @Component({
   selector: 'app-transaccion-listar',
@@ -28,26 +31,58 @@ dataSource = new MatTableDataSource<Transaccion>();
   
   totalFiat: number = 0;
   totalCripto: number = 0;
-  usuarioIdActual: number = 1; 
+  usuarioIdActual: number | null = null;
+  isAdmin: boolean = false;
 
-  constructor(private transaccionService: TransaccionService,private snackBar: MatSnackBar,private dialog: MatDialog,) {}
+  constructor(private transaccionService: TransaccionService,private snackBar: MatSnackBar,private dialog: MatDialog,private loginService: LoginService,    // Inyectado
+    private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
-    this.cargarDatos();
+    this.verificarPermisosYCargar();
   }
 
-  cargarDatos() {
-    this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
+  verificarPermisosYCargar() {
+    // 1. Verificamos el Rol
+    const roles = this.loginService.showRole();
+    this.isAdmin = (roles && JSON.stringify(roles).includes('ADMINISTRADOR')) || false;
+
+    if (this.isAdmin) {
+      // CASO A: Es ADMIN -> Carga TODO (y quizás agrega columna de usuario si quisieras)
+      this.cargarTodas();
+    } else {
+      // CASO B: Es USUARIO -> Busca su ID y carga lo suyo
+      this.cargarSoloMias();
+    }
+  }
+
+  cargarTodas() {
+    this.transaccionService.obtenerTodos().subscribe(data => {
       this.dataSource.data = data;
+      // Como Admin ve todo, los totales personales no aplican (o se ponen en 0)
+      this.totalFiat = 0;
+      this.totalCripto = 0;
     });
+  }
 
-    this.transaccionService.calcularTotalFiatPorUsuario(this.usuarioIdActual).subscribe(total => {
-      this.totalFiat = total;
-    });
+  cargarSoloMias() {
+    const email = this.loginService.getUsuarioActual();
 
-    this.transaccionService.calcularTotalCriptoPorUsuario(this.usuarioIdActual).subscribe(total => {
-      this.totalCripto = total;
-    });
+    if (email) {
+      this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
+        if (usuario && usuario.usuarioId) {
+          this.usuarioIdActual = usuario.usuarioId;
+          
+          // 1. Cargar lista filtrada
+          this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
+            this.dataSource.data = data;
+          });
+
+          // 2. Cargar sus totales
+          this.transaccionService.calcularTotalFiatPorUsuario(this.usuarioIdActual).subscribe(t => this.totalFiat = t);
+          this.transaccionService.calcularTotalCriptoPorUsuario(this.usuarioIdActual).subscribe(t => this.totalCripto = t);
+        }
+      });
+    }
   }
 
   eliminar(id: number) {
@@ -55,7 +90,8 @@ dataSource = new MatTableDataSource<Transaccion>();
       this.transaccionService.eliminar(id).subscribe({
         next: () => {
           this.snackBar.open('Transacción eliminada', 'Cerrar', { duration: 3000 });
-          this.cargarDatos(); // Recargamos la lista y los totales
+          // Recargamos según el rol que tenga
+          this.isAdmin ? this.cargarTodas() : this.cargarSoloMias(); // Reutiliza la lógica de carga correcta
         },
         error: (err) => {
           console.error('Error eliminando:', err);

@@ -50,6 +50,13 @@ private url = 'http://localhost:8080/login';
     // Devuelve el rol (o roles) que vienen dentro del token
     return decodedToken?.roles || decodedToken?.role; 
   }
+  getUsuarioActual(): string | null {
+    let token = sessionStorage.getItem('token');
+    if (!token) return null;
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    return decodedToken?.sub; 
+  }
 
   // 4. LOGOUT: Cierra sesión
   logout() {

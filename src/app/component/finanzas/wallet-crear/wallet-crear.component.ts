@@ -11,6 +11,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Criptomoneda } from '../../../model/Criptomoneda';
 import { WalletService } from '../../../service/wallet.service';
 import { CriptomonedaService } from '../../../service/criptomoneda.service';
+import { UsuarioService } from '../../../service/usuario.service';
+import { LoginService } from '../../../service/login-service';
 
 @Component({
   selector: 'app-wallet-crear', 
@@ -28,7 +30,7 @@ form: FormGroup;
   criptos: Criptomoneda[] = [];
   esEdicion = false;
   idEditar: number | null = null;
-  usuarioIdActual = 1; 
+  usuarioIdActual: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -36,19 +38,22 @@ form: FormGroup;
     private criptoService: CriptomonedaService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private usuarioService: UsuarioService, // <--- CAMBIO 2: Inyectar UsuarioService (ya lo tenías importado pero faltaba aquí)
+    private loginService: LoginService,
   ) {
     this.form = this.fb.group({
       criptoId: ['', Validators.required],
       direccion: ['', [Validators.required, Validators.minLength(10)]],
       saldo: [0, [Validators.required, Validators.min(0)]],
       estado: [true],
-      usuarioId: [this.usuarioIdActual]
+      usuarioId: ['']
     });
   }
 
   ngOnInit(): void {
     this.cargarCriptos();
+    this.obtenerUsuarioLogueado();
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -58,6 +63,22 @@ form: FormGroup;
         this.cargarDatos(this.idEditar);
       }
     });
+  }
+
+  obtenerUsuarioLogueado() {
+    // Obtenemos el email del token
+    const email = this.loginService.showRole(); // Asumo que agregaste este método al servicio como vimos antes
+
+    if (email) {
+      this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
+        this.usuarioIdActual = usuario.usuarioId!;
+        
+        // Si NO estamos editando, asignamos el usuario al formulario
+        if (!this.esEdicion) {
+          this.form.patchValue({ usuarioId: this.usuarioIdActual });
+        }
+      });
+    }
   }
 
   cargarCriptos() {

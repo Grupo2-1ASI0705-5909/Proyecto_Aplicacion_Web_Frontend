@@ -120,7 +120,7 @@
         <span matListItemTitle>Cambiar Rol (Demo)</span>
       </a>
 
-      <a mat-list-item routerLink="/login" style="color: #d32f2f;">
+      <a mat-list-item (click)="logout()" style="color: #d32f2f; cursor: pointer;">
         <mat-icon matListItemIcon style="color: #d32f2f;">logout</mat-icon>
         <span matListItemTitle>Cerrar Sesión</span>
       </a>

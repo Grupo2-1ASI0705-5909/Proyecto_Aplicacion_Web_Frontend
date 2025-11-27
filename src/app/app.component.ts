@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { LoginService } from './service/login-service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,8 @@ export class AppComponent {
   showFinanzasMenu: boolean = false;
   showSistemaMenu: boolean = false;
   showOperacionesMenu: boolean = false;
+
+  constructor(private loginService: LoginService) {}
   toggleRole() {
     this.isAdmin = !this.isAdmin;
   }
@@ -37,5 +40,9 @@ export class AppComponent {
 
   toggleSistema() {
     this.showSistemaMenu = !this.showSistemaMenu;
+  }
+
+  logout() {
+    this.loginService.logout();
   }
 }
