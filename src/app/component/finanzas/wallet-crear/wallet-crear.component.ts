@@ -15,18 +15,18 @@ import { UsuarioService } from '../../../service/usuario.service';
 import { LoginService } from '../../../service/login-service';
 
 @Component({
-  selector: 'app-wallet-crear', 
+  selector: 'app-wallet-crear',
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
-    MatFormFieldModule, MatInputModule, MatSelectModule, 
+    MatFormFieldModule, MatInputModule, MatSelectModule,
     MatButtonModule, MatSlideToggleModule, MatSnackBarModule
   ],
-  templateUrl: './wallet-crear.component.html', 
+  templateUrl: './wallet-crear.component.html',
   styleUrl: './wallet-crear.component.css'
 })
-export class WalletCrearComponent implements OnInit{
-form: FormGroup;
+export class WalletCrearComponent implements OnInit {
+  form: FormGroup;
   criptos: Criptomoneda[] = [];
   esEdicion = false;
   idEditar: number | null = null;
@@ -67,12 +67,12 @@ form: FormGroup;
 
   obtenerUsuarioLogueado() {
     // Obtenemos el email del token
-    const email = this.loginService.showRole(); // Asumo que agregaste este método al servicio como vimos antes
+    const email = this.loginService.getUsuarioActual(); // Obtiene el email del usuario logueado
 
     if (email) {
       this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
         this.usuarioIdActual = usuario.usuarioId!;
-        
+
         // Si NO estamos editando, asignamos el usuario al formulario
         if (!this.esEdicion) {
           this.form.patchValue({ usuarioId: this.usuarioIdActual });

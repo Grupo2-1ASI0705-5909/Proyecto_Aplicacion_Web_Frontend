@@ -7,19 +7,30 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UsuarioService } from '../../../service/usuario.service';
 import { RolService } from '../../../service/rol.service';
 import { Rol } from '../../../model/Rol';
+import { emailUnicoValidator } from '../../../validators/email-async.validator';
 
 @Component({
   selector: 'app-usuario-crear',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatSnackBarModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './usuario-crear.component.html',
   styleUrl: './usuario-crear.component.css'
 })
-export class UsuarioCrearComponent implements OnInit{
-form: FormGroup;
+export class UsuarioCrearComponent implements OnInit {
+  form: FormGroup;
   roles: Rol[] = [];
   esEdicion = false;
   idEditar: number | null = null;
@@ -35,9 +46,12 @@ form: FormGroup;
     this.form = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['',
+        [Validators.required, Validators.email],
+        [] // Async validators se agregan en ngOnInit cuando sabemos si es edición
+      ],
       telefono: ['', Validators.required],
-      passwordHash: [''], // Opcional en edición, obligatorio en crear (validar lógica luego)
+      passwordHash: [''], // Opcional en edición, obligatorio en crear
       rolId: ['', Validators.required],
       estado: [true]
     });
@@ -51,10 +65,20 @@ form: FormGroup;
       if (id) {
         this.esEdicion = true;
         this.idEditar = Number(id);
+
+        // Agregar validador asíncrono para edición (excluye el ID actual)
+        this.form.get('email')?.setAsyncValidators([
+          emailUnicoValidator(this.usuarioService, this.idEditar)
+        ]);
+
         this.usuarioService.obtenerPorId(this.idEditar).subscribe(data => {
           this.form.patchValue(data);
-          // Ojo: passwordHash no se suele devolver ni mostrar por seguridad
         });
+      } else {
+        // Agregar validador asíncrono para creación (sin ID)
+        this.form.get('email')?.setAsyncValidators([
+          emailUnicoValidator(this.usuarioService)
+        ]);
       }
     });
   }

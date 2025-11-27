@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../environment/environment';
 import { TipoCambio } from '../model/TipoCambio';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoCambioService {
-  private url = 'http://localhost:8080/api/tipos-cambio';
+  private url = `${environment.apiUrl}/tipos-cambio`;
+
 
   constructor(private http: HttpClient) { }
 

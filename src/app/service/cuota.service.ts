@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cuota } from '../model/Cuota';
+import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CuotaService {
-  private url = 'http://localhost:8080/api/cuotas';
+  private url = `${environment.apiUrl}/cuotas`;
 
   constructor(private http: HttpClient) { }
 
