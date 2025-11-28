@@ -47,10 +47,7 @@ export class RegistroComponent {
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['',
-        [Validators.required, Validators.email],
-        [emailUnicoValidator(this.usuarioService)]
-      ],
+      email: ['', [Validators.required, Validators.email]], // Validador asíncrono eliminado para evitar error 401
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
       passwordHash: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
@@ -105,12 +102,23 @@ export class RegistroComponent {
       },
       error: (error) => {
         console.error('Error en registro:', error);
-        const mensaje = error.error?.message || 'Error al registrar usuario. Intenta nuevamente.';
+        this.registrando = false;
+
+        let mensaje = 'Error al registrar usuario. Intenta nuevamente.';
+
+        // Intentar extraer mensaje del backend
+        if (error.error && error.error.message) {
+          mensaje = error.error.message;
+        }
+        // Si el mensaje contiene indicio de duplicado
+        else if (error.message && (error.message.includes('email') || error.message.includes('ConstraintViolation'))) {
+          mensaje = 'Este correo electrónico ya está registrado.';
+        }
+
         this.snackBar.open(`❌ ${mensaje}`, 'Cerrar', {
           duration: 4000,
           panelClass: ['error-snackbar']
         });
-        this.registrando = false;
       }
     });
   }

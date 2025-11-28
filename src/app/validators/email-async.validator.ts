@@ -1,9 +1,6 @@
-// Archivo: src/app/validators/email-async.validator.ts
-// Validador asíncrono para verificar si un email ya está en uso
-
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
-import { map, catchError, switchMap, first } from 'rxjs/operators';
+import { map, catchError, switchMap, first, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UsuarioService } from '../service/usuario.service';
 
 export function emailUnicoValidator(
@@ -11,12 +8,15 @@ export function emailUnicoValidator(
     idActual?: number
 ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-        if (!control.value) {
+        // Validación básica antes de llamar al backend
+        if (!control.value || control.value.length < 5 || !control.value.includes('@')) {
             return of(null);
         }
 
-        // Debounce de 500ms para no hacer peticiones en cada tecla
+        // Optimización: Esperar a que el usuario deje de escribir
         return timer(500).pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
             switchMap(() =>
                 usuarioService.obtenerPorEmail(control.value).pipe(
                     map(usuario => {

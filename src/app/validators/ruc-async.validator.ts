@@ -1,9 +1,6 @@
-// Archivo: src/app/validators/ruc-async.validator.ts
-// Validador asíncrono para verificar si un RUC ya está en uso
-
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
-import { map, catchError, switchMap, first } from 'rxjs/operators';
+import { map, catchError, switchMap, first, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ComercioService } from '../service/comercio.service';
 
 export function rucUnicoValidator(
@@ -11,12 +8,15 @@ export function rucUnicoValidator(
     idActual?: number
 ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-        if (!control.value) {
+        // Validación básica: RUC debe tener 11 dígitos
+        if (!control.value || control.value.length !== 11) {
             return of(null);
         }
 
-        // Debounce de 500ms para no hacer peticiones en cada tecla
+        // Optimización: Esperar a que el usuario deje de escribir
         return timer(500).pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
             switchMap(() =>
                 comercioService.obtenerPorRuc(control.value).pipe(
                     map(comercio => {
