@@ -41,11 +41,25 @@
           <mat-icon>store</mat-icon>
           <span>Comercios</span>
         </a>
+
+        <a routerLink="/transacciones" routerLinkActive="active" class="nav-link">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Transacciones</span>
+        </a>
+
+        <a routerLink="/criptomonedas" routerLinkActive="active" class="nav-link">
+          <mat-icon>currency_bitcoin</mat-icon>
+          <span>Criptomonedas</span>
+        </a>
+
+        <a routerLink="/tipos-cambio" routerLinkActive="active" class="nav-link">
+          <mat-icon>currency_exchange</mat-icon>
+          <span>Tipos de Cambio</span>
+        </a>
       </div>
 
-      <!-- Menú Cliente / Comercio -->
-      <div *ngIf="isCliente || isComercio || (!isAdmin && !isCliente && !isComercio)" class="nav-section">
-
+      <!-- Menú COMERCIO -->
+      <div *ngIf="isComercio" class="nav-section">
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
           <mat-icon>home</mat-icon>
           <span>Inicio</span>
@@ -56,97 +70,71 @@
           <span>Mi Perfil</span>
         </a>
 
-        <!-- Menú Comercio (Solo para Rol Comercio) -->
-        <div *ngIf="isComercio" class="nav-group">
-          <a (click)="toggleComercio()" class="nav-link nav-group-header">
-            <mat-icon>storefront</mat-icon>
-            <span>Mi Comercio</span>
-            <mat-icon class="expand-icon">{{ showComercioMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
-          </a>
+        <a routerLink="/transacciones" routerLinkActive="active" class="nav-link">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Mis Ventas</span>
+        </a>
 
-          <div *ngIf="showComercioMenu" class="nav-submenu">
-            <a routerLink="/dashboard" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>dashboard</mat-icon>
-              <span>Resumen Ventas</span>
-            </a>
-            <a routerLink="/transacciones" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>receipt_long</mat-icon>
-              <span>Historial Ventas</span>
-            </a>
-          </div>
-        </div>
+        <a routerLink="/comercios/nuevo" routerLinkActive="active" class="nav-link">
+          <mat-icon>storefront</mat-icon>
+          <span>Mi Comercio</span>
+        </a>
 
-        <!-- Operaciones (Expandible) -->
-        <div class="nav-group">
-          <a (click)="toggleOperaciones()" class="nav-link nav-group-header">
-            <mat-icon>paid</mat-icon>
-            <span>Operaciones</span>
-            <mat-icon class="expand-icon">{{ showOperacionesMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
-          </a>
-
-          <div *ngIf="showOperacionesMenu" class="nav-submenu">
-            <a routerLink="/transacciones" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>receipt_long</mat-icon>
-              <span>Transacciones</span>
-            </a>
-            <a routerLink="/planes" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>event_note</mat-icon>
-              <span>Planes de Pago</span>
-            </a>
-            <a routerLink="/metodos-pago" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>credit_card</mat-icon>
-              <span>Métodos de Pago</span>
-            </a>
-            <a routerLink="/comercios" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>store</mat-icon>
-              <span>Comercios</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Finanzas & Cripto (Expandible) -->
-        <div class="nav-group">
-          <a (click)="toggleFinanzas()" class="nav-link nav-group-header">
-            <mat-icon>savings</mat-icon>
-            <span>Finanzas & Cripto</span>
-            <mat-icon class="expand-icon">{{ showFinanzasMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
-          </a>
-
-          <div *ngIf="showFinanzasMenu" class="nav-submenu">
-            <a routerLink="/wallets" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>account_balance_wallet</mat-icon>
-              <span>Wallets</span>
-            </a>
-            <a routerLink="/criptomonedas" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>currency_bitcoin</mat-icon>
-              <span>Criptomonedas</span>
-            </a>
-            <a routerLink="/tipos-cambio" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>currency_exchange</mat-icon>
-              <span>Tipos de Cambio</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Sistema (Expandible) -->
-        <div class="nav-group">
-          <a (click)="toggleSistema()" class="nav-link nav-group-header">
-            <mat-icon>settings_suggest</mat-icon>
-            <span>Sistema</span>
-            <mat-icon class="expand-icon">{{ showSistemaMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
-          </a>
-
-          <div *ngIf="showSistemaMenu" class="nav-submenu">
-            <a routerLink="/notificaciones" routerLinkActive="active" class="nav-sublink">
-              <mat-icon>notifications</mat-icon>
-              <span>Notificaciones</span>
-            </a>
-          </div>
-        </div>
-
+        <a routerLink="/notificaciones" routerLinkActive="active" class="nav-link">
+          <mat-icon>notifications</mat-icon>
+          <span>Notificaciones</span>
+        </a>
       </div>
 
-      <!-- Logout -->
+      <!-- Menú CLIENTE -->
+      <div *ngIf="isCliente || (!isAdmin && !isComercio)" class="nav-section">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <mat-icon>home</mat-icon>
+          <span>Inicio</span>
+        </a>
+
+        <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
+          <mat-icon>person</mat-icon>
+          <span>Mi Perfil</span>
+        </a>
+
+        <a routerLink="/wallets" routerLinkActive="active" class="nav-link">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <span>Mis Wallets</span>
+        </a>
+
+        <a routerLink="/transacciones" routerLinkActive="active" class="nav-link">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Mis Pagos</span>
+        </a>
+
+        <a routerLink="/planes" routerLinkActive="active" class="nav-link">
+          <mat-icon>event_note</mat-icon>
+          <span>Planes de Pago</span>
+        </a>
+
+        <a routerLink="/metodos-pago" routerLinkActive="active" class="nav-link">
+          <mat-icon>credit_card</mat-icon>
+          <span>Métodos de Pago</span>
+        </a>
+
+        <a routerLink="/criptomonedas" routerLinkActive="active" class="nav-link">
+          <mat-icon>currency_bitcoin</mat-icon>
+          <span>Criptomonedas</span>
+        </a>
+
+        <a routerLink="/tipos-cambio" routerLinkActive="active" class="nav-link">
+          <mat-icon>currency_exchange</mat-icon>
+          <span>Tipos de Cambio</span>
+        </a>
+
+        <a routerLink="/notificaciones" routerLinkActive="active" class="nav-link">
+          <mat-icon>notifications</mat-icon>
+          <span>Notificaciones</span>
+        </a>
+      </div>
+
+      <!-- Logout (Todos) -->
       <div class="nav-section nav-footer">
         <a (click)="logout()" class="nav-link logout-link">
           <mat-icon>logout</mat-icon>

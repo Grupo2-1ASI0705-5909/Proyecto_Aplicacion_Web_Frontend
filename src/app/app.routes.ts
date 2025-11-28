@@ -74,10 +74,25 @@ export const routes: Routes = [
   { path: 'planes', component: PlanPagoListarComponent, canActivate: [seguridadGuard] },
   { path: 'planes/nuevo', component: PlanPagoCrearComponent, canActivate: [seguridadGuard] },
 
-  // MÉTODOS DE PAGO (Todos los usuarios autenticados)
-  { path: 'metodos-pago', component: MetodoPagoListarComponent, canActivate: [seguridadGuard] },
-  { path: 'metodos-pago/nuevo', component: MetodoPagoCrearComponent, canActivate: [seguridadGuard] },
-  { path: 'metodos-pago/editar/:id', component: MetodoPagoCrearComponent, canActivate: [seguridadGuard] },
+  // MÉTODOS DE PAGO (Admin y Cliente - Comercios usan los de sus clientes)
+  {
+    path: 'metodos-pago',
+    component: MetodoPagoListarComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR', 'CLIENTE', 'USER', 'USUARIO'] }
+  },
+  {
+    path: 'metodos-pago/nuevo',
+    component: MetodoPagoCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR', 'CLIENTE', 'USER', 'USUARIO'] }
+  },
+  {
+    path: 'metodos-pago/editar/:id',
+    component: MetodoPagoCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR', 'CLIENTE', 'USER', 'USUARIO'] }
+  },
 
   // WALLETS (BILLETERAS) (Todos los usuarios autenticados)
   { path: 'wallets', component: WalletListarComponent, canActivate: [seguridadGuard] },
@@ -85,22 +100,52 @@ export const routes: Routes = [
   { path: 'wallets/detalle/:id', component: WalletDetalleComponent, canActivate: [seguridadGuard] },
   { path: 'wallets/editar/:id', component: WalletCrearComponent, canActivate: [seguridadGuard] },
 
-  // CRIPTOMONEDAS (Todos los usuarios autenticados)
+  // CRIPTOMONEDAS (Listar: todos, Crear/Editar: solo Admin)
   { path: 'criptomonedas', component: CriptoListarComponent, canActivate: [seguridadGuard] },
-  { path: 'criptomonedas/nueva', component: CriptoCrearComponent, canActivate: [seguridadGuard] },
-  { path: 'criptomonedas/editar/:id', component: CriptoCrearComponent, canActivate: [seguridadGuard] },
+  {
+    path: 'criptomonedas/nueva',
+    component: CriptoCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
+  },
+  {
+    path: 'criptomonedas/editar/:id',
+    component: CriptoCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
+  },
 
-  // TIPOS DE CAMBIO (Todos los usuarios autenticados)
+  // TIPOS DE CAMBIO (Listar: todos, Crear: solo Admin)
   { path: 'tipos-cambio', component: TipoCambioListarComponent, canActivate: [seguridadGuard] },
-  { path: 'tipos-cambio/nuevo', component: TipoCambioCrearComponent, canActivate: [seguridadGuard] },
+  {
+    path: 'tipos-cambio/nuevo',
+    component: TipoCambioCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
+  },
 
   // NOTIFICACIONES (Todos los usuarios autenticados)
   { path: 'notificaciones', component: NotificacionListarComponent, canActivate: [seguridadGuard] },
 
-  // COMERCIOS (Todos los usuarios autenticados)
-  { path: 'comercios', component: ComercioListarComponent, canActivate: [seguridadGuard] },
-  { path: 'comercios/nuevo', component: ComercioCrearComponent, canActivate: [seguridadGuard] },
-  { path: 'comercios/editar/:id', component: ComercioCrearComponent, canActivate: [seguridadGuard] },
+  // COMERCIOS (Listar todos: solo Admin, Crear/Editar: Admin y Comercio)
+  {
+    path: 'comercios',
+    component: ComercioListarComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
+  },
+  {
+    path: 'comercios/nuevo',
+    component: ComercioCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR', 'COMERCIO', 'VENDEDOR'] }
+  },
+  {
+    path: 'comercios/editar/:id',
+    component: ComercioCrearComponent,
+    canActivate: [seguridadGuard, roleGuard],
+    data: { roles: ['ADMIN', 'ADMINISTRADOR', 'COMERCIO', 'VENDEDOR'] }
+  },
 
   // Ruta 404 - Redirigir al dashboard si está logueado, sino al login
   { path: '**', redirectTo: 'login' }

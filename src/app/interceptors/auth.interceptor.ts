@@ -14,27 +14,45 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
 
-            // Manejo de errores 401 (No autorizado - Token inválido o expirado)
+            // Manejo de errores 401 (No autorizado)
             if (error.status === 401) {
-                snackBar.open('Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
-                    duration: 4000,
-                    panelClass: ['error-snackbar']
-                });
+                const token = sessionStorage.getItem('token');
+                const errorMessage = error.error?.message || error.message || '';
 
-                // Limpiar token y redirigir al login
-                sessionStorage.removeItem('token');
-                router.navigate(['/login']);
+                // Solo cerrar sesión si el token está expirado/inválido o no existe
+                const isTokenExpired = !token ||
+                    errorMessage.toLowerCase().includes('expired') ||
+                    errorMessage.toLowerCase().includes('invalid') ||
+                    errorMessage.toLowerCase().includes('expirado') ||
+                    errorMessage.toLowerCase().includes('inválido');
+
+                if (isTokenExpired) {
+                    snackBar.open('Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
+                        duration: 4000,
+                        panelClass: ['error-snackbar']
+                    });
+
+                    // Limpiar token y redirigir al login
+                    sessionStorage.removeItem('token');
+                    router.navigate(['/login']);
+                } else {
+                    // 401 pero token válido = falta de permisos específicos
+                    // No cerrar sesión, solo notificar
+                    snackBar.open('No tiene autorización para esta operación.', 'Cerrar', {
+                        duration: 3000,
+                        panelClass: ['warning-snackbar']
+                    });
+                    // No redirigir, dejar que el guard o componente maneje
+                }
             }
 
             // Manejo de errores 403 (Prohibido - Sin permisos)
             if (error.status === 403) {
                 snackBar.open('No tiene permisos para realizar esta acción.', 'Cerrar', {
-                    duration: 4000,
-                    panelClass: ['error-snackbar']
+                    duration: 3000,
+                    panelClass: ['warning-snackbar']
                 });
-
-                // Redirigir al dashboard
-                router.navigate(['/dashboard']);
+                // No redirigir automáticamente, dejar que el componente maneje
             }
 
             // Manejo de errores 404 (No encontrado)

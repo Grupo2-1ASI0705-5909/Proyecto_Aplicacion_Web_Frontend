@@ -1,17 +1,18 @@
-/* ========================================
-   DASHBOARD COMPONENT - PULSEPAY STYLES
-   ======================================== */
+/* ============================================
+   ESTILOS DEL DASHBOARD - PULSEPAY
+   ============================================ */
 
+/* Contenedor principal del dashboard */
 .dashboard-pulsepay {
   padding: var(--spacing-xl);
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* ========================================
-   HEADER
-   ======================================== */
-
+/* ============================================
+   ENCABEZADO
+   ============================================ */
+/* Barra superior con título y acciones */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -19,6 +20,7 @@
   margin-bottom: var(--spacing-xl);
 }
 
+/* Título principal de la página */
 .page-title {
   font-size: 32px;
   font-weight: 700;
@@ -26,16 +28,17 @@
   margin: 0 0 var(--spacing-xs) 0;
 }
 
+/* Subtítulo descriptivo */
 .page-subtitle {
   font-size: 16px;
   color: var(--text-light);
   margin: 0;
 }
 
-/* ========================================
-   KPI GRID
-   ======================================== */
-
+/* ============================================
+   TARJETAS KPI (Indicadores Clave)
+   ============================================ */
+/* Grid responsivo para las tarjetas de métricas */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -43,14 +46,14 @@
   margin-bottom: var(--spacing-xl);
 }
 
+/* Tarjeta individual de KPI */
 .kpi-card {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  position: relative;
-  overflow: hidden;
 }
 
+/* Icono circular con color de fondo */
 .kpi-icon {
   width: 64px;
   height: 64px;
@@ -68,10 +71,12 @@
   color: white;
 }
 
+/* Contenido de texto del KPI */
 .kpi-content {
   flex: 1;
 }
 
+/* Etiqueta descriptiva del KPI */
 .kpi-label {
   font-size: 14px;
   color: var(--text-light);
@@ -81,6 +86,7 @@
   font-weight: 600;
 }
 
+/* Valor numérico principal */
 .kpi-value {
   font-size: 36px;
   font-weight: 700;
@@ -89,12 +95,14 @@
   line-height: 1;
 }
 
+/* Texto secundario del KPI */
 .kpi-subtitle {
   font-size: 13px;
   color: var(--text-light);
   margin: 0;
 }
 
+/* Botón de acción en el KPI */
 .kpi-action {
   display: flex;
   align-items: center;
@@ -110,14 +118,10 @@
   height: 18px;
 }
 
-/* ========================================
+/* ============================================
    ACCIONES RÁPIDAS
-   ======================================== */
-
-.quick-actions {
-  grid-column: span 1;
-}
-
+   ============================================ */
+/* Sección de botones de acceso rápido */
 .section-title {
   font-size: 18px;
   font-weight: 600;
@@ -125,12 +129,14 @@
   margin: 0 0 var(--spacing-md) 0;
 }
 
+/* Grid de 2 columnas para botones */
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-sm);
 }
 
+/* Botón de acción con icono y texto */
 .action-btn {
   display: flex;
   flex-direction: column;
@@ -151,14 +157,15 @@
   font-weight: 600;
 }
 
-/* ========================================
+/* ============================================
    ACTIVIDAD RECIENTE
-   ======================================== */
-
+   ============================================ */
+/* Sección de transacciones recientes */
 .recent-activity {
   margin-top: var(--spacing-xl);
 }
 
+/* Encabezado de sección con botón "Ver todo" */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -174,16 +181,19 @@
   font-weight: 600;
 }
 
+/* Tarjeta contenedora de la lista */
 .activity-card {
   padding: 0;
   overflow: hidden;
 }
 
+/* Lista de items de actividad */
 .activity-list {
   display: flex;
   flex-direction: column;
 }
 
+/* Item individual de actividad */
 .activity-item {
   display: flex;
   align-items: center;
@@ -201,6 +211,7 @@
   background-color: var(--bg-light);
 }
 
+/* Icono de la actividad */
 .activity-icon {
   width: 48px;
   height: 48px;
@@ -219,6 +230,7 @@
   color: var(--primary-orange);
 }
 
+/* Detalles de la actividad */
 .activity-details {
   flex: 1;
   min-width: 0;
@@ -246,6 +258,7 @@
   margin: 0;
 }
 
+/* Monto de la transacción */
 .activity-amount {
   text-align: right;
   display: flex;
@@ -261,10 +274,10 @@
   margin: 0;
 }
 
-/* ========================================
-   EMPTY STATE
-   ======================================== */
-
+/* ============================================
+   ESTADO VACÍO
+   ============================================ */
+/* Mensaje cuando no hay datos */
 .empty-state {
   text-align: center;
   padding: var(--spacing-xl);
@@ -284,16 +297,17 @@
   margin: 0;
 }
 
-/* ========================================
-   RESPONSIVE
-   ======================================== */
-
+/* ============================================
+   DISEÑO RESPONSIVO
+   ============================================ */
+/* Tablets */
 @media (max-width: 1024px) {
   .kpi-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 
+/* Móviles */
 @media (max-width: 768px) {
   .dashboard-pulsepay {
     padding: var(--spacing-md);
