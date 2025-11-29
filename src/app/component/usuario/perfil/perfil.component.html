@@ -1,50 +1,63 @@
-<div class="container" style="padding: 20px; display: flex; justify-content: center;">
+<div class="profile-container">
 
-  <mat-card style="width: 100%; max-width: 500px;">
-    <div style="background-color: #3f51b5; height: 100px; display: flex; justify-content: center; align-items: center;">
-      <mat-icon style="color: white; font-size: 64px; width: 64px; height: 64px;">account_circle</mat-icon>
+  <!-- Perfil Header con Avatar -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <h1 class="profile-title">Mi Perfil</h1>
+    <p class="profile-subtitle">Administra tu cuenta y preferencias</p>
+  </div>
+
+  <!-- Tarjeta de Información del Usuario -->
+  <div class="profile-card">
+    <div class="profile-info-header">
+      <div>
+        <h2 class="user-name">{{ usuario?.nombre }} {{ usuario?.apellido }}</h2>
+        <span class="user-role badge-pulsepay badge-info">{{ usuario?.rol?.nombre || 'Usuario' }}</span>
+      </div>
     </div>
 
-    <mat-card-header style="margin-top: 10px; justify-content: center;">
-      <mat-card-title>{{ usuario?.nombre }} {{ usuario?.apellido }}</mat-card-title>
-      <mat-card-subtitle>{{ usuario?.rol?.nombre || 'Usuario' }}</mat-card-subtitle>
-    </mat-card-header>
+    <form [formGroup]="form" (ngSubmit)="actualizar()" class="profile-form">
 
-    <mat-card-content style="margin-top: 20px;">
-      <form [formGroup]="form" (ngSubmit)="actualizar()">
-
-        <mat-form-field appearance="outline" style="width: 100%;">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput formControlName="nombre">
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-form-field appearance="outline">
           <mat-label>Apellido</mat-label>
           <input matInput formControlName="apellido">
+          <mat-icon matSuffix>person_outline</mat-icon>
         </mat-form-field>
+      </div>
 
-        <mat-form-field appearance="outline" style="width: 100%;">
-          <mat-label>Correo Electrónico</mat-label>
-          <input matInput formControlName="email">
-          <mat-icon matSuffix>email</mat-icon>
-          <mat-hint>El correo no se puede cambiar</mat-hint>
-        </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput formControlName="email">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-hint>El correo no se puede cambiar</mat-hint>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" style="width: 100%; margin-top: 15px;">
-          <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="telefono">
-          <mat-icon matSuffix>phone</mat-icon>
-        </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono">
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
 
-        <div style="margin-top: 20px; text-align: right;">
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">
-            Guardar Cambios
-          </button>
-        </div>
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">
+          <mat-icon>save</mat-icon>
+          Guardar Cambios
+        </button>
+        <button mat-stroked-button type="button" (click)="form.reset()">
+          Cancelar
+        </button>
+      </div>
 
-      </form>
-    </mat-card-content>
-  </mat-card>
+    </form>
+  </div>
 
 </div>

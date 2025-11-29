@@ -1,5 +1,6 @@
 /* ============================================
-   ESTILOS DEL DASHBOARD - PULSEPAY
+   DASHBOARD PULSEPAY FLEXPAY
+   Diseño tipo Exchange/Crypto Payments
    ============================================ */
 
 /* Contenedor principal del dashboard */
@@ -7,53 +8,67 @@
   padding: var(--spacing-xl);
   max-width: 1400px;
   margin: 0 auto;
+  min-height: 100vh;
 }
 
 /* ============================================
    ENCABEZADO
    ============================================ */
-/* Barra superior con título y acciones */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
-/* Título principal de la página */
 .page-title {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: bold;
   color: var(--text-dark);
   margin: 0 0 var(--spacing-xs) 0;
 }
 
-/* Subtítulo descriptivo */
 .page-subtitle {
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-light);
   margin: 0;
 }
 
+.dashboard-header button {
+  box-shadow: var(--shadow-primary);
+}
+
 /* ============================================
-   TARJETAS KPI (Indicadores Clave)
+   TARJETAS KPI (Card Style from Mockup)
    ============================================ */
-/* Grid responsivo para las tarjetas de métricas */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
 
-/* Tarjeta individual de KPI */
 .kpi-card {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-/* Icono circular con color de fondo */
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Icono con gradiente */
 .kpi-icon {
   width: 64px;
   height: 64px;
@@ -61,7 +76,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .kpi-icon mat-icon {
@@ -71,33 +86,28 @@
   color: white;
 }
 
-/* Contenido de texto del KPI */
+/* Contenido del KPI */
 .kpi-content {
   flex: 1;
 }
 
-/* Etiqueta descriptiva del KPI */
 .kpi-label {
-  font-size: 14px;
+  font-size: 0.9rem;
   color: var(--text-light);
   margin: 0 0 var(--spacing-xs) 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-/* Valor numérico principal */
 .kpi-value {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--text-dark);
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-primary);
   margin: 0 0 var(--spacing-xs) 0;
   line-height: 1;
 }
 
-/* Texto secundario del KPI */
 .kpi-subtitle {
-  font-size: 13px;
+  font-size: 0.85rem;
   color: var(--text-light);
   margin: 0;
 }
@@ -107,9 +117,14 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  color: var(--primary-orange);
+  color: var(--color-primary);
   font-weight: 600;
   padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.kpi-action:hover {
+  color: var(--color-primary-dark);
 }
 
 .kpi-action mat-icon {
@@ -121,51 +136,64 @@
 /* ============================================
    ACCIONES RÁPIDAS
    ============================================ */
-/* Sección de botones de acceso rápido */
+.quick-actions {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
 .section-title {
-  font-size: 18px;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--text-dark);
   margin: 0 0 var(--spacing-md) 0;
 }
 
-/* Grid de 2 columnas para botones */
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
 }
 
-/* Botón de acción con icono y texto */
 .action-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-md) !important;
+  justify-content: center;
+  padding: var(--spacing-lg) !important;
   height: auto !important;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-normal);
+  border-radius: var(--border-radius);
+  background: var(--bg-light);
+  border: 2px solid var(--bg-gray);
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .action-btn mat-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .action-btn span {
-  font-size: 13px;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
 /* ============================================
    ACTIVIDAD RECIENTE
    ============================================ */
-/* Sección de transacciones recientes */
 .recent-activity {
   margin-top: var(--spacing-xl);
 }
 
-/* Encabezado de sección con botón "Ver todo" */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -173,27 +201,38 @@
   margin-bottom: var(--spacing-md);
 }
 
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
 .section-header button {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  color: var(--primary-orange);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
-/* Tarjeta contenedora de la lista */
-.activity-card {
-  padding: 0;
-  overflow: hidden;
+.section-header button:hover {
+  color: var(--color-primary-dark);
 }
 
-/* Lista de items de actividad */
+.activity-card {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
 .activity-list {
   display: flex;
   flex-direction: column;
 }
 
-/* Item individual de actividad */
 .activity-item {
   display: flex;
   align-items: center;
@@ -227,7 +266,7 @@
   font-size: 24px;
   width: 24px;
   height: 24px;
-  color: var(--primary-orange);
+  color: var(--color-primary);
 }
 
 /* Detalles de la actividad */
@@ -237,14 +276,14 @@
 }
 
 .activity-title {
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-dark);
   margin: 0 0 4px 0;
 }
 
 .activity-subtitle {
-  font-size: 13px;
+  font-size: 0.85rem;
   color: var(--text-light);
   margin: 0 0 4px 0;
   white-space: nowrap;
@@ -253,7 +292,7 @@
 }
 
 .activity-date {
-  font-size: 12px;
+  font-size: 0.8rem;
   color: var(--text-light);
   margin: 0;
 }
@@ -268,8 +307,8 @@
 }
 
 .amount-value {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: bold;
   color: var(--text-dark);
   margin: 0;
 }
@@ -277,7 +316,6 @@
 /* ============================================
    ESTADO VACÍO
    ============================================ */
-/* Mensaje cuando no hay datos */
 .empty-state {
   text-align: center;
   padding: var(--spacing-xl);
@@ -293,21 +331,19 @@
 }
 
 .empty-state p {
-  font-size: 16px;
+  font-size: 1rem;
   margin: 0;
 }
 
 /* ============================================
-   DISEÑO RESPONSIVO
+   RESPONSIVE
    ============================================ */
-/* Tablets */
 @media (max-width: 1024px) {
   .kpi-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 
-/* Móviles */
 @media (max-width: 768px) {
   .dashboard-pulsepay {
     padding: var(--spacing-md);
@@ -320,7 +356,7 @@
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 
   .kpi-grid {
@@ -328,7 +364,7 @@
   }
 
   .kpi-value {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
 
   .actions-grid {

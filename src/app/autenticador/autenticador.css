@@ -23,6 +23,11 @@
     overflow: hidden;
 }
 
+/* Aplicar gradiente naranja amarillo */
+.gradient-orange {
+    background: linear-gradient(135deg, #FF8000 0%, #FFC523 100%);
+}
+
 .login-branding::before {
     content: '';
     position: absolute;
