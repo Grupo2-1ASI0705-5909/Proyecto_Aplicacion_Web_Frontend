@@ -6,7 +6,6 @@
     /* RUTA CORREGIDA */
     background-image: url('/assets/imagenes/1.png');
     background-size: cover;
-    overflow-x: hidden;
     background-repeat: no-repeat;
     width: 100%;
     box-sizing: border-box;
@@ -112,9 +111,15 @@ a.framer-1dc0k7u {
 }
 
 .hero__main {
-    text-align: center;
+    text-align: center; /* El texto sigue centrado internamente */
     color: black;
-    margin: 180px 0;
+    
+    /* El truco está aquí: cambias el margen */
+    /* 180px arriba/abajo, 0 derecha, 0 abajo, 100px izquierda */
+    margin: 180px 0 180px 100px; 
+    
+    /* O simplemente agrega esto debajo de tu margin actual: */
+    margin-left: 350px; /* Aumenta este número para moverlo más a la derecha */
 }
 
 .hero__title {
@@ -280,7 +285,7 @@ p {
 
 .hero__main4 {
     text-align: center;
-    margin: 505px auto;
+    margin: 450px auto;
 }
 
 .titulo4 {
@@ -622,7 +627,7 @@ p {
 }
 
 .hero__main7 {
-    margin: -110px 200px;
+    margin: -190px 200px;
 }
 
 .titulo7 {
@@ -660,7 +665,7 @@ p {
 }
 
 .hero__main8 {
-    margin: 450px 200px;
+    margin: 260px 200px;
 }
 
 .titulo8 {
@@ -728,9 +733,10 @@ p {
 .icon-container_9 {
     display: flex;
     gap: 10px;
-    margin: -320px 0;
+    margin: -320px 0px;
     gap: 55px;
     justify-content: center;
+    transform: translateY(275px);
 }
 
 .icon_9 img {
@@ -738,6 +744,7 @@ p {
     height: 50px;
     border-radius: 50%;
     transition: transform 0.3s, box-shadow 0.3s;
+
 }
 
 .icon_9 img:hover {
@@ -750,7 +757,7 @@ p {
     align-items: center;
     gap: 10px;
     margin: 380px 50px;
-    margin-top: 500px;
+    margin-top: 675px;
 }
 
 .logo-icon10 {
