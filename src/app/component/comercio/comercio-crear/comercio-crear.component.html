@@ -1,1 +1,45 @@
-<p>comercio-crear works!</p>
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Comercio</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Nombre Comercial</mat-label>
+      <input matInput formControlName="nombreComercial" placeholder="Ej. Supermercado Metro">
+      <mat-error *ngIf="form.get('nombreComercial')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>RUC</mat-label>
+      <input matInput formControlName="ruc" placeholder="11 dígitos">
+      <mat-error *ngIf="form.get('ruc')?.hasError('required')">Requerido</mat-error>
+      <mat-error *ngIf="form.get('ruc')?.hasError('pattern')">Solo números</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Categoría</mat-label>
+      <input matInput formControlName="categoria" placeholder="Ej. Tecnología, Alimentos...">
+      <mat-error *ngIf="form.get('categoria')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Dirección</mat-label>
+      <textarea matInput formControlName="direccion" rows="2"></textarea>
+      <mat-error *ngIf="form.get('direccion')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <div style="margin-bottom: 20px;">
+      <mat-slide-toggle formControlName="estado" color="primary">
+        {{ form.get('estado')?.value ? 'Operativo (Activo)' : 'Cerrado (Inactivo)' }}
+      </mat-slide-toggle>
+    </div>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button mat-button type="button" routerLink="/comercios">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+
+  </form>
+</div>
