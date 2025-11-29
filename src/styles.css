@@ -1,473 +1,166 @@
-/* ============================================
-   PULSEPAY - ESTILOS GLOBALES
-   ============================================ */
+/* ========================================
+   VARIABLES GLOBALES - PULSEPAY
+   Color Predominante: AMARILLO
+   ======================================== */
 
-/* ============================================
-   1. VARIABLES CSS
-   ============================================ */
-/* Aquí se definen todos los valores reutilizables del diseño */
 :root {
-  /* Colores principales de la marca */
-  --primary-orange: #FF8000;
-  --primary-orange-dark: #E67300;
-  --primary-orange-light: #FFA040;
+    /* Colores Principales - AMARILLO */
+    --primary-orange: #FFC107;
+    --primary-orange-dark: #FFB300;
+    --primary-orange-light: #FFECB3;
 
-  /* Colores de fondo */
-  --bg-dark: #1a1a1a;
-  --bg-light: #f8f9fa;
-  --bg-white: #ffffff;
-  --bg-gray: #e9ecef;
+    /* Alias para consistencia */
+    --color-primary: #FFC107;
+    --color-primary-dark: #FFB300;
+    --color-primary-light: #FFECB3;
+    --color-primary-contrast: #000000;
 
-  /* Colores de texto */
-  --text-dark: #1a1a1a;
-  --text-light: #6c757d;
-  --text-white: #ffffff;
+    /* Colores Secundarios */
+    --color-secondary: #FF6F00;
+    --color-secondary-dark: #E65100;
+    --color-secondary-light: #FF9800;
 
-  /* Bordes redondeados */
-  --border-radius: 16px;
-  --border-radius-lg: 20px;
-  --border-radius-sm: 12px;
-  --border-color: #dee2e6;
+    /* Colores de Estado */
+    --color-success: #4CAF50;
+    --color-danger: #F44336;
+    --color-warning: #FF9800;
+    --color-info: #2196F3;
 
-  /* Sombras para profundidad */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Colores de Texto */
+    --text-dark: #212121;
+    --text-light: #757575;
+    --text-white: #FFFFFF;
+    --color-text-primary: #212121;
+    --color-text-secondary: #757575;
+    --color-text-disabled: #BDBDBD;
 
-  /* Espaciado consistente */
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
+    /* Colores de Fondo */
+    --bg-dark: #1a1a1a;
+    --bg-light: #FAFAFA;
+    --color-background: #FAFAFA;
+    --color-surface: #FFFFFF;
+    --color-divider: #E0E0E0;
 
-  /* Velocidad de animaciones */
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
+    /* Espaciado */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Bordes */
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+    --border-radius-lg: 12px;
+
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
 }
 
-/* ============================================
-   2. ESTILOS BASE
-   ============================================ */
-/* Configuración básica para todos los elementos */
-* {
-  box-sizing: border-box;
-}
+/* ========================================
+   ESTILOS GLOBALES
+   ======================================== */
 
 html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* Estilos del body principal */
 body {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-light);
-  color: var(--text-dark);
-  font-size: 14px;
-  line-height: 1.6;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
 }
 
-/* ============================================
-   3. PERSONALIZACIÓN DE ANGULAR MATERIAL
-   ============================================ */
+/* ========================================
+   SOBRESCRIBIR MATERIAL DESIGN
+   ======================================== */
 
-/* Sombras suaves en lugar de las predeterminadas de Material */
-.mat-elevation-z1,
-.mat-elevation-z2,
-.mat-elevation-z3,
-.mat-elevation-z4,
-.mat-elevation-z5,
-.mat-elevation-z6,
-.mat-elevation-z7,
-.mat-elevation-z8 {
-  box-shadow: var(--shadow-sm) !important;
-}
-
-/* Botones de Material con estilo PulsePay */
-.mat-mdc-raised-button,
-.mat-mdc-unelevated-button {
-  border-radius: var(--border-radius) !important;
-  font-weight: 600 !important;
-  text-transform: none !important;
-  padding: 12px 24px !important;
-  box-shadow: none !important;
-  transition: all var(--transition-fast) !important;
-}
-
-.mat-mdc-raised-button:hover,
-.mat-mdc-unelevated-button:hover {
-  box-shadow: var(--shadow-md) !important;
-  transform: translateY(-2px);
-}
-
-/* Botón primario con color naranja */
 .mat-primary {
-  background-color: var(--primary-orange) !important;
-  color: var(--text-white) !important;
+    background-color: var(--color-primary) !important;
+    color: var(--color-primary-contrast) !important;
 }
 
-.mat-primary:hover {
-  background-color: var(--primary-orange-dark) !important;
+.mat-raised-button.mat-primary {
+    background-color: var(--color-primary) !important;
+    color: var(--color-primary-contrast) !important;
 }
 
-/* Campos de texto (inputs) */
-.mat-mdc-form-field {
-  width: 100%;
+.mat-raised-button.mat-primary:hover {
+    background-color: var(--color-primary-dark) !important;
 }
 
-.mat-mdc-text-field-wrapper {
-  background-color: var(--bg-white) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--border-radius) !important;
-  padding: 4px 12px !important;
+.mat-flat-button.mat-primary {
+    background-color: var(--color-primary) !important;
+    color: var(--color-primary-contrast) !important;
 }
 
-.mat-mdc-text-field-wrapper:hover {
-  border-color: #adb5bd !important;
+.mat-mdc-raised-button.mat-primary {
+    --mdc-protected-button-container-color: var(--color-primary) !important;
+    --mdc-protected-button-label-text-color: var(--color-primary-contrast) !important;
 }
 
-/* Eliminar efectos de Material que no usamos */
-.mat-mdc-form-field-focus-overlay,
-.mat-mdc-form-field-underline,
-.mdc-line-ripple {
-  display: none !important;
+.mat-mdc-unelevated-button.mat-primary {
+    --mdc-filled-button-container-color: var(--color-primary) !important;
+    --mdc-filled-button-label-text-color: var(--color-primary-contrast) !important;
 }
 
-/* Tarjetas (cards) */
-.mat-mdc-card {
-  border-radius: var(--border-radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
-  border: none !important;
-  transition: all var(--transition-normal) !important;
+/* Enlaces */
+a {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
-.mat-mdc-card:hover {
-  box-shadow: var(--shadow-md) !important;
-  transform: translateY(-4px);
+a:hover {
+    color: var(--color-primary);
 }
 
-/* Tablas */
-.mat-mdc-table {
-  background-color: var(--bg-white) !important;
-  border-radius: var(--border-radius) !important;
-  overflow: hidden;
-}
+/* ========================================
+   SCROLLBAR PERSONALIZADO
+   ======================================== */
 
-.mat-mdc-header-row {
-  background-color: var(--bg-gray) !important;
-}
-
-.mat-mdc-header-cell {
-  color: var(--text-dark) !important;
-  font-weight: 600 !important;
-  border: none !important;
-}
-
-.mat-mdc-row {
-  border-bottom: 1px solid var(--bg-gray) !important;
-  transition: background-color var(--transition-fast) !important;
-}
-
-.mat-mdc-row:hover {
-  background-color: var(--bg-light) !important;
-}
-
-.mat-mdc-cell {
-  border: none !important;
-  padding: var(--spacing-md) !important;
-}
-
-/* Chips (etiquetas pequeñas) */
-.mat-mdc-chip {
-  border-radius: var(--border-radius-sm) !important;
-  font-weight: 500 !important;
-  padding: 6px 12px !important;
-}
-
-.mat-mdc-chip.mat-primary {
-  background-color: #e3f2fd !important;
-  color: #1976d2 !important;
-}
-
-.mat-mdc-chip.mat-warn {
-  background-color: #fff3e0 !important;
-  color: #f57c00 !important;
-}
-
-.mat-mdc-chip.mat-accent {
-  background-color: #f3e5f5 !important;
-  color: #7b1fa2 !important;
-}
-
-/* Notificaciones (snackbar) */
-.mat-mdc-snack-bar-container {
-  border-radius: var(--border-radius) !important;
-  box-shadow: var(--shadow-lg) !important;
-}
-
-/* Diálogos (modales) */
-.mat-mdc-dialog-container {
-  border-radius: var(--border-radius-lg) !important;
-  box-shadow: var(--shadow-lg) !important;
-}
-
-/* ============================================
-   4. COMPONENTES PERSONALIZADOS
-   ============================================ */
-
-/* Tarjeta personalizada de PulsePay */
-.card-pulsepay {
-  background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-}
-
-.card-pulsepay:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
-}
-
-/* Botón sólido naranja */
-.btn-pulsepay {
-  background: var(--primary-orange);
-  color: var(--text-white);
-  border: none;
-  border-radius: var(--border-radius);
-  padding: 12px 24px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.btn-pulsepay:hover {
-  background: var(--primary-orange-dark);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.btn-pulsepay:active {
-  transform: translateY(0);
-}
-
-/* Botón con borde (outline) */
-.btn-pulsepay-outline {
-  background: transparent;
-  color: var(--primary-orange);
-  border: 2px solid var(--primary-orange);
-  border-radius: var(--border-radius);
-  padding: 10px 22px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.btn-pulsepay-outline:hover {
-  background: var(--primary-orange);
-  color: var(--text-white);
-}
-
-/* Etiquetas de estado (badges) */
-.badge-pulsepay {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: var(--border-radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.badge-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.badge-warning {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.badge-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.badge-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
-/* Gradiente naranja para fondos */
-.gradient-orange {
-  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-dark) 100%);
-}
-
-/* ============================================
-   5. LAYOUT (Diseño de página)
-   ============================================ */
-
-/* Contenedor centrado con ancho máximo */
-.container-pulsepay {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
-}
-
-/* Grid responsivo automático */
-.grid-pulsepay {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-/* ============================================
-   6. SCROLLBAR PERSONALIZADO
-   ============================================ */
-/* Barra de desplazamiento más delgada y estilizada */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-light);
+    background: var(--color-background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
+    background: var(--color-primary-light);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-light);
+    background: var(--color-primary);
 }
 
-/* ============================================
-   7. ANIMACIONES
-   ============================================ */
-/* Animación de aparición suave */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+/* ========================================
+   UTILIDADES
+   ======================================== */
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.text-primary {
+    color: var(--color-primary) !important;
 }
 
-.fade-in {
-  animation: fadeIn var(--transition-normal);
+.bg-primary {
+    background-color: var(--color-primary) !important;
 }
 
-/* ============================================
-   8. UTILIDADES DE TEXTO
-   ============================================ */
-.text-center {
-  text-align: center;
+.text-success {
+    color: var(--color-success) !important;
 }
 
-.text-bold {
-  font-weight: 600;
+.text-danger {
+    color: var(--color-danger) !important;
 }
 
-.text-light {
-  color: var(--text-light);
-}
-
-.text-small {
-  font-size: 12px;
-}
-
-/* ============================================
-   9. UTILIDADES DE ESPACIADO
-   ============================================ */
-/* Márgenes superiores */
-.mt-1 {
-  margin-top: var(--spacing-xs);
-}
-
-.mt-2 {
-  margin-top: var(--spacing-sm);
-}
-
-.mt-3 {
-  margin-top: var(--spacing-md);
-}
-
-.mt-4 {
-  margin-top: var(--spacing-lg);
-}
-
-/* Márgenes inferiores */
-.mb-1 {
-  margin-bottom: var(--spacing-xs);
-}
-
-.mb-2 {
-  margin-bottom: var(--spacing-sm);
-}
-
-.mb-3 {
-  margin-bottom: var(--spacing-md);
-}
-
-.mb-4 {
-  margin-bottom: var(--spacing-lg);
-}
-
-/* Padding (relleno interno) */
-.p-1 {
-  padding: var(--spacing-xs);
-}
-
-.p-2 {
-  padding: var(--spacing-sm);
-}
-
-.p-3 {
-  padding: var(--spacing-md);
-}
-
-.p-4 {
-  padding: var(--spacing-lg);
-}
-
-/* ============================================
-   10. DISEÑO RESPONSIVO
-   ============================================ */
-/* Ajustes para pantallas pequeñas (móviles) */
-@media (max-width: 768px) {
-  :root {
-    --spacing-lg: 16px;
-    --spacing-xl: 24px;
-  }
-
-  .container-pulsepay {
-    padding: var(--spacing-md);
-  }
-
-  .grid-pulsepay {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ============================================
-   11. CORRECCIONES DE NAVEGADOR
-   ============================================ */
-/* Evita que Chrome ponga fondo amarillo en campos autocompletados */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--bg-white) inset !important;
-  -webkit-text-fill-color: var(--text-dark) !important;
-  transition: background-color 5000s ease-in-out 0s;
+.text-warning {
+    color: var(--color-warning) !important;
 }

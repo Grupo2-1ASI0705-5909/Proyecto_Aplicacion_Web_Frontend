@@ -27,35 +27,34 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                     errorMessage.toLowerCase().includes('inválido');
 
                 if (isTokenExpired) {
-                    snackBar.open('Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
-                        duration: 4000,
-                        panelClass: ['error-snackbar']
-                    });
-
-                    // Limpiar token y redirigir al login
+                    // Token realmente expirado - limpiar y notificar
+                    // NO redirigir aquí, dejar que el componente lo haga
                     sessionStorage.removeItem('token');
-                    router.navigate(['/login']);
-                } else {
-                    // 401 pero token válido = falta de permisos específicos
-                    // No cerrar sesión, solo notificar
-                    snackBar.open('No tiene autorización para esta operación.', 'Cerrar', {
-                        duration: 3000,
-                        panelClass: ['warning-snackbar']
-                    });
-                    // No redirigir, dejar que el guard o componente maneje
+
+                    // Solo mostrar mensaje si no estamos en la página de login
+                    if (!router.url.includes('/login')) {
+                        snackBar.open('⏱️ Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
+                            duration: 4000,
+                            panelClass: ['error-snackbar']
+                        });
+                    }
                 }
+                // Si el token es válido pero hay 401, es un problema de permisos
+                // Dejar que el componente maneje el error (no mostrar snackbar aquí)
             }
 
-            // Manejo de errores 403 (Prohibido - Sin permisos)
+            // Manejo de errores 403, 404, 500 - Dejar que los componentes los manejen
+            // Solo interceptamos para logging, no mostramos snackbars aquí
+            // para evitar duplicados con el manejo en componentes
+
+            /* DESHABILITADO - Los componentes manejan estos errores
             if (error.status === 403) {
                 snackBar.open('No tiene permisos para realizar esta acción.', 'Cerrar', {
                     duration: 3000,
                     panelClass: ['warning-snackbar']
                 });
-                // No redirigir automáticamente, dejar que el componente maneje
             }
 
-            // Manejo de errores 404 (No encontrado)
             if (error.status === 404) {
                 snackBar.open('Recurso no encontrado.', 'Cerrar', {
                     duration: 3000,
@@ -63,13 +62,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 });
             }
 
-            // Manejo de errores 500 (Error del servidor)
             if (error.status === 500) {
                 snackBar.open('Error del servidor. Intente nuevamente más tarde.', 'Cerrar', {
                     duration: 4000,
                     panelClass: ['error-snackbar']
                 });
             }
+            */
 
             // Manejo de errores de red (sin conexión)
             if (error.status === 0) {

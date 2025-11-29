@@ -14,6 +14,7 @@ import { CriptoListarComponent } from './component/finanzas/cripto-listar/cripto
 import { CriptoCrearComponent } from './component/finanzas/cripto-crear/cripto-crear.component';
 import { TipoCambioListarComponent } from './component/finanzas/tipo-cambio-listar/tipo-cambio-listar.component';
 import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear/tipo-cambio-crear.component';
+import { CriptoTasasLiveComponent } from './component/finanzas/cripto-tasas-live/cripto-tasas-live.component';
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
 import { Autenticador } from './autenticador/autenticador';
 import { RegistroComponent } from './autenticador/registro/registro.component';
@@ -24,13 +25,23 @@ import { ComercioListarComponent } from './component/comercio/comercio-listar/co
 import { ComercioCrearComponent } from './component/comercio/comercio-crear/comercio-crear.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { PerfilComponent } from './component/usuario/perfil/perfil.component';
+import { HomeComponent } from './component/landing/home/home.component';
+import { NoticiasComponent } from './component/landing/noticias/noticias.component';
+import { ComunidadComponent } from './component/landing/comunidad/comunidad.component';
 
 export const routes: Routes = [
+
+  { path: '', component: HomeComponent },
+
+  { path: 'noticias', component: NoticiasComponent }, // index_2.html
+  { path: 'comunidad', component: ComunidadComponent },
+
   // Ruta inicial (Login)
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  //{ path: '', redirectTo: 'login', pathMatch: 'full' },
 
   // Login (Público)
   { path: 'login', component: Autenticador },
+
 
   // Registro (Público)
   { path: 'registro', component: RegistroComponent },
@@ -123,6 +134,9 @@ export const routes: Routes = [
     canActivate: [seguridadGuard, roleGuard],
     data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
   },
+
+  // TASAS EN TIEMPO REAL (Todos los usuarios autenticados)
+  { path: 'cripto-tasas-live', component: CriptoTasasLiveComponent, canActivate: [seguridadGuard] },
 
   // NOTIFICACIONES (Todos los usuarios autenticados)
   { path: 'notificaciones', component: NotificacionListarComponent, canActivate: [seguridadGuard] },

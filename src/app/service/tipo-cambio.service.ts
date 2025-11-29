@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, interval, switchMap, shareReplay, startWith } from 'rxjs';
 import { environment } from '../environment/environment';
 import { TipoCambio } from '../model/TipoCambio';
 
@@ -10,8 +10,17 @@ import { TipoCambio } from '../model/TipoCambio';
 export class TipoCambioService {
   private url = `${environment.apiUrl}/tipos-cambio`;
 
+  // Observable que emite las tasas más recientes cada 10 segundos
+  public tasasEnTiempoReal$: Observable<TipoCambio[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    // Configurar actualización automática cada 10 segundos
+    this.tasasEnTiempoReal$ = interval(10000).pipe(
+      startWith(0), // Emitir inmediatamente al suscribirse
+      switchMap(() => this.obtenerTasasMasRecientes()),
+      shareReplay(1) // Compartir la misma suscripción entre múltiples componentes
+    );
+  }
 
   crear(tipoCambio: TipoCambio): Observable<TipoCambio> {
     return this.http.post<TipoCambio>(this.url, tipoCambio);

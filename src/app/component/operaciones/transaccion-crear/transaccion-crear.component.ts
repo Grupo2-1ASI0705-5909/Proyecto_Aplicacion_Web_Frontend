@@ -12,9 +12,7 @@ import { ComercioService } from '../../../service/comercio.service';
 import { CriptomonedaService } from '../../../service/criptomoneda.service';
 import { MetodoPagoService } from '../../../service/metodo-pago.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TipoCambioService } from '../../../service/tipo-cambio.service';
 import { LoginService } from '../../../service/login-service';
-import { WalletService } from '../../../service/wallet.service';
 
 @Component({
   selector: 'app-transaccion-crear',
@@ -32,8 +30,6 @@ export class TransaccionCrearComponent implements OnInit {
 
   usuarioIdActual: number | null = null;
   guardando = false;
-  saldoInsuficiente = false;
-  saldoActualWallet = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -41,8 +37,6 @@ export class TransaccionCrearComponent implements OnInit {
     private comercioService: ComercioService,
     private criptoService: CriptomonedaService,
     private metodoPagoService: MetodoPagoService,
-    private tipoCambioService: TipoCambioService,
-    private walletService: WalletService,
     private router: Router,
     private snackBar: MatSnackBar,
     private loginService: LoginService
@@ -52,10 +46,11 @@ export class TransaccionCrearComponent implements OnInit {
       criptoId: ['', Validators.required],
       metodoPagoId: ['', Validators.required],
       montoTotalFiat: [0, [Validators.required, Validators.min(1)]],
-      codigoMoneda: [''],
+      // Estos campos se ignoran o usan valores por defecto, el backend los calculará
+      codigoMoneda: ['USD'],
       montoTotalCripto: [0],
       tasaAplicada: [1],
-      tipoCambioId: [null, Validators.required],
+      tipoCambioId: [null], // No requerido, el backend lo obtiene
       usuarioId: [this.usuarioIdActual],
       estado: ['PENDIENTE'],
       txHash: ['GENERATED_BY_FRONT']
@@ -75,73 +70,14 @@ export class TransaccionCrearComponent implements OnInit {
     this.metodoPagoService.obtenerActivos().subscribe(data => this.metodos = data);
   }
 
-  calcularConversion() {
-    const criptoId = this.form.get('criptoId')?.value;
-    const montoFiat = this.form.get('montoTotalFiat')?.value;
-
-    if (criptoId) {
-      const criptoSeleccionada = this.criptos.find(c => c.criptoId === criptoId);
-      if (criptoSeleccionada) {
-        this.form.patchValue({ codigoMoneda: criptoSeleccionada.codigo });
-
-        // ⚠️ SECURITY WARNING: 
-        // Actualmente el frontend calcula la tasa y el monto cripto.
-        // Esto es vulnerable a manipulación. El backend debería recibir solo montoFiat y criptoId,
-        // y realizar estos cálculos internamente. Se mantiene así por compatibilidad con el backend actual.
-        this.tipoCambioService.obtenerTasaMasReciente(criptoSeleccionada.codigo, 'USD')
-          .subscribe({
-            next: (tipoCambio) => {
-              if (tipoCambio) {
-                this.form.patchValue({
-                  tipoCambioId: tipoCambio.tipoCambioId,
-                  tasaAplicada: tipoCambio.tasa
-                });
-
-                if (tipoCambio.tasa > 0) {
-                  const totalCripto = montoFiat / tipoCambio.tasa;
-                  this.form.patchValue({ montoTotalCripto: totalCripto });
-
-                  // VALIDAR SALDO
-                  if (this.usuarioIdActual) {
-                    this.walletService.obtenerPorUsuarioYCripto(this.usuarioIdActual, criptoId).subscribe({
-                      next: (wallet) => {
-                        if (wallet) {
-                          this.saldoActualWallet = wallet.saldo;
-                          if (totalCripto > wallet.saldo) {
-                            this.saldoInsuficiente = true;
-                            this.form.setErrors({ saldoInsuficiente: true });
-                            this.snackBar.open(`Saldo insuficiente. Tienes ${wallet.saldo} ${criptoSeleccionada.codigo}`, 'Cerrar', { duration: 3000 });
-                          } else {
-                            this.saldoInsuficiente = false;
-                            // Si no hay otros errores, limpiar el error de saldo
-                            if (this.form.hasError('saldoInsuficiente')) {
-                              this.form.setErrors(null);
-                            }
-                          }
-                        }
-                      },
-                      error: () => {
-                        console.warn('No se encontró wallet para esta cripto');
-                        // Si no tiene wallet, no puede pagar con cripto
-                        this.saldoInsuficiente = true;
-                        this.form.setErrors({ noWallet: true });
-                      }
-                    });
-                  }
-                }
-              }
-            },
-            error: () => {
-              console.warn("No se encontró tasa de cambio para esta moneda");
-            }
-          });
-      }
-    }
-  }
+  // ELIMINADO: calcularConversion() 
+  // El backend ahora se encarga de:
+  // 1. Obtener el TipoCambioId
+  // 2. Calcular montoTotalCripto y tasaAplicada de forma segura
 
   guardar() {
     if (this.form.invalid) {
-      this.snackBar.open('Faltan datos, tasa no encontrada o saldo insuficiente', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('Faltan datos requeridos', 'Cerrar', { duration: 3000 });
       return;
     }
 
@@ -161,13 +97,28 @@ export class TransaccionCrearComponent implements OnInit {
         } else if (err.status === 400) {
           mensaje = err.error?.message || 'Datos de transacción inválidos.';
         } else if (err.status === 401) {
-          mensaje = 'Su sesión ha expirado. Por favor inicie sesión nuevamente.';
-          this.router.navigate(['/login']);
-          return;
+          // Verificar si el token existe y está expirado
+          const token = sessionStorage.getItem('token');
+          const errorMessage = err.error?.message || err.message || '';
+
+          const isTokenExpired = !token ||
+            errorMessage.toLowerCase().includes('expired') ||
+            errorMessage.toLowerCase().includes('expirado');
+
+          if (isTokenExpired) {
+            mensaje = '⏱️ Su sesión ha expirado. Por favor inicie sesión nuevamente.';
+            this.snackBar.open(`❌ ${mensaje}`, 'Cerrar', { duration: 5000 });
+            sessionStorage.removeItem('token');
+            this.router.navigate(['/login']);
+            return;
+          } else {
+            // Token válido pero sin permisos para esta operación específica
+            mensaje = 'No tiene autorización para crear transacciones. Verifique que su cuenta tenga el rol correcto (USUARIO o ADMINISTRADOR).';
+          }
         } else if (err.status === 403) {
           mensaje = 'No tiene permisos para realizar esta operación.';
         } else if (err.status === 404) {
-          mensaje = 'Recurso no encontrado (Comercio o Cripto no válidos).';
+          mensaje = 'Recurso no encontrado (Comercio, Cripto o Tasa de cambio no válidos).';
         } else if (err.status >= 500) {
           mensaje = 'Error interno del servidor. Intente más tarde.';
         }
