@@ -1,0 +1,52 @@
+<!-- Corregido -->
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>Crear Plan de Pago</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Asociar a Transacción</mat-label>
+      <mat-select formControlName="transaccionId" (selectionChange)="calcularCuota()">
+        <mat-option *ngFor="let t of transacciones" [value]="t.transaccionId">
+          #{{ t.transaccionId }} - {{ t.comercio?.nombreComercial }} ({{ t.montoTotalFiat | currency }})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('transaccionId')?.hasError('required')">Requerido</mat-error>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>N° Cuotas</mat-label>
+        <input matInput type="number" formControlName="numeroCuotas" (change)="calcularCuota()">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Interés (%)</mat-label>
+        <input matInput type="number" formControlName="interes" (change)="calcularCuota()">
+        <span matTextSuffix>%</span>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Fecha de Inicio</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaInicio" [min]="minDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>Monto por Cuota (Estimado)</mat-label>
+      <input matInput type="number" formControlName="montoPorCuota">
+      <span matTextPrefix>S/.&nbsp;</span>
+      <mat-hint>Se calcula automático al elegir transacción, cuotas e interés</mat-hint>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+      <button mat-button type="button" routerLink="/planes">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Generar Plan
+      </button>
+    </div>
+
+  </form>
+</div>
