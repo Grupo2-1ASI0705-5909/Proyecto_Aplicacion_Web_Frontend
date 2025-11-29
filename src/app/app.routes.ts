@@ -28,6 +28,8 @@ import { PerfilComponent } from './component/usuario/perfil/perfil.component';
 import { HomeComponent } from './component/landing/home/home.component';
 import { NoticiasComponent } from './component/landing/noticias/noticias.component';
 import { ComunidadComponent } from './component/landing/comunidad/comunidad.component';
+import { RecomendacionesComponent } from './component/landing/recomendaciones/recomendaciones.component';
+import { ExpansionComponent } from './component/landing/expansion/expansion.component';
 
 export const routes: Routes = [
 
@@ -35,6 +37,8 @@ export const routes: Routes = [
 
   { path: 'noticias', component: NoticiasComponent }, // index_2.html
   { path: 'comunidad', component: ComunidadComponent },
+  { path: 'recomendaciones', component: RecomendacionesComponent },
+  { path: 'cobertura', component: ExpansionComponent },
 
   // Ruta inicial (Login)
   //{ path: '', redirectTo: 'login', pathMatch: 'full' },
