@@ -20,7 +20,9 @@ import { WalletStateService } from '../../../service/wallet-state.service';
 import { UsuarioService } from '../../../service/usuario.service';
 import { TipoCambioService } from '../../../service/tipo-cambio.service';
 import { LoginService } from '../../../service/login-service';
+import { NotificacionService } from '../../../service/notificacion.service';
 import { Wallet } from '../../../model/Wallet';
+import { Notificacion } from '../../../model/Notificacion';
 
 @Component({
   selector: 'app-transaccion-crear',
@@ -78,7 +80,8 @@ export class TransaccionCrearComponent implements OnInit {
     private tipoCambioService: TipoCambioService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private notificacionService: NotificacionService
   ) {
     this.form = this.fb.group({
       comercioId: ['', Validators.required],
@@ -419,13 +422,41 @@ export class TransaccionCrearComponent implements OnInit {
           this.walletActual = walletRemitenteActualizada;
           this.actualizarSaldoLocal(nuevoSaldoRemitente);
 
-          // Paso B: Acreditar al Destinatario
+          // Paso B: Crear Notificación para el Remitente (Usuario Actual)
+          const notificacionRemitente: Notificacion = {
+            usuarioId: usuarioId,
+            titulo: 'Transferencia Enviada',
+            mensaje: `Has enviado ${monto} ${this.codigoCriptoSeleccionada} a ${this.emailDestinatario}`,
+            leido: false,
+            fechaEnvio: new Date().toISOString()
+          };
+
+          this.notificacionService.crear(notificacionRemitente).subscribe({
+            next: () => console.log('Notificación enviada al remitente'),
+            error: (err) => console.error('Error enviando notificación al remitente', err)
+          });
+
+          // Paso C: Acreditar al Destinatario
           const nuevoSaldoDestinatario = Number(this.walletDestinatario!.saldo) + monto;
           const walletDestinatarioActualizada = { ...this.walletDestinatario!, saldo: nuevoSaldoDestinatario };
 
           this.walletService.actualizar(destinatarioId, walletDestinatarioActualizada).subscribe({
             next: () => {
-              // Paso C: Guardar Historial
+              // Paso D: Crear Notificación para el Destinatario
+              const notificacionDestinatario: Notificacion = {
+                usuarioId: this.usuarioDestinatario.usuarioId,
+                titulo: 'Transferencia Recibida',
+                mensaje: `Has recibido ${monto} ${this.codigoCriptoSeleccionada} de ${this.loginService.getUsuarioActual()}`,
+                leido: false,
+                fechaEnvio: new Date().toISOString()
+              };
+
+              this.notificacionService.crear(notificacionDestinatario).subscribe({
+                next: () => console.log('Notificación enviada al destinatario'),
+                error: (err) => console.error('Error enviando notificación al destinatario', err)
+              });
+
+              // Paso E: Guardar Historial
               this.crearRegistroTransaccion();
             },
             error: (err) => {
@@ -497,7 +528,11 @@ export class TransaccionCrearComponent implements OnInit {
     this.guardando = true;
     const nuevoSaldo = this.saldoDisponibleCripto - this.montoEnCripto;
 
-    this.walletService.actualizarSaldo(this.walletActual.walletId, nuevoSaldo).subscribe({
+    // Clonamos el objeto y actualizamos el saldo
+    const walletActualizada = { ...this.walletActual, saldo: nuevoSaldo };
+
+    // Usamos ACTUALIZAR (PUT)
+    this.walletService.actualizar(this.walletActual.walletId, walletActualizada).subscribe({
       next: () => {
         this.actualizarSaldoLocal(nuevoSaldo);
         this.crearRegistroTransaccion();
@@ -505,6 +540,7 @@ export class TransaccionCrearComponent implements OnInit {
       error: (err) => {
         this.guardando = false;
         console.error(err);
+        this.snackBar.open('Error al procesar el pago.', 'Cerrar', { duration: 3000 });
       }
     });
   }

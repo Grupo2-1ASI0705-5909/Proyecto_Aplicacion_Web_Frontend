@@ -1,71 +1,110 @@
-<div class="container" style="padding: 20px;">
-  
-  <div style="margin-bottom: 20px;">
-    <h2>Mis Notificaciones</h2>
+<div class="notifications-container">
+
+  <!-- Header -->
+  <div class="notifications-header">
+    <div class="header-left">
+      <h1>
+        <mat-icon class="header-icon">notifications</mat-icon>
+        Notificaciones
+      </h1>
+      <p class="subtitle" *ngIf="!cargando">
+        <span *ngIf="cantidadNoLeidas > 0" class="badge-count">{{ cantidadNoLeidas }}</span>
+        {{ cantidadNoLeidas === 0 ? 'No tienes notificaciones nuevas' : cantidadNoLeidas === 1 ? '1 notificación nueva'
+        : cantidadNoLeidas + ' notificaciones nuevas' }}
+      </p>
     </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <ng-container matColumnDef="titulo">
-      <th mat-header-cell *matHeaderCellDef> Asunto </th>
-      <td mat-cell *matCellDef="let n"> 
-        <div style="display: flex; align-items: center;">
-          <mat-icon style="margin-right: 8px; color: gray; font-size: 20px;">
-            {{ n.leido ? 'drafts' : 'mail' }}
-          </mat-icon>
-          <span [style.fontWeight]="n.leido ? 'normal' : 'bold'">
-            {{ n.titulo }}
-          </span>
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="mensaje">
-      <th mat-header-cell *matHeaderCellDef> Mensaje </th>
-      <td mat-cell *matCellDef="let n" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> 
-        {{ n.mensaje }} 
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef> Recibido </th>
-      <td mat-cell *matCellDef="let n" style="color: gray; font-size: 0.9em;"> 
-        {{ n.fechaEnvio | date:'dd MMM yyyy, h:mm a' }} 
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="estado">
-      <th mat-header-cell *matHeaderCellDef> Estado </th>
-      <td mat-cell *matCellDef="let n">
-        <mat-chip [style.backgroundColor]="n.leido ? '#eee' : '#e3f2fd'" 
-                  [style.color]="n.leido ? 'gray' : '#1565c0'">
-          {{ n.leido ? 'Leído' : 'Nuevo' }}
-        </mat-chip>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let n">
-        
-        <button mat-icon-button color="primary" *ngIf="!n.leido" (click)="marcarLeida(n)" matTooltip="Marcar como leído">
-          <mat-icon>check_circle</mat-icon>
-        </button>
-
-        <button mat-icon-button color="warn" (click)="eliminar(n.notificacionId!)" matTooltip="Borrar">
-          <mat-icon>delete_outline</mat-icon>
-        </button>
-
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-        [style.backgroundColor]="row.leido ? 'white' : '#f8fdff'"></tr>
-  </table>
-  
-  <div *ngIf="dataSource.data.length === 0" style="padding: 40px; text-align: center; color: gray;">
-    <mat-icon style="font-size: 48px; height: 48px; width: 48px; margin-bottom: 10px;">notifications_off</mat-icon>
-    <p>No tienes notificaciones.</p>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="marcarTodasLeidas()" [disabled]="cantidadNoLeidas === 0"
+        matTooltip="Marcar todas como leídas">
+        <mat-icon>done_all</mat-icon>
+        Marcar todas como leídas
+      </button>
+    </div>
   </div>
+
+  <!-- Filtros -->
+  <div class="filters-container" *ngIf="!cargando && notificaciones.length > 0">
+    <button mat-button [class.active]="filtroActual === 'todas'" (click)="cambiarFiltro('todas')">
+      <mat-icon>list</mat-icon>
+      Todas ({{ notificaciones.length }})
+    </button>
+
+    <button mat-button [class.active]="filtroActual === 'noLeidas'" (click)="cambiarFiltro('noLeidas')">
+      <mat-icon>mark_email_unread</mat-icon>
+      No leídas ({{ cantidadNoLeidas }})
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="cargando">
+    <mat-spinner></mat-spinner>
+    <p>Cargando notificaciones...</p>
+  </div>
+
+  <!-- Lista de Notificaciones -->
+  <div class="notifications-list" *ngIf="!cargando">
+
+    <div class="notification-card" *ngFor="let notificacion of notificacionesFiltradas"
+      [class.unread]="!notificacion.leido" (click)="marcarLeida(notificacion)">
+
+      <!-- Indicador de no leída -->
+      <div class="unread-indicator" *ngIf="!notificacion.leido"></div>
+
+      <!-- Icono -->
+      <div class="notification-icon-container">
+        <div class="notification-icon" [style.background-color]="getColorNotificacion(notificacion.titulo)">
+          <mat-icon>{{ getIconoNotificacion(notificacion.titulo) }}</mat-icon>
+        </div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="notification-content">
+        <div class="notification-header-row">
+          <h3 class="notification-title">{{ notificacion.titulo }}</h3>
+          <span class="notification-time">{{ formatearFecha(notificacion.fechaEnvio) }}</span>
+        </div>
+
+        <p class="notification-message">{{ notificacion.mensaje }}</p>
+
+        <!-- Estado y Acciones -->
+        <div class="notification-footer">
+          <div class="notification-status">
+            <mat-chip [class.chip-unread]="!notificacion.leido" [class.chip-read]="notificacion.leido">
+              <mat-icon>{{ notificacion.leido ? 'done' : 'fiber_new' }}</mat-icon>
+              {{ notificacion.leido ? 'Leída' : 'Nueva' }}
+            </mat-chip>
+          </div>
+
+          <div class="notification-actions">
+            <button mat-icon-button *ngIf="!notificacion.leido" (click)="marcarLeida(notificacion, $event)"
+              matTooltip="Marcar como leída" class="action-btn">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <button mat-icon-button color="warn" (click)="eliminar(notificacion.notificacionId!, $event)"
+              matTooltip="Eliminar" class="action-btn">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado Vacío -->
+    <div class="empty-state" *ngIf="notificacionesFiltradas.length === 0 && notificaciones.length > 0">
+      <mat-icon>inbox</mat-icon>
+      <h3>No hay notificaciones {{ filtroActual === 'noLeidas' ? 'sin leer' : '' }}</h3>
+      <p>{{ filtroActual === 'noLeidas' ? 'Todas tus notificaciones están leídas' : 'No tienes notificaciones en este
+        momento' }}</p>
+    </div>
+
+    <div class="empty-state" *ngIf="notificaciones.length === 0">
+      <mat-icon>notifications_off</mat-icon>
+      <h3>No tienes notificaciones</h3>
+      <p>Cuando recibas notificaciones aparecerán aquí</p>
+    </div>
+
+  </div>
+
 </div>
