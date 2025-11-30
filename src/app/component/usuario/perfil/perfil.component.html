@@ -48,11 +48,11 @@
       </mat-form-field>
 
       <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
           <mat-icon>save</mat-icon>
           Guardar Cambios
         </button>
-        <button mat-stroked-button type="button" (click)="form.reset()">
+        <button mat-stroked-button type="button" (click)="cargarPerfil()">
           Cancelar
         </button>
       </div>
