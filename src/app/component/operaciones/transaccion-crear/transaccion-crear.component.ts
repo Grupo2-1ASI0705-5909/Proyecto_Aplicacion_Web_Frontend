@@ -52,7 +52,7 @@ export class TransaccionCrearComponent implements OnInit {
       tasaAplicada: [1],
       tipoCambioId: [null], // No requerido, el backend lo obtiene
       usuarioId: [this.usuarioIdActual],
-      estado: ['PENDIENTE'],
+      estado: ['COMPLETADA'],
       txHash: ['GENERATED_BY_FRONT']
     });
   }

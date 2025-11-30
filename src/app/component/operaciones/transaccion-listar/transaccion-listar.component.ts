@@ -123,37 +123,96 @@ export class TransaccionListarComponent implements OnInit {
   }
 
   cargarVentasComercio() {
-    this.usuarioIdActual = this.loginService.getUsuarioId();
-    if (this.usuarioIdActual) {
-      this.comercioService.obtenerPorUsuario(this.usuarioIdActual).subscribe(comercios => {
-        if (comercios && comercios.length > 0) {
-          const miComercio = comercios[0]; // Tomamos el primero
-          if (miComercio.comercioId) {
-            this.transaccionService.obtenerPorComercio(miComercio.comercioId).subscribe(data => {
-              this.dataSource.data = data;
+    console.log('cargarVentasComercio() llamado');
+    const email = this.loginService.getUsuarioActual();
+    console.log('Email obtenido:', email);
 
-              // Calcular totales manualmente (Ventas)
-              this.totalFiat = data.reduce((acc, t) => acc + t.montoTotalFiat, 0);
-              this.totalCripto = data.reduce((acc, t) => acc + t.montoTotalCripto, 0);
+    if (email) {
+      this.usuarioService.obtenerPorEmail(email).subscribe({
+        next: (usuario: any) => {
+          console.log('Usuario obtenido:', usuario);
+          this.usuarioIdActual = usuario.usuarioId;
+          console.log('Usuario ID:', this.usuarioIdActual);
+
+          if (this.usuarioIdActual) {
+            this.comercioService.obtenerPorUsuario(this.usuarioIdActual).subscribe({
+              next: (comercios) => {
+                console.log('Comercios obtenidos:', comercios);
+                if (comercios && comercios.length > 0) {
+                  const miComercio = comercios[0];
+                  console.log('Mi comercio:', miComercio);
+                  if (miComercio.comercioId) {
+                    this.transaccionService.obtenerPorComercio(miComercio.comercioId).subscribe({
+                      next: (data) => {
+                        console.log('Transacciones del comercio:', data);
+                        this.dataSource.data = data;
+
+                        // Calcular totales manualmente (Ventas)
+                        this.totalFiat = data.reduce((acc, t) => acc + t.montoTotalFiat, 0);
+                        this.totalCripto = data.reduce((acc, t) => acc + t.montoTotalCripto, 0);
+                      },
+                      error: (err) => console.error('Error al cargar transacciones del comercio:', err)
+                    });
+                  }
+                } else {
+                  console.log('No se encontraron comercios para este usuario');
+                }
+              },
+              error: (err) => console.error('Error al obtener comercios:', err)
             });
           }
-        }
+        },
+        error: (err) => console.error('Error al obtener usuario por email:', err)
       });
+    } else {
+      console.log('No hay email de usuario logueado');
     }
   }
 
   cargarSoloMias() {
-    this.usuarioIdActual = this.loginService.getUsuarioId();
+    console.log('cargarSoloMias() llamado');
+    const email = this.loginService.getUsuarioActual();
+    console.log('Email obtenido:', email);
 
-    if (this.usuarioIdActual) {
-      // 1. Cargar lista filtrada
-      this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
-        this.dataSource.data = data;
+    if (email) {
+      this.usuarioService.obtenerPorEmail(email).subscribe({
+        next: (usuario: any) => {
+          console.log('Usuario obtenido:', usuario);
+          this.usuarioIdActual = usuario.usuarioId;
+          console.log('Usuario ID:', this.usuarioIdActual);
+
+          if (this.usuarioIdActual) {
+            // 1. Cargar lista filtrada
+            this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe({
+              next: (data) => {
+                console.log('Transacciones del usuario:', data);
+                this.dataSource.data = data;
+              },
+              error: (err) => console.error('Error al cargar transacciones:', err)
+            });
+
+            // 2. Cargar sus totales
+            this.transaccionService.calcularTotalFiatPorUsuario(this.usuarioIdActual).subscribe({
+              next: (t) => {
+                console.log('Total Fiat:', t);
+                this.totalFiat = t;
+              },
+              error: (err) => console.error('Error al calcular total fiat:', err)
+            });
+
+            this.transaccionService.calcularTotalCriptoPorUsuario(this.usuarioIdActual).subscribe({
+              next: (t) => {
+                console.log('Total Cripto:', t);
+                this.totalCripto = t;
+              },
+              error: (err) => console.error('Error al calcular total cripto:', err)
+            });
+          }
+        },
+        error: (err) => console.error('Error al obtener usuario por email:', err)
       });
-
-      // 2. Cargar sus totales
-      this.transaccionService.calcularTotalFiatPorUsuario(this.usuarioIdActual).subscribe(t => this.totalFiat = t);
-      this.transaccionService.calcularTotalCriptoPorUsuario(this.usuarioIdActual).subscribe(t => this.totalCripto = t);
+    } else {
+      console.log('No hay email de usuario logueado');
     }
   }
 
