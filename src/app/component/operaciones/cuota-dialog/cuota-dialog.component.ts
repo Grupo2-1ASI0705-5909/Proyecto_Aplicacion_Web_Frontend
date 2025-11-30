@@ -67,7 +67,7 @@ export class CuotaDialogComponent implements OnInit {
 
     this.cuotaService.pagarCuota(cuota.cuotaId).subscribe({
       next: (cuotaActualizada) => {
-        this.snackBar.open('✅ Cuota pagada exitosamente', 'Cerrar', {
+        this.snackBar.open('Cuota pagada exitosamente', 'Cerrar', {
           duration: 3000,
           panelClass: ['success-snackbar']
         });
@@ -83,7 +83,7 @@ export class CuotaDialogComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al pagar cuota:', error);
-        this.snackBar.open('❌ Error al pagar la cuota. Intente nuevamente.', 'Cerrar', {
+        this.snackBar.open('Error al pagar la cuota. Intente nuevamente.', 'Cerrar', {
           duration: 4000,
           panelClass: ['error-snackbar']
         });

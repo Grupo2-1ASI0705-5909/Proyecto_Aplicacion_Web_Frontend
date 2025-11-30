@@ -28,6 +28,19 @@
 }
 
 /* ============================================
+   FORZAR COLOR NEGRO EN LOS MONTOS KPI
+   ============================================ */
+.gradient-blue div,
+.gradient-purple div {
+    color: inherit !important;
+}
+
+.gradient-blue div[style*="font-size: 24px"],
+.gradient-purple div[style*="font-size: 24px"] {
+    color: #000000 !important;
+}
+
+/* ============================================
    FILTROS Y BÚSQUEDA
    ============================================ */
 .filters-container {

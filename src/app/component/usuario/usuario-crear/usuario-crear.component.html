@@ -22,20 +22,6 @@
       </mat-spinner>
 
       <!-- Mensajes de error -->
-      <mat-error *ngIf="form.get('email')?.hasError('required')">
-        El email es requerido
-      </mat-error>
-      <mat-error *ngIf="form.get('email')?.hasError('email')">
-        Email inválido
-      </mat-error>
-      <mat-error *ngIf="form.get('email')?.hasError('emailEnUso')">
-        ⚠️ Este email ya está registrado
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" style="width: 100%;">
-      <mat-label>Teléfono</mat-label>
-      <input matInput formControlName="telefono">
     </mat-form-field>
 
     <mat-form-field appearance="outline" style="width: 100%;" *ngIf="!esEdicion">

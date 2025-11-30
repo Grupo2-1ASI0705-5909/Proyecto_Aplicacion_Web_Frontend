@@ -17,20 +17,6 @@
       <mat-spinner *ngIf="form.get('ruc')?.pending" diameter="20" matSuffix>
       </mat-spinner>
 
-      <!-- Mensajes de error -->
-      <mat-error *ngIf="form.get('ruc')?.hasError('required')">Requerido</mat-error>
-      <mat-error *ngIf="form.get('ruc')?.hasError('pattern')">Solo números</mat-error>
-      <mat-error *ngIf="form.get('ruc')?.hasError('minlength') || form.get('ruc')?.hasError('maxlength')">
-        Debe tener exactamente 11 dígitos
-      </mat-error>
-      <mat-error *ngIf="form.get('ruc')?.hasError('rucEnUso')">
-        ⚠️ Este RUC ya está registrado
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" style="width: 100%;">
-      <mat-label>Categoría</mat-label>
-      <input matInput formControlName="categoria" placeholder="Ej. Tecnología, Alimentos...">
       <mat-error *ngIf="form.get('categoria')?.hasError('required')">Requerido</mat-error>
     </mat-form-field>
 

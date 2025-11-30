@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Usuario } from '../model/Usuario';
@@ -46,7 +46,20 @@ export class UsuarioService {
   }
 
   obtenerPorEmail(email: string): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.url}/email/${email}`);
+    const token = sessionStorage.getItem('token');
+    console.log('UsuarioService: Token raw:', token ? 'Presente' : 'NULL');
+
+    let headers = new HttpHeaders();
+    if (token) {
+      // Evitar doble Bearer si el token ya lo trae
+      const authHeader = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+      headers = headers.set('Authorization', authHeader);
+      console.log('UsuarioService: Header Authorization seteado:', authHeader.substring(0, 15) + '...');
+    } else {
+      console.warn('UsuarioService: No hay token en sessionStorage');
+    }
+
+    return this.http.get<Usuario>(`${this.url}/email/${email}`, { headers });
   }
 
   actualizar(id: number, usuario: Usuario): Observable<Usuario> {

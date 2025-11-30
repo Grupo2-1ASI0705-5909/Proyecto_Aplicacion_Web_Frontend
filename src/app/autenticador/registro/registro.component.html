@@ -62,21 +62,16 @@
                     <mat-label>Correo Electrónico</mat-label>
                     <input matInput type="email" formControlName="email" placeholder="nombre@correo.com">
                     <mat-icon matSuffix>email</mat-icon>
-
                     <mat-spinner *ngIf="form.get('email')?.pending" diameter="20" matSuffix></mat-spinner>
-
                     <mat-error *ngIf="form.get('email')?.hasError('required')">
-                        El email es requerido
+                        El correo es requerido
                     </mat-error>
                     <mat-error *ngIf="form.get('email')?.hasError('email')">
-                        Email inválido
-                    </mat-error>
-                    <mat-error *ngIf="form.get('email')?.hasError('emailEnUso')">
-                        ⚠️ Este email ya está registrado
+                        Correo inválido
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Teléfono -->
+                <!-- Teléfono (SEPARADO) -->
                 <mat-form-field appearance="outline" class="form-field">
                     <mat-label>Teléfono</mat-label>
                     <input matInput formControlName="telefono" placeholder="987654321">

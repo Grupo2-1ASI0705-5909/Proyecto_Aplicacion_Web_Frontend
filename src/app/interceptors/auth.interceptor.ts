@@ -33,7 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
                     // Solo mostrar mensaje si no estamos en la página de login
                     if (!router.url.includes('/login')) {
-                        snackBar.open('⏱️ Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
+                        snackBar.open('Sesión expirada. Por favor, inicie sesión nuevamente.', 'Cerrar', {
                             duration: 4000,
                             panelClass: ['error-snackbar']
                         });

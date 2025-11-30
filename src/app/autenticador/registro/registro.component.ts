@@ -94,7 +94,7 @@ export class RegistroComponent {
 
     this.usuarioService.crear(usuario).subscribe({
       next: () => {
-        this.snackBar.open('✅ Registro exitoso. Ya puedes iniciar sesión', 'Cerrar', {
+        this.snackBar.open('Registro exitoso. Ya puedes iniciar sesión', 'Cerrar', {
           duration: 4000,
           panelClass: ['success-snackbar']
         });
@@ -115,7 +115,7 @@ export class RegistroComponent {
           mensaje = 'Este correo electrónico ya está registrado.';
         }
 
-        this.snackBar.open(`❌ ${mensaje}`, 'Cerrar', {
+        this.snackBar.open(`Error: ${mensaje}`, 'Cerrar', {
           duration: 4000,
           panelClass: ['error-snackbar']
         });
