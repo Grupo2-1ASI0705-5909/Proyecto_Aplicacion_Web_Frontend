@@ -1,11 +1,13 @@
 // Archivo: src/app/environment/environment.ts
-// Configuración para DESARROLLO (local)
-
 export const environment = {
     production: false,
     apiUrl: 'https://proyecto-aplicacion-web.onrender.com/api',
     loginUrl: 'https://proyecto-aplicacion-web.onrender.com/login',
-    allowedDomains: ['https://proyecto-aplicacion-web.onrender.com'],
+
+    // CORRECCIÓN CRÍTICA: Solo el dominio, SIN https://
+    allowedDomains: ['proyecto-aplicacion-web.onrender.com'],
+
+    // Estas rutas no llevarán token (Login, Registro, etc.)
     disallowedRoutes: [
         'https://proyecto-aplicacion-web.onrender.com/login',
         'https://proyecto-aplicacion-web.onrender.com/api/auth/register',
