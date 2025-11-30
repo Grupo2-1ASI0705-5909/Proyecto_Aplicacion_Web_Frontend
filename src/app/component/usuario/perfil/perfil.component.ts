@@ -11,6 +11,7 @@ import { UsuarioService } from '../../../service/usuario.service';
 import { Usuario } from '../../../model/Usuario';
 import { LoginService } from '../../../service/login-service';
 
+//hola
 @Component({
   selector: 'app-perfil',
   standalone: true,
