@@ -8,8 +8,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Comercio } from '../../../model/Comercio';
 import { ComercioService } from '../../../service/comercio.service';
+<<<<<<< HEAD
 import { LoginService } from '../../../service/login-service';
 import { UsuarioService } from '../../../service/usuario.service';
+=======
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
 @Component({
   selector: 'app-comercio-listar',
@@ -23,6 +26,7 @@ import { UsuarioService } from '../../../service/usuario.service';
 export class ComercioListarComponent implements OnInit {
   dataSource = new MatTableDataSource<Comercio>();
   displayedColumns: string[] = ['id', 'nombre', 'ruc', 'categoria', 'estado', 'acciones'];
+<<<<<<< HEAD
   usuarioIdActual: number | null = null;
   isAdmin: boolean = false;
 
@@ -55,11 +59,25 @@ export class ComercioListarComponent implements OnInit {
   }
 
   cargarTodas() {
+=======
+
+  constructor(
+    private comercioService: ComercioService,
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarComercios();
+  }
+
+  cargarComercios() {
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
     this.comercioService.obtenerTodos().subscribe(data => {
       this.dataSource.data = data;
     });
   }
 
+<<<<<<< HEAD
   cargarSoloMias() {
     const email = this.loginService.getUsuarioActual();
 
@@ -77,12 +95,18 @@ export class ComercioListarComponent implements OnInit {
     }
   }
 
+=======
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
   eliminar(id: number) {
     if (confirm('¿Estás seguro de eliminar este comercio?')) {
       this.comercioService.eliminar(id).subscribe({
         next: () => {
           this.snackBar.open('Comercio eliminado', 'Cerrar', { duration: 3000 });
+<<<<<<< HEAD
           this.isAdmin ? this.cargarTodas() : this.cargarSoloMias();
+=======
+          this.cargarComercios();
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
         },
         error: (err) => console.error(err)
       });

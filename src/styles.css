@@ -14,6 +14,7 @@
     --primary-orange-dark: #DB9030;
     --accent-yellow: #FFC523;
 
+<<<<<<< HEAD
     /* Alias para consistencia */
     --color-primary: #FF8000;
     --color-primary-dark: #DB9030;
@@ -522,3 +523,10 @@ button {
         font-size: 1.2rem;
     }
 }
+=======
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8

@@ -9,7 +9,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UsuarioService } from '../../../service/usuario.service';
 import { Usuario } from '../../../model/Usuario';
+<<<<<<< HEAD
 import { LoginService } from '../../../service/login-service';
+=======
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
 @Component({
   selector: 'app-perfil',
@@ -22,18 +25,30 @@ import { LoginService } from '../../../service/login-service';
 export class PerfilComponent implements OnInit {
   form: FormGroup;
   usuario: Usuario | null = null;
+<<<<<<< HEAD
   usuarioIdActual: number | null = null;
+=======
+  usuarioIdActual = 1; // En un sistema real vendría del AuthService
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
+<<<<<<< HEAD
     private snackBar: MatSnackBar,
     private loginService: LoginService
+=======
+    private snackBar: MatSnackBar
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
   ) {
     this.form = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
+<<<<<<< HEAD
       email: [{ value: '', disabled: true }, Validators.required],
+=======
+      email: [{value: '', disabled: true}, Validators.required], // Email suele ser ID, readonly
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
       telefono: ['', Validators.required],
       // Campos ocultos necesarios para el update
       rolId: [''],
@@ -43,6 +58,7 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
+<<<<<<< HEAD
     // Obtener ID del usuario logueado
     this.usuarioIdActual = this.loginService.getUsuarioId();
 
@@ -54,6 +70,12 @@ export class PerfilComponent implements OnInit {
   cargarPerfil() {
     if (!this.usuarioIdActual) return;
 
+=======
+    this.cargarPerfil();
+  }
+
+  cargarPerfil() {
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
     this.usuarioService.obtenerPorId(this.usuarioIdActual).subscribe(data => {
       this.usuario = data;
       this.form.patchValue({
@@ -69,7 +91,11 @@ export class PerfilComponent implements OnInit {
   }
 
   actualizar() {
+<<<<<<< HEAD
     if (this.form.invalid || !this.usuario || !this.usuarioIdActual) return;
+=======
+    if (this.form.invalid || !this.usuario) return;
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
     // Fusionamos los datos del formulario con el objeto original
     const datosActualizados: Usuario = {
@@ -88,4 +114,8 @@ export class PerfilComponent implements OnInit {
       }
     });
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8

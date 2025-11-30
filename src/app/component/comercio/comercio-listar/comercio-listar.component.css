@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ============================================
    LISTADO DE COMERCIOS - PULSEPAY
    ============================================ */
@@ -178,3 +179,7 @@
         grid-template-columns: 1fr;
     }
 }
+=======
+table { width: 100%; }
+.mat-column-acciones { width: 120px; text-align: right; }
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8

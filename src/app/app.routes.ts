@@ -16,6 +16,7 @@ import { TipoCambioListarComponent } from './component/finanzas/tipo-cambio-list
 import { TipoCambioCrearComponent } from './component/finanzas/tipo-cambio-crear/tipo-cambio-crear.component';
 import { CriptoTasasLiveComponent } from './component/finanzas/cripto-tasas-live/cripto-tasas-live.component';
 import { NotificacionListarComponent } from './component/sistema/notificacion-listar/notificacion-listar.component';
+<<<<<<< HEAD
 import { Autenticador } from './autenticador/autenticador';
 import { RegistroComponent } from './autenticador/registro/registro.component';
 import { RecuperarPasswordComponent } from './autenticador/recuperar-password/recuperar-password.component';
@@ -167,4 +168,51 @@ export const routes: Routes = [
 
   // Ruta 404 - Redirigir al dashboard si está logueado, sino al login
   { path: '**', redirectTo: 'login' }
+=======
+import { LoginComponent } from './auth/login/login.component';
+import { DashboardComponent} from './component/dashboard/dashboard.component';
+import { ComercioListarComponent } from './component/comercio/comercio-listar/comercio-listar.component';
+import { ComercioCrearComponent } from './component/comercio/comercio-crear/comercio-crear.component';
+import { PerfilComponent } from './component/usuario/perfil/perfil.component';
+
+export const routes: Routes = [
+  // Ruta por defecto
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
+  { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'perfil', component: PerfilComponent },
+
+  { path: 'usuarios', component: UsuarioListarComponent },
+  { path: 'usuarios/nuevo', component: UsuarioCrearComponent },
+  { path: 'usuarios/editar/:id', component: UsuarioCrearComponent },
+
+  { path: 'transacciones', component: TransaccionListarComponent },
+  { path: 'transacciones/nueva', component: TransaccionCrearComponent },
+
+  { path: 'planes', component: PlanPagoListarComponent },
+  { path: 'planes/nuevo', component: PlanPagoCrearComponent },
+
+  { path: 'metodos-pago', component: MetodoPagoListarComponent },
+  { path: 'metodos-pago/nuevo', component: MetodoPagoCrearComponent },
+  { path: 'metodos-pago/editar/:id', component: MetodoPagoCrearComponent },
+
+  // Rutas de Comercios agregadas
+  { path: 'comercios', component: ComercioListarComponent },
+  { path: 'comercios/nuevo', component: ComercioCrearComponent },
+  { path: 'comercios/editar/:id', component: ComercioCrearComponent },
+
+  { path: 'wallets', component: WalletListarComponent },
+  { path: 'wallets/nueva', component: WalletCrearComponent },
+  { path: 'wallets/editar/:id', component: WalletCrearComponent },
+
+  { path: 'criptomonedas', component: CriptoListarComponent },
+  { path: 'criptomonedas/nueva', component: CriptoCrearComponent },
+  { path: 'criptomonedas/editar/:id', component: CriptoCrearComponent },
+
+  { path: 'tipos-cambio', component: TipoCambioListarComponent },
+  { path: 'tipos-cambio/nuevo', component: TipoCambioCrearComponent },
+
+  { path: 'notificaciones', component: NotificacionListarComponent },
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 ];

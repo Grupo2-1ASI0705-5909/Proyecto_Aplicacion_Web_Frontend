@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <mat-sidenav-container class="pulsepay-container">
 
   <!-- Sidebar PulsePay - Solo visible si está logueado -->
@@ -41,12 +42,66 @@
           <mat-icon>store</mat-icon>
           <span>Gestionar Comercios</span>
         </a>
+=======
+<mat-sidenav-container style="height: 100vh;">
+
+  <mat-sidenav #sidenav mode="side" opened style="width: 250px; background: #f5f5f5; border-right: 1px solid #ddd;">
+
+    <div style="padding: 20px; text-align: center; background: #3f51b5; color: white;">
+      <mat-icon style="font-size: 40px; height: 40px; width: 40px;">account_balance_wallet</mat-icon>
+      <h3>Gestion App</h3>
+      <small>{{ isAdmin ? 'Modo Administrador' : 'Modo Cliente' }}</small>
+    </div>
+
+    <mat-nav-list>
+
+      @if (isAdmin) {
+        <div mat-subheader style="font-weight: bold; color: gray;">ADMINISTRACIÓN</div>
+        <a mat-list-item routerLink="/dashboard">
+          <mat-icon matListItemIcon>dashboard</mat-icon> <span matListItemTitle>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/usuarios">
+          <mat-icon matListItemIcon>group</mat-icon> <span matListItemTitle>Usuarios</span>
+        </a>
+        <a mat-list-item routerLink="/comercios">
+          <mat-icon matListItemIcon>store</mat-icon> <span matListItemTitle>Comercios</span>
+        </a>
+      }
+
+      @if (!isAdmin) {
+
+        <a mat-list-item routerLink="/dashboard">
+          <mat-icon matListItemIcon>home</mat-icon>
+          <span matListItemTitle>Inicio</span>
+        </a>
+
+        <a mat-list-item routerLink="/perfil">
+          <mat-icon matListItemIcon>person</mat-icon> <span matListItemTitle>Mi Perfil</span>
+        </a>
+
+        <a mat-list-item (click)="toggleOperaciones()" style="cursor: pointer; background-color: #fafafa;">
+          <mat-icon matListItemIcon>paid</mat-icon>
+          <span matListItemTitle>Operaciones</span>
+
+          <mat-icon matListItemMeta>
+            {{ showOperacionesMenu ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </a>
+
+        @if (showOperacionesMenu) {
+
+          <a mat-list-item routerLink="/transacciones" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">receipt_long</mat-icon>
+            <span matListItemTitle>Transacciones</span>
+          </a>
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
         <a routerLink="/transacciones" routerLinkActive="active" class="nav-link">
           <mat-icon>receipt_long</mat-icon>
           <span>Ver Transacciones</span>
         </a>
 
+<<<<<<< HEAD
         <a routerLink="/criptomonedas" routerLinkActive="active" class="nav-link">
           <mat-icon>currency_bitcoin</mat-icon>
           <span>Gestionar Criptos</span>
@@ -89,6 +144,63 @@
           <mat-icon>notifications</mat-icon>
           <span>Notificaciones</span>
         </a>
+=======
+          <a mat-list-item routerLink="/metodos-pago" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">credit_card</mat-icon>
+            <span matListItemTitle>Métodos de Pago</span>
+          </a>
+
+          <a mat-list-item routerLink="/comercios" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">store</mat-icon>
+            <span matListItemTitle>Comercios</span>
+          </a>
+        }
+
+        <a mat-list-item (click)="toggleFinanzas()" style="cursor: pointer; background-color: #fafafa;">
+          <mat-icon matListItemIcon>savings</mat-icon>
+          <span matListItemTitle>Finanzas & Cripto</span>
+
+          <mat-icon matListItemMeta>
+            {{ showFinanzasMenu ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </a>
+
+        @if (showFinanzasMenu) {
+
+          <a mat-list-item routerLink="/wallets" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">account_balance_wallet</mat-icon>
+            <span matListItemTitle>Wallets</span>
+          </a>
+
+          <a mat-list-item routerLink="/criptomonedas" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">currency_bitcoin</mat-icon>
+            <span matListItemTitle>Criptomonedas</span>
+          </a>
+
+          <a mat-list-item routerLink="/tipos-cambio" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">currency_exchange</mat-icon>
+            <span matListItemTitle>Tipos de Cambio</span>
+          </a>
+        }
+
+        <a mat-list-item (click)="toggleSistema()" style="cursor: pointer; background-color: #fafafa;">
+          <mat-icon matListItemIcon>settings_suggest</mat-icon>
+          <span matListItemTitle>Sistema</span>
+
+          <mat-icon matListItemMeta>
+            {{ showSistemaMenu ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </a>
+
+        @if (showSistemaMenu) {
+
+          <a mat-list-item routerLink="/notificaciones" style="padding-left: 3rem; font-size: 0.9em;">
+            <mat-icon matListItemIcon style="font-size: 20px;">notifications</mat-icon>
+            <span matListItemTitle>Notificaciones</span>
+          </a>
+
+        }
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
         <a routerLink="/cripto-tasas-live" routerLinkActive="active" class="nav-link">
           <mat-icon>trending_up</mat-icon>
@@ -96,12 +208,21 @@
         </a>
       </div>
 
+<<<<<<< HEAD
       <!-- Menú CLIENTE -->
       <div *ngIf="isCliente || (!isAdmin && !isComercio)" class="nav-section">
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
           <mat-icon>home</mat-icon>
           <span>Inicio</span>
         </a>
+=======
+      <mat-divider style="margin-top: 20px;"></mat-divider>
+
+      <a mat-list-item (click)="toggleRole()" style="cursor: pointer;">
+        <mat-icon matListItemIcon>swap_horiz</mat-icon>
+        <span matListItemTitle>Cambiar Rol (Demo)</span>
+      </a>
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
         <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
           <mat-icon>person</mat-icon>
@@ -146,8 +267,19 @@
 
   </mat-sidenav>
 
+<<<<<<< HEAD
   <!-- Contenido Principal -->
   <mat-sidenav-content class="pulsepay-content">
+=======
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Gestión Financiera</span>
+    </mat-toolbar>
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
 
     <!-- Sin toolbar superior - el contenido maneja su propio header -->
     <div class="content-wrapper" [class.no-sidebar]="!isLoggedIn">

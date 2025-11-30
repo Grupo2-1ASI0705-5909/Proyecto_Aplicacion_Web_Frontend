@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ============================================
    DASHBOARD PULSEPAY FLEXPAY
    Diseño tipo Exchange/Crypto Payments
@@ -384,3 +385,25 @@
     align-items: center;
   }
 }
+=======
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.kpi-card {
+  border-left: 5px solid;
+}
+.recent-list {
+  list-style: none;
+  padding: 0;
+}
+.recent-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8
