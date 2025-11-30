@@ -4,7 +4,7 @@
 </h2>
 
 <mat-dialog-content>
-  
+
   <div style="margin-bottom: 15px; padding: 10px; background: #e3f2fd; border-radius: 5px;">
     <strong>Total Financiado:</strong> S/. {{ plan.montoPorCuota * plan.numeroCuotas | number:'1.2-2' }} <br>
     <small>(Incluye {{ plan.interes }}% de interés)</small>
@@ -24,8 +24,8 @@
 
     <ng-container matColumnDef="monto">
       <th mat-header-cell *matHeaderCellDef> Monto </th>
-      <td mat-cell *matCellDef="let c"> 
-        <strong>S/. {{ c.monto | number:'1.2-2' }}</strong> 
+      <td mat-cell *matCellDef="let c">
+        <strong>S/. {{ c.monto | number:'1.2-2' }}</strong>
       </td>
     </ng-container>
 
@@ -33,16 +33,34 @@
       <th mat-header-cell *matHeaderCellDef> Estado </th>
       <td mat-cell *matCellDef="let c">
         <mat-chip [color]="getColorEstado(c.estado)" selected>
-            {{ c.estado }}
+          {{ c.estado }}
         </mat-chip>
+      </td>
+    </ng-container>
+
+    <!-- Nueva columna de acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let c">
+        <button mat-raised-button color="primary" *ngIf="puedePagar(c)" (click)="pagarCuota(c)"
+          [disabled]="estaPagando(c)" style="min-width: 100px;">
+          <mat-icon *ngIf="!estaPagando(c)">payment</mat-icon>
+          <mat-spinner *ngIf="estaPagando(c)" diameter="20"
+            style="display: inline-block; margin-right: 5px;"></mat-spinner>
+          {{ estaPagando(c) ? 'Pagando...' : 'Pagar' }}
+        </button>
+        <span *ngIf="c.estado === 'PAGADA'" style="color: #4caf50; display: flex; align-items: center; gap: 5px;">
+          <mat-icon>check_circle</mat-icon>
+          Pagada
+        </span>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
+
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4" style="text-align: center; padding: 20px;">
+      <td class="mat-cell" colspan="5" style="text-align: center; padding: 20px;">
         No se encontraron cuotas.
       </td>
     </tr>
@@ -51,4 +69,4 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="cerrar()">Cerrar</button>
-  </mat-dialog-actions>
+</mat-dialog-actions>

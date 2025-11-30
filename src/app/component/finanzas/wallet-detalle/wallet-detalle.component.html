@@ -1,0 +1,105 @@
+<div class="container" style="padding: 20px;">
+    <mat-card *ngIf="wallet">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon style="vertical-align: middle; margin-right: 10px;">account_balance_wallet</mat-icon>
+                Detalle de Wallet
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <!-- Información de la Wallet -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                <div>
+                    <strong>Criptomoneda:</strong><br>
+                    {{ wallet.criptomoneda?.nombre || 'N/A' }}
+                </div>
+                <div>
+                    <strong>Saldo:</strong><br>
+                    <span style="font-size: 1.2em; color: #4caf50;">
+                        {{ wallet.saldo | number:'1.2-8' }}
+                    </span>
+                </div>
+                <div>
+                    <strong>Dirección:</strong><br>
+                    <small style="word-break: break-all;">{{ wallet.direccion }}</small>
+                </div>
+                <div>
+                    <strong>Estado:</strong><br>
+                    <mat-chip [color]="wallet.estado ? 'primary' : 'warn'" selected>
+                        {{ wallet.estado ? 'Activa' : 'Inactiva' }}
+                    </mat-chip>
+                </div>
+            </div>
+
+            <!-- Historial de Transacciones -->
+            <h3 style="margin-top: 30px; margin-bottom: 15px;">
+                <mat-icon style="vertical-align: middle;">history</mat-icon>
+                Historial de Transacciones del Usuario
+            </h3>
+
+            <mat-spinner *ngIf="cargando" diameter="50" style="margin: 20px auto;"></mat-spinner>
+
+            <table mat-table [dataSource]="transacciones" *ngIf="!cargando" class="mat-elevation-z2"
+                style="width: 100%;">
+
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                    <td mat-cell *matCellDef="let transaccion">
+                        {{ transaccion.fechaTransaccion | date:'dd/MM/yyyy HH:mm' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="comercio">
+                    <th mat-header-cell *matHeaderCellDef>Comercio</th>
+                    <td mat-cell *matCellDef="let transaccion">
+                        {{ transaccion.comercio?.nombre || 'N/A' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="monto">
+                    <th mat-header-cell *matHeaderCellDef>Monto</th>
+                    <td mat-cell *matCellDef="let transaccion">
+                        <div>
+                            <strong>Fiat:</strong> {{ transaccion.montoTotalFiat | currency }}<br>
+                            <strong>Cripto:</strong> {{ transaccion.montoTotalCripto | number:'1.2-8' }}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef>Estado</th>
+                    <td mat-cell *matCellDef="let transaccion">
+                        <mat-chip [color]="getColorEstado(transaccion.estado)" selected>
+                            {{ transaccion.estado }}
+                        </mat-chip>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4" style="text-align: center; padding: 20px;">
+                        <mat-icon style="font-size: 48px; color: #ccc;">info</mat-icon>
+                        <p>No hay transacciones para este usuario</p>
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button mat-button routerLink="/wallets">
+                <mat-icon>arrow_back</mat-icon>
+                Volver
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+    <!-- Mensaje de carga inicial -->
+    <div *ngIf="!wallet && cargando" style="text-align: center; padding: 50px;">
+        <mat-spinner diameter="50" style="margin: 0 auto;"></mat-spinner>
+        <p>Cargando información...</p>
+    </div>
+</div>

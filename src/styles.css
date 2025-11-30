@@ -1,10 +1,532 @@
-/* You can add global styles to this file, and also import other style files */
+/* ========================================
+   PULSEPAY FLEXPAY - ESTILOS GLOBALES
+   Diseño Inspirado en Exchange/Crypto Payments
+   Paleta: Naranja #FF8000, #FFC523, #FFAC0A
+   ======================================== */
 
+/* ========================================
+   VARIABLES GLOBALES
+   ======================================== */
+:root {
+    /* Colores Principales - Naranja PulsePay */
+    --primary-orange: #FF8000;
+    --primary-orange-light: #FFAC0A;
+    --primary-orange-dark: #DB9030;
+    --accent-yellow: #FFC523;
+
+<<<<<<< HEAD
+    /* Alias para consistencia */
+    --color-primary: #FF8000;
+    --color-primary-dark: #DB9030;
+    --color-primary-light: #FFAC0A;
+    --color-primary-contrast: #FFFFFF;
+
+    /* Colores Secundarios */
+    --color-secondary: #1a1a1a;
+    --color-secondary-dark: #0a0a0a;
+    --color-secondary-light: #2a2a2a;
+
+    /* Colores de Estado */
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #FFC523;
+    --color-info: #17a2b8;
+
+    /* Colores de Texto */
+    --text-dark: #1a1a1a;
+    --text-light: #7f8c8d;
+    --text-white: #FFFFFF;
+    --text-muted: #bdc3c7;
+
+    /* Colores de Fondo */
+    --bg-gradient: linear-gradient(135deg, #FF8000 0%, #FFC523 100%);
+    --bg-light: #f8f9fa;
+    --bg-white: #FFFFFF;
+    --bg-dark: #1a1a1a;
+    --bg-gray: #e1e5e9;
+
+    /* Sombras */
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+    --shadow-primary: 0 10px 20px rgba(255, 128, 0, 0.3);
+
+    /* Espaciado */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Bordes */
+    --border-radius: 10px;
+    --border-radius-sm: 5px;
+    --border-radius-lg: 15px;
+    --border-radius-xl: 20px;
+
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ========================================
+   RESET Y ESTILOS BASE
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* ========================================
+   TIPOGRAFÍA
+   ======================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-dark);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+h5 {
+    font-size: 1.1rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+/* ========================================
+   ENLACES
+   ======================================== */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* ========================================
+   CONTENEDORES Y TARJETAS
+   ======================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* Tarjeta Base con estilo PulsePay */
+.card,
+.card-pulsepay {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card:hover,
+.card-pulsepay:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   BOTONES - Sobrescribir Angular Material
+   ======================================== */
+.btn,
+button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Botón Primario */
+.btn-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary {
+    background: var(--bg-gradient) !important;
+    color: var(--color-primary-contrast) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.btn-primary:hover,
+.mat-mdc-raised-button.mat-primary:hover,
+.mat-mdc-unelevated-button.mat-primary:hover,
+.mat-raised-button.mat-primary:hover,
+.mat-flat-button.mat-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary) !important;
+}
+
+/* Botón Secundario */
+.btn-secondary,
+.mat-mdc-outlined-button,
+.mat-stroked-button {
+    background: var(--bg-light) !important;
+    color: var(--text-dark) !important;
+    border: 1px solid var(--bg-gray) !important;
+}
+
+.btn-secondary:hover,
+.mat-mdc-outlined-button:hover,
+.mat-stroked-button:hover {
+    background: var(--bg-gray) !important;
+}
+
+/* ========================================
+   FORMULARIOS - Angular Material
+   NOTA: Mantener diseño simple de los campos
+   ======================================== */
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+/* Color del label cuando está enfocado */
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: var(--color-primary) !important;
+}
+
+/* Color del borde cuando está enfocado */
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__notch,
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border-color: var(--bg-gray);
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--focused .mdc-notched-outline__leading,
+.mat-mdc-text-field-wrapper.mdc-text-field--focused .mdc-notched-outline__notch,
+.mat-mdc-text-field-wrapper.mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--color-primary) !important;
+    border-width: 2px !important;
+}
+
+/* ========================================
+   BADGES Y ETIQUETAS
+   ======================================== */
+.badge,
+.badge-pulsepay {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-pending,
+.badge-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-danger,
+.badge-failed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.badge-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* ========================================
+   NAVEGACIÓN SIDEBAR
+   ======================================== */
+.sidebar {
+    width: 250px;
+    background: var(--bg-dark);
+    color: var(--text-white);
+    padding: var(--spacing-lg) 0;
+    border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.sidebar-header {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-secondary-light);
+}
+
+.sidebar-header h3 {
+    color: var(--text-white);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.sidebar-header p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: var(--spacing-lg) 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 5px;
+}
+
+.sidebar-nav a {
+    display: block;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 15px var(--spacing-lg);
+    transition: all var(--transition-normal);
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    background: var(--color-secondary-light);
+    color: var(--text-white);
+    border-right: 3px solid var(--color-primary);
+}
+
+/* ========================================
+   TABLAS
+   ======================================== */
+.table-container {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.table,
+.mat-mdc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.mat-mdc-header-cell {
+    background: var(--bg-light);
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--bg-gray);
+}
+
+.table td,
+.mat-mdc-cell {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.table tr:hover,
+.mat-mdc-row:hover {
+    background: var(--bg-light);
+}
+
+/* ========================================
+   MODALES
+   ======================================== */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--bg-white);
+    margin: auto;
+    padding: 0;
+    border-radius: var(--border-radius-lg);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-bottom: 1px solid var(--bg-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+.modal-footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--bg-gray);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+/* ========================================
+   SCROLLBAR PERSONALIZADO
+   ======================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary-light);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
+.text-success {
+    color: var(--color-success) !important;
+}
+
+.text-danger {
+    color: var(--color-danger) !important;
+}
+
+.text-warning {
+    color: var(--color-warning) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.bg-primary {
+    background-color: var(--color-primary) !important;
+}
+
+.bg-gradient {
+    background: var(--bg-gradient) !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-md);
+    }
+
+    .sidebar {
+        width: 100%;
+        border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.35rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+}
+=======
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8

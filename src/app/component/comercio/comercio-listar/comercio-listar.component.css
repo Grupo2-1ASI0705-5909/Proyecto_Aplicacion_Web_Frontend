@@ -1,2 +1,185 @@
+<<<<<<< HEAD
+/* ============================================
+   LISTADO DE COMERCIOS - PULSEPAY
+   ============================================ */
+
+.comercios-container {
+    padding: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.comercios-header {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comercios-header h1 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* ============================================
+   GRID DE COMERCIOS
+   ============================================ */
+.comercios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* ============================================
+   TARJETA DE COMERCIO
+   ============================================ */
+.comercio-card {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.comercio-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--bg-gradient);
+}
+
+.comercio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.comercio-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.comercio-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--border-radius);
+    background: var(--bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.comercio-icon mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: var(--color-primary);
+}
+
+.comercio-info h3 {
+    margin: 0 0 4px 0;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.comercio-ruc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.comercio-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.detail-row mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--color-primary);
+}
+
+.comercio-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--bg-gray);
+}
+
+.comercio-actions button {
+    flex: 1;
+}
+
+/* ============================================
+   ESTADO VACÍO
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl) * 2;
+    color: var(--text-light);
+    grid-column: 1 / -1;
+}
+
+.empty-state mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    opacity: 0.3;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .comercios-container {
+        padding: var(--spacing-md);
+    }
+
+    .comercios-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .comercios-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .comercios-grid {
+        grid-template-columns: 1fr;
+    }
+}
+=======
 table { width: 100%; }
 .mat-column-acciones { width: 120px; text-align: right; }
+>>>>>>> 3330925f60b519963fce1d47832c4bf37df971c8

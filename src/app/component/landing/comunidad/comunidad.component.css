@@ -1,0 +1,117 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #1E1E1E; /* Fondo negro */
+    /* RUTA CORREGIDA */
+    background-image: url('/assets/imagenes/fondo3.png');
+    overflow-x: hidden;
+    background-repeat: no-repeat;
+    width: 100%;
+    box-sizing: border-box;
+    
+    /* Variables CSS movidas aquí */
+    --poppins: 'Poppins', sans-serif;
+    --open-sans: 'Open sans', sans-serif;
+    --naranja: hsl(29, 83%, 41%);
+    --blanco_titulo: #E9FFF7;
+    --plomo:#E5E6E5;
+    --plomo_parrafo_oscuro:#898ca9;
+    --padding-container:80px 0;
+        
+    overflow: hidden;
+    
+    /* Fuente base */
+    font-family: 'Poppins', sans-serif; 
+}
+
+.barra_inicio {
+    /* 1. ESTO HACE QUE TE SIGA */
+    position: fixed; 
+    top: 20px; /* Distancia desde el techo de la pantalla */
+    
+    /* 2. TRUCO DE CENTRADO PERFECTO PARA ELEMENTOS FIJOS */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* 3. DIMENSIONES */
+    width: 90%;
+    max-width: 1408px;
+    height: 85px;
+    
+    /* 4. ASEGURAR QUE ESTÉ ENCIMA DE TODO */
+    z-index: 1000;
+    
+    /* Estilos visuales (Vidrio, bordes, etc.) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    backdrop-filter: blur(16px);
+    background-color: rgba(217, 217, 217, 0.1);
+    border-radius: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    
+    /* Limpiamos márgenes porque usamos top/left para posicionar */
+    margin: 0; 
+}
+
+.texto_barra {
+    margin-left: 10px;
+    font-size: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #DD8636;
+}
+
+.framer-1dc0k7u {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.framer-e1uzgd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.framer-text {
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    color: black;
+}
+
+.framer-text:active {
+    color: #A9A9A9;
+}
+
+a.framer-1dc0k7u {
+    text-decoration: none;
+    color: inherit;
+}
+
+.framer-iSgFf {
+    height: 70px;
+    width: 70px;
+    margin-left: 10px;
+}
+
+.ultimo_parrafo1 {
+    font-family: var(--poppins);
+    font-size: 0px;
+    color: #676767;
+    margin: 1800px 0; /* Margen gigante original mantenido */
+}

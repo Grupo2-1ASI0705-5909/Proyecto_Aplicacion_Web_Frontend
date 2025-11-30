@@ -2,7 +2,7 @@
   <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Usuario</h2>
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
-    
+
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre">
@@ -16,6 +16,21 @@
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" type="email">
+
+      <!-- Spinner mientras valida -->
+      <mat-spinner *ngIf="form.get('email')?.pending" diameter="20" matSuffix>
+      </mat-spinner>
+
+      <!-- Mensajes de error -->
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        El email es requerido
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        Email inválido
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('emailEnUso')">
+        ⚠️ Este email ya está registrado
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" style="width: 100%;">

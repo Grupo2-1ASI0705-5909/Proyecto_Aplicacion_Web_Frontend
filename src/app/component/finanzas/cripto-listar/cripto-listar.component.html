@@ -2,9 +2,9 @@
   
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2>Gestión de Criptomonedas</h2>
-    <button mat-raised-button color="primary" routerLink="/criptomonedas/nueva">
-      <mat-icon>add</mat-icon> Nueva Cripto
-    </button>
+    <button mat-raised-button color="primary" routerLink="/criptomonedas/nueva" *ngIf="isAdmin">
+  <mat-icon>add</mat-icon> Nueva Cripto
+</button>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

@@ -7,12 +7,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
+
+
 import { Wallet } from '../../../model/Wallet';
 import { WalletService } from '../../../service/wallet.service';
+import { LoginService } from '../../../service/login-service';
+import { UsuarioService } from '../../../service/usuario.service';
 
 @Component({
   selector: 'app-wallet-listar', 
-  standalone: true,
+  standalone: true, 
   imports: [
     CommonModule, RouterLink,
     MatTableModule, MatButtonModule, MatIconModule,
@@ -26,27 +30,66 @@ dataSource = new MatTableDataSource<Wallet>();
   displayedColumns: string[] = ['id', 'cripto', 'direccion', 'saldo', 'estado', 'acciones'];
   
   saldoTotal: number = 0;
-  usuarioIdActual = 1; // ID temporal
+
+  usuarioIdActual: number | null = null;
+  isAdmin: boolean = false;
 
   constructor(
     private walletService: WalletService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loginService: LoginService, // Para saber quién es
+    private usuarioService: UsuarioService, // Para buscar su ID
   ) {}
 
   ngOnInit(): void {
-    this.cargarDatos();
+    this.verificarPermisosYCargar();
+  }
+  
+  verificarPermisosYCargar() {
+    // 1. Verificamos el Rol
+    const roles = this.loginService.showRole();
+    this.isAdmin = (roles && JSON.stringify(roles).includes('ADMINISTRADOR')) || false;
+
+    if (this.isAdmin) {
+      // CASO A: Es ADMIN -> Ve TODAS las wallets del sistema
+      // Agregamos columna propietario para que el admin sepa de quién es
+      this.displayedColumns = ['id', 'cripto', 'direccion', 'saldo', 'estado', 'acciones'];
+      this.cargarTodas();
+    } else {
+      // CASO B: Es USUARIO -> Ve SOLO SUS wallets
+      this.displayedColumns = ['id', 'cripto', 'direccion', 'saldo', 'estado', 'acciones'];
+      this.cargarSoloMias();
+    }
   }
 
-  cargarDatos() {
-    // 1. Cargar lista de wallets
-    this.walletService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
+  cargarTodas() {
+    this.walletService.obtenerTodos().subscribe(data => {
       this.dataSource.data = data;
+      // (Opcional) Podrías sumar todos los saldos aquí si quisieras un total global
+      this.saldoTotal = 0; 
     });
+  }
 
-    // 2. Cargar saldo total estimado
-    this.walletService.obtenerSaldoTotalUsuario(this.usuarioIdActual).subscribe(total => {
-      this.saldoTotal = total;
-    });
+  cargarSoloMias() {
+    const email = this.loginService.getUsuarioActual();
+
+    if (email) {
+      this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
+        if (usuario && usuario.usuarioId) {
+          this.usuarioIdActual = usuario.usuarioId;
+          
+          // 1. Cargar lista personal
+          this.walletService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
+            this.dataSource.data = data;
+          });
+
+          // 2. Cargar saldo total personal
+          this.walletService.obtenerSaldoTotalUsuario(this.usuarioIdActual).subscribe(total => {
+            this.saldoTotal = total;
+          });
+        }
+      });
+    }
   }
 
   eliminar(id: number) {
@@ -54,7 +97,8 @@ dataSource = new MatTableDataSource<Wallet>();
       this.walletService.eliminar(id).subscribe({
         next: () => {
           this.snackBar.open('Wallet eliminada', 'Cerrar', { duration: 3000 });
-          this.cargarDatos();
+          // Recargamos usando la lógica correspondiente al rol
+          this.isAdmin ? this.cargarTodas() : this.cargarSoloMias();
         },
         error: (err) => console.error(err)
       });

@@ -1,0 +1,209 @@
+<section class="recomendaciones-wrapper">
+
+    <!-- 1. BARRA DE NAVEGACIÓN -->
+    <div class="barra_inicio" 
+          style="--border-bottom-width: 1px; 
+                 justify-content: space-between; 
+                 align-items: center; 
+                 --border-color: rgba(255, 255, 255, 0.4); 
+                 --border-left-width: 1px; 
+                 --border-right-width: 1px; 
+                 --border-style: solid; 
+                 --border-top-width: 1px; 
+                 backdrop-filter: blur(16px); 
+                 background-color: rgba(217, 217, 217, 0.1); 
+                 width: 100%; 
+                 border-radius: 40px; 
+                 opacity: 1; 
+                 padding: 10px 20px; 
+                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+                 margin-top: 20px;">
+
+         <a routerLink="/" 
+            style="display: flex; 
+                   align-items: center; 
+                   text-decoration: none; 
+                   color: rgb(0, 0, 0); 
+                   opacity: 1;">
+              <img src="assets/imagenes/logo_flexpay.png" 
+              alt="Logo FlexPay" 
+              style="width: 60px; height: 60px; flex-shrink: 0;">
+              <span class="texto_barra">FLEX-PAY</span> 
+             </a>
+
+             <nav style="display: flex; font-family: 'Poppins', sans-serif; font-size: 25px;">
+               <a routerLink="/comunidad" 
+                  style="text-decoration: none; color: #E9FFF7; transition: color 0.3s ease; margin-right: 105px;"
+                  onmouseover="this.style.color='#abc0b8';" 
+                  onmouseout="this.style.color='#E9FFF7';">
+                 Sobre Nosotros
+               </a>
+             
+               <a routerLink="/recomendaciones"
+                  style="text-decoration: none; color: #E9FFF7; transition: color 0.3s ease; margin-right: 105px;"
+                  onmouseover="this.style.color='#abc0b8';" 
+                  onmouseout="this.style.color='#E9FFF7';">
+                 Recomendaciones
+               </a>
+             
+               <a routerLink="/noticias" style="text-decoration: none; color: #E9FFF7; transition: color 0.3s ease; margin-right: 105px;"
+               onmouseover="this.style.color='#abc0b8';" 
+               onmouseout="this.style.color='#E9FFF7';">
+              Noticias
+            </a>
+
+
+            
+             
+               
+
+             </nav>
+
+       <a  routerLink="/cobertura"
+            style="display: flex; 
+                   align-items: center; 
+                   text-decoration: none; 
+                   color: rgb(0, 0, 0); 
+                   opacity: 1;">
+              <img src="assets/imagenes/peru.png" 
+              alt="Perú" 
+              style="width: 160px; height: 65px; flex-shrink: 0;"> 
+             </a>
+     </div>
+
+    <!-- 2. ENCABEZADO -->
+    <div class="header-section">
+        <h1>Voces de Confianza</h1>
+        <p>Descubre por qué miles de peruanos eligen Flex-Pay para proteger y hacer crecer su patrimonio digital. <br>Seguridad, rapidez y transparencia en cada historia.</p>
+    </div>
+
+    <!-- 3. GRILLA DE RECOMENDACIONES (8 TARJETAS) -->
+    <div class="testimonials-grid">
+
+        <!-- Opinión 1: LEONARDO RAMIREZ (La solicitada) -->
+        <div class="review-card" style="border-color: #FFC107; background: rgba(255, 193, 7, 0.08);">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Leonardo Ramirez" class="avatar">
+                <div class="user-details">
+                    <h3>Leonardo Ramirez</h3>
+                    <span>Inversionista Senior, Lima</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "He probado innumerables plataformas financieras, pero ninguna me ha dado la paz mental que siento con Flex-Pay. Su sistema de seguridad es impenetrable y la transparencia en cada transacción es admirable. Es más que una app, es un aliado financiero en quien confío ciegamente."
+            </p>
+        </div>
+
+        <!-- Opinión 2 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=5" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Lucía Fernández</h3>
+                    <span>Trader Profesional, Arequipa</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "La velocidad lo es todo en mi trabajo, y Flex-Pay nunca me falla. Los retiros a mi banco son instantáneos y la interfaz oscura es perfecta para operar de noche sin cansar la vista. Simplemente brillante."
+            </p>
+        </div>
+
+        <!-- Opinión 3 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=68" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Jorge Quispe</h3>
+                    <span>Estudiante de Economía, Cusco</span>
+                </div>
+            </div>
+            <div class="rating">★★★★☆</div>
+            <p class="review-text">
+                "Empecé con mucho miedo al mundo cripto, pero la sección de 'Aprende' y la facilidad de la app me dieron la confianza que necesitaba. Ahora gestiono mis ahorros universitarios aquí con total seguridad."
+            </p>
+        </div>
+
+        <!-- Opinión 4 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=44" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Mariana López</h3>
+                    <span>Freelancer Digital, Trujillo</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "Cobrar mis proyectos del extranjero solía ser un dolor de cabeza. Con Flex-Pay, recibo mis pagos en cripto y los paso a Soles en segundos. Es la herramienta que todo freelancer necesita."
+            </p>
+        </div>
+
+        <!-- Opinión 5 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=13" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Ricardo Tello</h3>
+                    <span>Gerente de PYME, Chiclayo</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "Lo que más valoro es el soporte humano. Tuve una duda con una transferencia grande y me atendieron en minutos. Saber que hay personas reales y no solo bots detrás de la app me da mucha seguridad."
+            </p>
+        </div>
+
+        <!-- Opinión 6 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=32" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Sofia Wong</h3>
+                    <span>Diseñadora UX/UI, Piura</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "Desde el punto de vista de diseño, es una joya. La experiencia de usuario es fluida, intuitiva y visualmente hermosa. Se nota que han cuidado cada detalle para que usarla sea un placer."
+            </p>
+        </div>
+
+        <!-- Opinión 7 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=59" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Andrés Velarde</h3>
+                    <span>Ingeniero de Software, Lima</span>
+                </div>
+            </div>
+            <div class="rating">★★★★★</div>
+            <p class="review-text">
+                "Como programador, me fijo mucho en la robustez técnica. La autenticación de dos factores y el cifrado de datos de Flex-Pay están al nivel de los grandes bancos internacionales. Mis activos están blindados."
+            </p>
+        </div>
+
+        <!-- Opinión 8 -->
+        <div class="review-card">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/150?img=9" alt="Usuario" class="avatar">
+                <div class="user-details">
+                    <h3>Valentina Ruiz</h3>
+                    <span>Emprendedora, Ica</span>
+                </div>
+            </div>
+            <div class="rating">★★★★☆</div>
+            <p class="review-text">
+                "Gracias a Flex-Pay he podido diversificar las ganancias de mi negocio sin complicaciones. Es una plataforma amigable que te lleva de la mano en el mundo financiero digital. ¡Súper recomendada!"
+            </p>
+        </div>
+
+    </div>
+
+    <div class="footer-simple">
+        <p>© 2024 Flex-Pay. Construyendo el futuro financiero del Perú.</p>
+    </div>
+
+</section>

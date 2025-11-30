@@ -1,0 +1,53 @@
+/* Usar los mismos estilos del login */
+@import '../autenticador.css';
+
+/* Ajustes específicos para el formulario de registro */
+.login-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.form-field:nth-child(1),
+.form-field:nth-child(2) {
+    /* Nombre y Apellido en la misma fila */
+}
+
+.form-field:nth-child(3),
+.form-field:nth-child(4),
+.form-field:nth-child(5),
+.form-field:nth-child(6) {
+    grid-column: span 2;
+}
+
+.btn-login,
+.form-footer {
+    grid-column: span 2;
+}
+
+.form-footer p {
+    text-align: center;
+    color: var(--text-light);
+    margin: 0;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .login-form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field:nth-child(1),
+    .form-field:nth-child(2),
+    .form-field:nth-child(3),
+    .form-field:nth-child(4),
+    .form-field:nth-child(5),
+    .form-field:nth-child(6) {
+        grid-column: span 1;
+    }
+
+    .btn-login,
+    .form-footer {
+        grid-column: span 1;
+    }
+}

@@ -1,0 +1,150 @@
+/* ============================================
+   LISTADO GENÉRICO - PULSEPAY
+   CSS compartido para listas de usuarios, comercios, etc.
+   ============================================ */
+
+.list-container {
+    padding: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.list-header {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-header h1 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.list-header button {
+    box-shadow: var(--shadow-sm);
+}
+
+/* ============================================
+   FILTROS Y BÚSQUEDA
+   ============================================ */
+.filters-section {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box {
+    width: 100%;
+}
+
+.search-box mat-form-field {
+    width: 100%;
+}
+
+/* ============================================
+   TABLA
+   ============================================ */
+.table-container {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.mat-mdc-table {
+    width: 100%;
+}
+
+.mat-mdc-header-row {
+    background: var(--bg-light);
+}
+
+.mat-mdc-header-cell {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mat-mdc-row {
+    transition: background-color var(--transition-fast);
+}
+
+.mat-mdc-row:hover {
+    background: var(--bg-light);
+}
+
+.mat-mdc-cell button {
+    margin-right: var(--spacing-xs);
+}
+
+/* ============================================
+   PAGINADOR
+   ============================================ */
+.mat-mdc-paginator {
+    background: var(--bg-white);
+    border-top: 1px solid var(--bg-gray);
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+}
+
+/* ============================================
+   ESTADO VACÍO
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl) * 2;
+    color: var(--text-light);
+}
+
+.empty-state mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    opacity: 0.3;
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-state h3 {
+    color: var(--text-light);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .list-container {
+        padding: var(--spacing-md);
+    }
+
+    .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .list-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .list-header button {
+        width: 100%;
+    }
+}

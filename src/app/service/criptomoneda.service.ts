@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Criptomoneda } from '../model/Criptomoneda';
+import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CriptomonedaService {
-  private url = 'http://localhost:8080/api/criptomonedas';
+  private url = `${environment.apiUrl}/criptomonedas`;
+
 
   constructor(private http: HttpClient) { }
 

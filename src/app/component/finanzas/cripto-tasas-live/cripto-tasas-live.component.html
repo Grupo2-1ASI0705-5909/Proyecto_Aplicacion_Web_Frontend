@@ -1,0 +1,62 @@
+<div class="tasas-container">
+    <div class="header">
+        <h2>
+            <mat-icon>trending_up</mat-icon>
+            Tasas de Cambio en Tiempo Real
+        </h2>
+        <div class="ultima-actualizacion">
+            <mat-icon>schedule</mat-icon>
+            Actualizado: {{ ultimaActualizacion | date:'HH:mm:ss' }}
+        </div>
+    </div>
+
+    <div *ngIf="cargando" class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Cargando tasas...</p>
+    </div>
+
+    <div *ngIf="!cargando" class="tasas-grid">
+        <mat-card *ngFor="let tasa of tasas" class="tasa-card" [class.trending-up]="tasa.tendencia === 'up'"
+            [class.trending-down]="tasa.tendencia === 'down'">
+            <mat-card-content>
+                <div class="cripto-header">
+                    <div class="cripto-icon" [style.background]="obtenerColorCripto(tasa.hastaCodigo)">
+                        {{ obtenerIconoCripto(tasa.hastaCodigo) }}
+                    </div>
+                    <div class="cripto-info">
+                        <h3>{{ tasa.desdeCodigo }}/{{ tasa.hastaCodigo }}</h3>
+                        <span class="par-nombre">{{ tasa.desdeCodigo }} a {{ tasa.hastaCodigo }}</span>
+                    </div>
+                </div>
+
+                <div class="tasa-valor">
+                    <span class="precio">{{ tasa.tasa | number:'1.2-8' }}</span>
+                    <div class="tendencia-indicator" *ngIf="tasa.tendencia !== 'neutral'">
+                        <mat-icon [class.up]="tasa.tendencia === 'up'" [class.down]="tasa.tendencia === 'down'">
+                            {{ tasa.tendencia === 'up' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                        <span [class.up]="tasa.tendencia === 'up'" [class.down]="tasa.tendencia === 'down'">
+                            {{ calcularCambioPorcentaje(tasa) | number:'1.2-2' }}%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="tasa-footer">
+                    <div class="info-item">
+                        <mat-icon>source</mat-icon>
+                        <span>{{ tasa.fuente || 'Sistema' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <mat-icon>access_time</mat-icon>
+                        <span>{{ tasa.fechaHora | date:'HH:mm' }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div *ngIf="!cargando && tasas.length === 0" class="empty-state">
+        <mat-icon>info</mat-icon>
+        <p>No hay tasas de cambio disponibles</p>
+    </div>
+</div>

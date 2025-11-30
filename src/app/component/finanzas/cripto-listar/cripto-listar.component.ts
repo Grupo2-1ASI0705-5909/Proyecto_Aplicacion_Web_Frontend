@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Criptomoneda } from '../../../model/Criptomoneda';
 import { CriptomonedaService } from '../../../service/criptomoneda.service';
+import { LoginService } from '../../../service/login-service';
 
 @Component({
   selector: 'app-cripto-listar',
@@ -23,14 +24,27 @@ import { CriptomonedaService } from '../../../service/criptomoneda.service';
 export class CriptoListarComponent implements OnInit{
 dataSource = new MatTableDataSource<Criptomoneda>();
   displayedColumns: string[] = ['id', 'codigo', 'nombre', 'decimales', 'estado', 'acciones'];
+  isAdmin: boolean = false; // <--- Variable de control
 
   constructor(
     private criptoService: CriptomonedaService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar, private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
+    this.verificarPermisos();
     this.cargarCriptos();
+  }
+
+  verificarPermisos() {
+    // 1. Verificamos el Rol
+    const roles = this.loginService.showRole();
+    this.isAdmin = (roles && JSON.stringify(roles).includes('ADMINISTRADOR')) || false;
+
+    // 2. Si NO es Admin, quitamos la columna de acciones (Solo lectura)
+    if (!this.isAdmin) {
+      this.displayedColumns = ['id', 'codigo', 'nombre', 'decimales', 'estado'];
+    }
   }
 
   cargarCriptos() {
