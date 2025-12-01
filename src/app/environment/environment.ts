@@ -2,12 +2,12 @@
 // Configuración para DESARROLLO LOCAL
 export const environment = {
     production: false,
-    apiUrl: 'https://proyecto-aplicacion-web.onrender.com/api',
-    loginUrl: 'https://proyecto-aplicacion-web.onrender.com/login',
-    allowedDomains: ['https://proyecto-aplicacion-web.onrender.com'],
+    apiUrl: 'http://localhost:8080/api',
+    loginUrl: 'http://localhost:8080/login',
+    allowedDomains: ['localhost:8080'],
     disallowedRoutes: [
-        'https://proyecto-aplicacion-web.onrender.com/login',
-        'https://proyecto-aplicacion-web.onrender.com/api/auth/register',
-        'https://proyecto-aplicacion-web.onrender.com/api/auth/forgot-password'
+        'http://localhost:8080/login',
+        'http://localhost:8080/api/auth/register',
+        'http://localhost:8080/api/auth/forgot-password'
     ]
 };
