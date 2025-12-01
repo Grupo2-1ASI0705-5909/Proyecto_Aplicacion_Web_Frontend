@@ -71,4 +71,9 @@ export class WalletService {
   obtenerSaldoTotalUsuario(usuarioId: number): Observable<number> {
     return this.http.get<number>(`${this.url}/usuario/${usuarioId}/saldo-total`, { headers: this.getHeaders() });
   }
+
+  // ✅ NUEVO: Obtener patrimonio en USD
+  obtenerPatrimonioUSD(usuarioId: number): Observable<number> {
+    return this.http.get<number>(`${this.url}/patrimonio/${usuarioId}`, { headers: this.getHeaders() });
+  }
 }

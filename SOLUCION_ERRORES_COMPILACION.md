@@ -1,3 +1,17 @@
+# 🔥 SOLUCIÓN RÁPIDA - COPIAR Y PEGAR ESTOS ARCHIVOS COMPLETOS
+
+## ⚠️ IMPORTANTE: Los archivos se corrompieron durante la edición automática
+## SOLUCIÓN: Copiar manualmente estos 2 archivos
+
+---
+
+## 📁 `wallet-crear.component.ts`
+
+**Ubicación**: `src/app/component/finanzas/wallet-crear/wallet-crear.component.ts`
+
+**BORRA TODO** y reemplaza con:
+
+```typescript
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,7 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';  // ✅ AGREGADO
 import { Criptomoneda } from '../../../model/Criptomoneda';
 import { WalletService } from '../../../service/wallet.service';
 import { CriptomonedaService } from '../../../service/criptomoneda.service';
@@ -22,7 +36,7 @@ import { LoginService } from '../../../service/login-service';
     CommonModule, ReactiveFormsModule, RouterLink,
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatButtonModule, MatSlideToggleModule, MatSnackBarModule,
-    MatIconModule
+    MatIconModule  // ✅ AGREGADO
   ],
   templateUrl: './wallet-crear.component.html',
   styleUrl: './wallet-crear.component.css'
@@ -44,6 +58,7 @@ export class WalletCrearComponent implements OnInit {
     private usuarioService: UsuarioService,
     private loginService: LoginService,
   ) {
+    // ✅ FORMULARIO SIMPLIFICADO: Solo cripto y usuario
     this.form = this.fb.group({
       criptoId: ['', Validators.required],
       estado: [true],
@@ -118,3 +133,73 @@ export class WalletCrearComponent implements OnInit {
     this.router.navigate(['/wallets']);
   }
 }
+```
+
+---
+
+## 📁 `wallet-listar.component.html`
+
+**Ubicación**: `src/app/component/finanzas/wallet-listar/wallet-listar.component.html`
+
+En la tabla, **BUSCA** la línea con el botón eliminar que dice:
+
+```html
+(click)="eliminar(w.walletId!)"
+```
+
+Y **REEMPLÁZALA** con:
+
+```html
+(click)="eliminar(w)"
+```
+
+El botón completo debe quedar así:
+
+```html
+<button 
+  mat-icon-button 
+  color="warn" 
+  (click)="eliminar(w)"
+  [disabled]="w.saldo > 0"
+  [matTooltip]="w.saldo > 0 ? 'No puedes eliminar wallet con saldo' : 'Eliminar wallet'">
+  <mat-icon>delete</mat-icon>
+</button>
+```
+
+---
+
+## 📁 `wallet-listar.component.ts`
+
+**Ubicación**: `src/app/component/finanzas/wallet-listar/wallet-listar.component.ts`
+
+**BUSCA** el archivo en: `ARCHIVOS_COMPLETOS_COPIAR.md` (archivo que creé antes)
+
+Y copia el contenido completo de ahí.
+
+---
+
+## ✅ DESPUÉS DE COPIAR/PEGAR:
+
+1. Guarda todos los archivos
+2. Cierra el servidor Angular (Ctrl+C)
+3. Ejecuta:
+   ```
+   ng serve -o
+   ```
+
+---
+
+## 🆘 SI SIGUE FALLANDO:
+
+Ejecuta esto para limpiar todo:
+
+```powershell
+# Detener servidor (Ctrl+C)
+
+# Limpiar caché
+Remove-Item -Recurse -Force .angular/cache
+Remove-Item -Recurse -Force node_modules/.cache
+
+# Reiniciar
+ng serve -o
+```

@@ -1,5 +1,5 @@
 <div class="container" style="padding: 20px;">
-  
+
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2>Mis Billeteras Digitales</h2>
     <button mat-raised-button color="primary" routerLink="/wallets/nueva">
@@ -10,7 +10,8 @@
   <mat-card style="margin-bottom: 20px; background-color: #e0f7fa; border-left: 5px solid #0097a7;">
     <mat-card-content>
       <div style="display: flex; align-items: center;">
-        <mat-icon style="font-size: 40px; height: 40px; width: 40px; color: #006064; margin-right: 15px;">account_balance</mat-icon>
+        <mat-icon
+          style="font-size: 40px; height: 40px; width: 40px; color: #006064; margin-right: 15px;">account_balance</mat-icon>
         <div>
           <div style="font-size: 14px; color: #006064;">Patrimonio Total Estimado</div>
           <div style="font-size: 24px; font-weight: bold;">
@@ -30,15 +31,15 @@
 
     <ng-container matColumnDef="cripto">
       <th mat-header-cell *matHeaderCellDef> Criptomoneda </th>
-      <td mat-cell *matCellDef="let w"> 
-        <strong>{{ w.criptomoneda?.nombre }}</strong> 
+      <td mat-cell *matCellDef="let w">
+        <strong>{{ w.criptomoneda?.nombre }}</strong>
         <small style="color: gray;">({{ w.criptomoneda?.codigo }})</small>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="direccion">
       <th mat-header-cell *matHeaderCellDef> Dirección </th>
-      <td mat-cell *matCellDef="let w"> 
+      <td mat-cell *matCellDef="let w">
         <span style="font-family: monospace; background: #eee; padding: 4px; border-radius: 4px;">
           {{ w.direccion | slice:0:10 }}...{{ w.direccion | slice:-5 }}
         </span>
@@ -47,7 +48,7 @@
 
     <ng-container matColumnDef="saldo">
       <th mat-header-cell *matHeaderCellDef> Saldo </th>
-      <td mat-cell *matCellDef="let w"> 
+      <td mat-cell *matCellDef="let w">
         {{ w.saldo }} {{ w.criptomoneda?.codigo }}
       </td>
     </ng-container>
@@ -64,10 +65,8 @@
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let w">
-        <button mat-icon-button color="primary" [routerLink]="['/wallets/editar', w.walletId]">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="eliminar(w.walletId!)">
+        <button mat-icon-button color="warn" (click)="eliminar(w)" [disabled]="w.saldo > 0"
+          [matTooltip]="w.saldo > 0 ? 'No puedes eliminar wallet con saldo' : 'Eliminar wallet'">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

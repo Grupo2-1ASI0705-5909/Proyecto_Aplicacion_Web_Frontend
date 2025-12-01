@@ -6,14 +6,17 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 import { Wallet } from '../../../model/Wallet';
 import { WalletService } from '../../../service/wallet.service';
 import { WalletStateService } from '../../../service/wallet-state.service';
 import { LoginService } from '../../../service/login-service';
 import { UsuarioService } from '../../../service/usuario.service';
+import { TipoCambioService } from '../../../service/tipo-cambio.service';
+import { TipoCambio } from '../../../model/TipoCambio';
 
 @Component({
   selector: 'app-wallet-listar',
@@ -21,7 +24,8 @@ import { UsuarioService } from '../../../service/usuario.service';
   imports: [
     CommonModule, RouterLink,
     MatTableModule, MatButtonModule, MatIconModule,
-    MatCardModule, MatChipsModule, MatSnackBarModule
+    MatCardModule, MatChipsModule, MatSnackBarModule,
+    MatTooltipModule
   ],
   templateUrl: './wallet-listar.component.html',
   styleUrl: './wallet-listar.component.css'
@@ -31,13 +35,13 @@ export class WalletListarComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'cripto', 'direccion', 'saldo', 'estado', 'acciones'];
 
   saldoTotal: number = 0;
-
   usuarioIdActual: number | null = null;
   isAdmin: boolean = false;
 
-  // Suscripciones para limpiar en OnDestroy
   private walletsSubscription?: Subscription;
   private reloadSubscription?: Subscription;
+  private tasasSubscription?: Subscription;
+  private walletsActuales: Wallet[] = [];
 
   constructor(
     private walletService: WalletService,
@@ -45,46 +49,34 @@ export class WalletListarComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private loginService: LoginService,
     private usuarioService: UsuarioService,
+    private tipoCambioService: TipoCambioService  // ✅ AGREGADO
   ) { }
 
   ngOnInit(): void {
     console.log('[INIT] WalletListarComponent inicializado');
-
-    // Suscribirse a los cambios del estado compartido
     this.suscribirseAEstadoCompartido();
-
-    // Suscribirse al trigger de recarga
     this.suscribirseARecargas();
-
-    // Cargar datos iniciales
+    this.suscribirseATasasEnVivo();  // ✅ NUEVO
     this.verificarPermisosYCargar();
   }
 
   ngOnDestroy(): void {
-    // Limpiar suscripciones al destruir el componente
     this.walletsSubscription?.unsubscribe();
     this.reloadSubscription?.unsubscribe();
+    this.tasasSubscription?.unsubscribe();  // ✅ LIMPIEZA
     console.log('[CLEANUP] WalletListarComponent destruido - suscripciones limpiadas');
   }
 
-  /**
-   * Se suscribe al estado compartido de wallets
-   * Cada vez que otro componente actualice una wallet, este componente se enterará
-   */
   suscribirseAEstadoCompartido() {
     this.walletsSubscription = this.walletStateService.wallets$.subscribe(wallets => {
       if (wallets.length > 0) {
         console.log('[STATE] Wallets actualizadas desde el estado compartido:', wallets);
         this.dataSource.data = wallets;
-        this.calcularSaldoTotal(wallets);
+        this.walletsActuales = wallets;  // ✅ GUARDAR PARA CÁLCULO
       }
     });
   }
 
-  /**
-   * Se suscribe al trigger de recarga
-   * Cuando otro componente actualice el backend, este recargará los datos
-   */
   suscribirseARecargas() {
     this.reloadSubscription = this.walletStateService.reload$.subscribe(shouldReload => {
       if (shouldReload) {
@@ -94,8 +86,43 @@ export class WalletListarComponent implements OnInit, OnDestroy {
     });
   }
 
-  calcularSaldoTotal(wallets: Wallet[]) {
-    this.saldoTotal = wallets.reduce((sum, wallet) => sum + wallet.saldo, 0);
+  // ✅ NUEVO: Suscripción a tasas en tiempo real
+  suscribirseATasasEnVivo() {
+    this.tasasSubscription = this.tipoCambioService.tasasEnTiempoReal$.subscribe(tasas => {
+      console.log('[TASAS] Tasas actualizadas:', tasas);
+      this.calcularPatrimonioConTasas(this.walletsActuales, tasas);
+    });
+  }
+
+  // ✅ NUEVO: Calcular patrimonio con tasas en tiempo real
+  private calcularPatrimonioConTasas(wallets: Wallet[], tasas: TipoCambio[]) {
+    if (!wallets || wallets.length === 0) {
+      this.saldoTotal = 0;
+      return;
+    }
+
+    let total = 0;
+
+    wallets.forEach(wallet => {
+      const codigoCripto = wallet.criptomoneda?.codigo;
+      if (!codigoCripto) return;
+
+      // Buscar la tasa de la cripto a USD
+      const tasa = tasas.find(t =>
+        t.desdeCodigo === codigoCripto && t.hastaCodigo === 'USD'
+      );
+
+      if (tasa) {
+        const valorEnUSD = wallet.saldo * tasa.tasa;
+        total += valorEnUSD;
+        console.log(`[CALCULO] ${codigoCripto}: ${wallet.saldo} × $${tasa.tasa} = $${valorEnUSD}`);
+      } else {
+        console.warn(`[CALCULO] No se encontró tasa para ${codigoCripto}/USD`);
+      }
+    });
+
+    this.saldoTotal = total;
+    console.log('[PATRIMONIO] Total calculado con tasas en vivo: $', total.toFixed(2));
   }
 
   verificarPermisosYCargar() {
@@ -114,9 +141,7 @@ export class WalletListarComponent implements OnInit, OnDestroy {
   cargarTodas() {
     this.walletService.obtenerTodos().subscribe(data => {
       this.dataSource.data = data;
-      this.saldoTotal = 0;
-
-      // Actualizar el estado compartido
+      this.walletsActuales = data;  // ✅ GUARDAR
       this.walletStateService.setWallets(data);
     });
   }
@@ -129,33 +154,39 @@ export class WalletListarComponent implements OnInit, OnDestroy {
         if (usuario && usuario.usuarioId) {
           this.usuarioIdActual = usuario.usuarioId;
 
-          // 1. Cargar lista personal
+          // Cargar wallets del usuario
           this.walletService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
             console.log('[DATA] Wallets del usuario cargadas desde backend:', data);
             this.dataSource.data = data;
-
-            // ACTUALIZAR EL ESTADO COMPARTIDO para que otros componentes lo vean
+            this.walletsActuales = data;  // ✅ GUARDAR PARA CÁLCULO CON TASAS
             this.walletStateService.setWallets(data);
-          });
-
-          // 2. Cargar saldo total personal
-          this.walletService.obtenerSaldoTotalUsuario(this.usuarioIdActual).subscribe(total => {
-            this.saldoTotal = total;
           });
         }
       });
     }
   }
 
-  eliminar(id: number) {
-    if (confirm('¿Estás seguro de eliminar esta wallet?')) {
-      this.walletService.eliminar(id).subscribe({
+  eliminar(wallet: Wallet) {
+    if (wallet.saldo && wallet.saldo > 0) {
+      this.snackBar.open(
+        `No puedes eliminar una wallet con saldo positivo. Saldo actual: ${wallet.saldo}`,
+        'Cerrar',
+        { duration: 5000, panelClass: ['error-snackbar'] }
+      );
+      return;
+    }
+
+    if (confirm(`¿Estás seguro de eliminar la wallet de ${wallet.criptomoneda?.nombre}?`)) {
+      this.walletService.eliminar(wallet.walletId!).subscribe({
         next: () => {
-          this.snackBar.open('Wallet eliminada', 'Cerrar', { duration: 3000 });
-          // Recargamos usando la lógica correspondiente al rol
+          this.snackBar.open('Wallet eliminada correctamente', 'Cerrar', { duration: 3000 });
           this.isAdmin ? this.cargarTodas() : this.cargarSoloMias();
         },
-        error: (err) => console.error(err)
+        error: (err) => {
+          const mensaje = err.error?.message || err.message || 'Error al eliminar la wallet';
+          this.snackBar.open(mensaje, 'Cerrar', { duration: 5000 });
+          console.error('Error eliminando wallet:', err);
+        }
       });
     }
   }
