@@ -47,7 +47,7 @@ export class WalletCrearComponent implements OnInit {
     this.form = this.fb.group({
       criptoId: ['', Validators.required],
       estado: [true],
-      usuarioId: ['']
+      usuarioId: ['', Validators.required]
     });
   }
 
@@ -66,16 +66,40 @@ export class WalletCrearComponent implements OnInit {
   }
 
   obtenerUsuarioLogueado() {
+    // 1. Intentar obtener ID directamente del token (más rápido)
+    const idToken = this.loginService.getUsuarioId();
+    if (idToken) {
+      console.log('WalletCrear: Usuario ID obtenido del token:', idToken);
+      this.usuarioIdActual = idToken;
+      if (!this.esEdicion) {
+        this.form.patchValue({ usuarioId: this.usuarioIdActual });
+      }
+      return;
+    }
+
+    // 2. Si no está en el token, buscar por email (Patrón robusto usado en otros componentes)
     const email = this.loginService.getUsuarioActual();
+    console.log('WalletCrear: Buscando usuario por email:', email);
 
     if (email) {
-      this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
-        this.usuarioIdActual = usuario.usuarioId!;
-
-        if (!this.esEdicion) {
-          this.form.patchValue({ usuarioId: this.usuarioIdActual });
+      this.usuarioService.obtenerPorEmail(email).subscribe({
+        next: (usuario) => {
+          console.log('WalletCrear: Usuario encontrado por email:', usuario);
+          if (usuario && usuario.usuarioId) {
+            this.usuarioIdActual = usuario.usuarioId;
+            if (!this.esEdicion) {
+              this.form.patchValue({ usuarioId: this.usuarioIdActual });
+            }
+          }
+        },
+        error: (err) => {
+          console.error('WalletCrear: Error al obtener usuario por email', err);
+          this.snackBar.open('Error al identificar usuario. Intente iniciar sesión nuevamente.', 'Cerrar', { duration: 5000 });
         }
       });
+    } else {
+      console.warn('WalletCrear: No se pudo obtener email del token');
+      this.snackBar.open('No se pudo identificar al usuario. Inicie sesión.', 'Cerrar', { duration: 5000 });
     }
   }
 
@@ -98,17 +122,37 @@ export class WalletCrearComponent implements OnInit {
   }
 
   guardar() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      console.warn('WalletCrear: Formulario inválido', this.form.errors);
+      return;
+    }
 
     const wallet = this.form.value;
+    console.log('WalletCrear: Enviando wallet:', wallet);
+
+    // Asegurar que usuarioId sea número
+    wallet.usuarioId = Number(wallet.usuarioId);
 
     if (this.esEdicion && this.idEditar) {
-      this.walletService.actualizar(this.idEditar, wallet).subscribe(() => {
-        this.mostrarExito('Wallet actualizada');
+      this.walletService.actualizar(this.idEditar, wallet).subscribe({
+        next: () => this.mostrarExito('Wallet actualizada'),
+        error: (err) => {
+          console.error('WalletCrear: Error al actualizar', err);
+          this.snackBar.open('Error al actualizar wallet: ' + err.message, 'Cerrar', { duration: 3000 });
+        }
       });
     } else {
-      this.walletService.crear(wallet).subscribe(() => {
-        this.mostrarExito('Wallet registrada con éxito');
+      this.walletService.crear(wallet).subscribe({
+        next: () => this.mostrarExito('Wallet registrada con éxito'),
+        error: (err) => {
+          console.error('WalletCrear: Error al crear', err);
+          // Mostrar mensaje detallado si es 401
+          if (err.status === 401) {
+            this.snackBar.open('Error de autorización (401). Revise su sesión.', 'Cerrar', { duration: 5000 });
+          } else {
+            this.snackBar.open('Error al crear wallet: ' + (err.error?.message || err.message), 'Cerrar', { duration: 3000 });
+          }
+        }
       });
     }
   }

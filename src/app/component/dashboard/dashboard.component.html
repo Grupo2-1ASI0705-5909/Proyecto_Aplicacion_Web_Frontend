@@ -3,33 +3,178 @@
   <!-- Header del Dashboard -->
   <div class="dashboard-header">
     <div>
-      <h1 class="page-title">Dashboard</h1>
-      <p class="page-subtitle">Bienvenido a tu panel de control</p>
+      <h1 class="page-title">{{ isAdmin ? 'Dashboard Financiero' : 'Dashboard' }}</h1>
+      <p class="page-subtitle">{{ isAdmin ? 'Business Intelligence & Analytics' : 'Bienvenido a tu panel de control' }}
+      </p>
     </div>
-    <button mat-raised-button color="primary" routerLink="/transacciones/nueva">
+    <button mat-raised-button color="primary" routerLink="/transacciones/nueva" *ngIf="!isAdmin">
       <mat-icon>add</mat-icon>
       Nueva Transacción
     </button>
   </div>
 
-  <!-- Grid de KPIs -->
-  <div class="kpi-grid">
+  <!-- VISTA ADMIN: Business Intelligence -->
+  <div class="admin-dashboard" *ngIf="isAdmin">
 
-    <!-- KPI 1: Usuarios Activos (Solo Admin) -->
-    <div class="kpi-card card-pulsepay" *ngIf="isAdmin">
-      <div class="kpi-icon" style="background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);">
-        <mat-icon>group</mat-icon>
+    <!-- Row 1: KPIs Principales -->
+    <div class="kpi-grid-admin">
+      <div class="kpi-card-bi card-blue">
+        <div class="kpi-bi-icon"><mat-icon>group</mat-icon></div>
+        <div class="kpi-bi-content">
+          <span class="kpi-bi-label">Usuarios Registrados</span>
+          <h3 class="kpi-bi-value">{{ totalUsuarios }}</h3>
+          <span class="kpi-bi-trend">+{{ totalUsuarios > 0 ? '100%' : '0%' }} vs mes anterior</span>
+        </div>
       </div>
-      <div class="kpi-content">
-        <p class="kpi-label">Usuarios Activos</p>
-        <h2 class="kpi-value">{{ totalUsuarios }}</h2>
-        <p class="kpi-subtitle">En la plataforma</p>
+
+      <div class="kpi-card-bi card-green">
+        <div class="kpi-bi-icon"><mat-icon>payments</mat-icon></div>
+        <div class="kpi-bi-content">
+          <span class="kpi-bi-label">Volumen Total</span>
+          <h3 class="kpi-bi-value">{{ volumenTotal | currency:'USD':'symbol':'1.0-0' }}</h3>
+          <span class="kpi-bi-trend">Acumulado histórico</span>
+        </div>
       </div>
-      <button mat-button class="kpi-action" routerLink="/usuarios">
-        Gestionar
-        <mat-icon>arrow_forward</mat-icon>
-      </button>
+
+      <div class="kpi-card-bi card-purple">
+        <div class="kpi-bi-icon"><mat-icon>monetization_on</mat-icon></div>
+        <div class="kpi-bi-content">
+          <span class="kpi-bi-label">Ingresos Estimados</span>
+          <h3 class="kpi-bi-value">{{ ingresosEstimados | currency:'USD':'symbol':'1.0-0' }}</h3>
+          <span class="kpi-bi-trend">~1% del volumen</span>
+        </div>
+      </div>
+
+      <div class="kpi-card-bi card-orange">
+        <div class="kpi-bi-icon"><mat-icon>receipt_long</mat-icon></div>
+        <div class="kpi-bi-content">
+          <span class="kpi-bi-label">Transacciones Hoy</span>
+          <h3 class="kpi-bi-value">{{ transaccionesHoyCount }}</h3>
+          <span class="kpi-bi-trend">Operaciones del día</span>
+        </div>
+      </div>
     </div>
+
+    <!-- Row 2: Gráficos -->
+    <div class="charts-grid">
+
+      <!-- Gráfico de Tendencia (Line Chart SVG) -->
+      <div class="chart-card card-pulsepay">
+        <div class="chart-header">
+          <h3 class="chart-title">Tendencia de Transacciones</h3>
+          <span class="chart-subtitle">Últimos 7 días</span>
+        </div>
+
+        <div class="chart-container">
+          <!-- SVG con viewBox fijo para evitar desbordes -->
+          <svg viewBox="0 0 500 150" class="line-chart-svg" preserveAspectRatio="none">
+            <!-- Area Fill -->
+            <path [attr.d]="fillChartPath" fill="rgba(33, 150, 243, 0.1)" stroke="none" />
+
+            <!-- Line Path -->
+            <path [attr.d]="lineChartPath" fill="none" stroke="#2196f3" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round" />
+
+            <!-- Points -->
+            <circle *ngFor="let p of tendenciaData" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#fff" stroke="#2196f3"
+              stroke-width="2">
+              <title>{{ p.fecha }}: {{ p.monto | currency:'USD' }}</title>
+            </circle>
+          </svg>
+
+          <!-- Labels X-Axis -->
+          <div class="chart-labels">
+            <span *ngFor="let p of tendenciaData">{{ p.fecha | date:'dd/MM' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico de Distribución (Lista Limpia) -->
+      <div class="chart-card card-pulsepay">
+        <div class="chart-header">
+          <h3 class="chart-title">Distribución por Cripto</h3>
+          <span class="chart-subtitle">Volumen por moneda</span>
+        </div>
+
+        <div class="pie-chart-container">
+          <div class="crypto-list">
+            <div class="crypto-item" *ngFor="let c of distribucionCripto">
+              <div class="crypto-info">
+                <div class="crypto-name-group">
+                  <span class="dot" [style.background-color]="c.color"></span>
+                  <span class="crypto-name">{{ c.nombre }}</span>
+                </div>
+                <span class="crypto-pct">{{ c.porcentaje | number:'1.1-1' }}%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" [style.width.%]="c.porcentaje" [style.background-color]="c.color"></div>
+              </div>
+              <span class="crypto-amount">{{ c.monto | currency:'USD':'symbol':'1.0-0' }}</span>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-chart" *ngIf="distribucionCripto.length === 0">
+              <p>No hay datos disponibles</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Top Usuarios y Recientes -->
+    <div class="bottom-grid">
+      <!-- Top Usuarios -->
+      <div class="table-card card-pulsepay">
+        <h3 class="section-title">Top 5 Usuarios (Volumen)</h3>
+        <table mat-table [dataSource]="topUsuarios" class="mat-elevation-z0 full-width-table">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Usuario </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="user-cell">
+                <div class="user-avatar">{{ element.nombre.charAt(0) }}</div>
+                <span>{{element.nombre}}</span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="transacciones">
+            <th mat-header-cell *matHeaderCellDef> Ops </th>
+            <td mat-cell *matCellDef="let element"> {{element.transacciones}} </td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef> Volumen </th>
+            <td mat-cell *matCellDef="let element" class="amount-cell"> {{element.total |
+              currency:'USD':'symbol':'1.0-0'}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="['nombre', 'transacciones', 'total']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['nombre', 'transacciones', 'total'];"></tr>
+        </table>
+      </div>
+
+      <!-- Actividad Reciente (Reused) -->
+      <div class="recent-activity-admin card-pulsepay">
+        <div class="section-header">
+          <h3 class="section-title">Actividad Reciente</h3>
+          <button mat-button routerLink="/transacciones">Ver todo</button>
+        </div>
+        <div class="activity-list-compact">
+          <div class="activity-item" *ngFor="let t of transaccionesRecientes">
+            <div class="activity-icon-small">
+              <mat-icon>receipt</mat-icon>
+            </div>
+            <div class="activity-details">
+              <span class="activity-title-small">#{{ t.transaccionId }}</span>
+              <span class="activity-date-small">{{ t.fechaTransaccion | date:'dd/MM HH:mm' }}</span>
+            </div>
+            <span class="activity-amount-small">{{ t.montoTotalFiat | currency:'USD' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VISTA COMERCIO / CLIENTE (Original Logic) -->
+  <div class="kpi-grid" *ngIf="!isAdmin">
 
     <!-- KPI 2: Ventas Totales (Solo Comercio) -->
     <div class="kpi-card card-pulsepay" *ngIf="isComercio">
@@ -88,8 +233,8 @@
 
   </div>
 
-  <!-- Actividad Reciente -->
-  <div class="recent-activity">
+  <!-- Actividad Reciente (Solo No-Admin) -->
+  <div class="recent-activity" *ngIf="!isAdmin">
     <div class="section-header">
       <h2 class="section-title">Actividad Reciente</h2>
       <button mat-button routerLink="/transacciones">
