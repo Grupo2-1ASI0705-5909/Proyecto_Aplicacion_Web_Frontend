@@ -4,7 +4,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://proyecto-aplicacion-web.onrender.com/api',
     loginUrl: 'https://proyecto-aplicacion-web.onrender.com/login',
-    allowedDomains: ['https://proyecto-aplicacion-web.onrender.com'],
+    allowedDomains: ['proyecto-aplicacion-web.onrender.com'],
     disallowedRoutes: [
         'https://proyecto-aplicacion-web.onrender.com/login',
         'https://proyecto-aplicacion-web.onrender.com/api/auth/register',
