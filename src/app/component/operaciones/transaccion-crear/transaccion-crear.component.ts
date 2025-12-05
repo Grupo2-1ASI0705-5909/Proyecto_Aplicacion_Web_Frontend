@@ -550,7 +550,7 @@ export class TransaccionCrearComponent implements OnInit {
       ...this.form.value,
       montoTotalCripto: this.montoEnCripto,
       tasaAplicada: this.tasaCambioActual,
-      comercioId: this.tipoTransaccion === 'comercio' ? this.form.get('comercioId')?.value : (this.comercios[0]?.comercioId || 1),
+      comercioId: this.tipoTransaccion === 'comercio' ? this.form.get('comercioId')?.value : null,
       txHash: this.tipoTransaccion === 'p2p' ? `P2P-${Date.now()}` : 'GENERATED_BY_FRONT'
     };
 

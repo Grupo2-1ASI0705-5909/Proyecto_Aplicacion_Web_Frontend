@@ -9,17 +9,21 @@ import { Subscription, forkJoin } from 'rxjs';
 import { TransaccionService } from '../../service/transaccion.service';
 import { WalletService } from '../../service/wallet.service';
 import { UsuarioService } from '../../service/usuario.service';
+import { ComercioService } from '../../service/comercio.service';
 import { TipoCambioService } from '../../service/tipo-cambio.service';
 import { Transaccion } from '../../model/Transaccion';
 import { LoginService } from '../../service/login-service';
 import { Wallet } from '../../model/Wallet';
 import { TipoCambio } from '../../model/TipoCambio';
 import { Usuario } from '../../model/Usuario';
+import { Comercio } from '../../model/Comercio';
+import { ChatbotComponent } from '../chatbot/chatbot.component';
+import { CryptoPricesComponent } from '../finanzas/crypto-prices/crypto-prices.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, MatTableModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, MatTableModule, RouterLink, ChatbotComponent, CryptoPricesComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -56,6 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private transaccionService: TransaccionService,
     private walletService: WalletService,
     private usuarioService: UsuarioService,
+    private comercioService: ComercioService,
     private tipoCambioService: TipoCambioService
   ) { }
 
@@ -129,9 +134,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
 
     } else if (this.isComercio) {
-      this.transaccionService.obtenerPorUsuario(this.usuarioIdActual).subscribe(data => {
-        this.ventasTotales = data.reduce((acc, tx) => acc + tx.montoTotalFiat, 0);
-        this.transaccionesRecientes = this.filtrarTransaccionesDelDia(data);
+      // First, get the comercio for this user
+      this.comercioService.obtenerPorUsuario(this.usuarioIdActual).subscribe((comercios: Comercio[]) => {
+        if (comercios && comercios.length > 0) {
+          const comercio = comercios[0]; // Get the first comercio for this user
+
+          // Now get transactions for this specific comercio
+          this.transaccionService.obtenerPorComercio(comercio.comercioId!).subscribe(data => {
+            this.ventasTotales = data.reduce((acc, tx) => acc + tx.montoTotalFiat, 0);
+            this.transaccionesRecientes = this.filtrarTransaccionesDelDia(data);
+          });
+        }
       });
     } else {
       this.walletService.obtenerPorUsuario(this.usuarioIdActual).subscribe(wallets => {

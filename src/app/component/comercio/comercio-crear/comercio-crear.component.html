@@ -1,5 +1,5 @@
 <div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
-  <h2>{{ esEdicion ? 'Editar' : 'Registrar' }} Comercio</h2>
+  <h2>{{ esEdicion ? 'Editar' : 'Mi Comercio' }}</h2>
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
 
@@ -17,6 +17,16 @@
       <mat-spinner *ngIf="form.get('ruc')?.pending" diameter="20" matSuffix>
       </mat-spinner>
 
+      <mat-error *ngIf="form.get('ruc')?.hasError('required')">Requerido</mat-error>
+      <mat-error *ngIf="form.get('ruc')?.hasError('minlength') || form.get('ruc')?.hasError('maxlength')">Debe tener 11
+        dígitos</mat-error>
+      <mat-error *ngIf="form.get('ruc')?.hasError('pattern')">Solo números</mat-error>
+      <mat-error *ngIf="form.get('ruc')?.hasError('rucEnUso')">Este RUC ya está registrado</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Categoría</mat-label>
+      <input matInput formControlName="categoria" placeholder="Ej. Restaurante, Tienda, Supermercado">
       <mat-error *ngIf="form.get('categoria')?.hasError('required')">Requerido</mat-error>
     </mat-form-field>
 

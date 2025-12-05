@@ -1,349 +1,492 @@
-# 💳 PulsePay - Frontend
+# FlexPay - Sistema de Pagos con Criptomonedas
 
-<div align="center">
+Sistema completo de gestión de transacciones con criptomonedas desarrollado con Angular y Spring Boot.
 
-**Plataforma de gestión de pagos con criptomonedas**
+## Arquitectura del Sistema
 
-[![Angular](https://img.shields.io/badge/Angular-19.2-DD0031?logo=angular)](https://angular.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![Material](https://img.shields.io/badge/Material-UI-0081CB?logo=mui)](https://material.angular.io/)
+### Stack Tecnológico
 
-</div>
+**Frontend:**
+- Angular 18 (Standalone Components)
+- Angular Material UI
+- TypeScript
+- RxJS para manejo reactivo
+- HttpClient para comunicación con APIs
 
----
+**Backend:**
+- Spring Boot 3.x
+- Spring Security con JWT
+- JPA/Hibernate
+- Base de datos relacional (MySQL/PostgreSQL)
+- RESTful API
 
-## 📋 Descripción
+**APIs Externas:**
+- CoinGecko API para precios de criptomonedas en tiempo real
+- Advice Slip API para consejos financieros
 
-**PulsePay** es una aplicación web moderna para la gestión de transacciones, billeteras digitales, criptomonedas y sistemas de pago. Diseñada con Angular 19 y Material Design, ofrece una interfaz intuitiva y profesional para administradores, comercios y clientes.
-
----
-
-## ✨ Características Principales
-
-### 🔐 **Autenticación y Seguridad**
-- ✅ Login con JWT (JSON Web Tokens)
-- ✅ Registro público de usuarios
-- ✅ Recuperación de contraseña
-- ✅ Guards de autenticación y autorización basados en roles
-- ✅ Interceptor HTTP para manejo inteligente de errores
-- ✅ Validación de expiración de token
-- ✅ Cierre de sesión automático al expirar token
-
-### 👥 **Gestión de Usuarios** (Solo Admin)
-- ✅ Listar usuarios con paginación
-- ✅ Crear nuevos usuarios
-- ✅ Editar usuarios existentes
-- ✅ Eliminar usuarios
-- ✅ Validaciones de email y RUC
-- ✅ Asignación de roles (Admin, Cliente, Comercio)
-
-### 🏪 **Gestión de Comercios**
-- ✅ Listar todos los comercios (Admin)
-- ✅ Crear y editar comercios (Admin y Comercio)
-- ✅ Ver detalles del comercio
-- ✅ Validación asíncrona de RUC
-- ✅ Gestión de información comercial
-
-### 💸 **Operaciones y Transacciones**
-- ✅ Crear transacciones
-- ✅ Listar transacciones con filtros
-- ✅ Ver detalles de transacciones
-- ✅ Gestión de planes de pago
-- ✅ Pago de cuotas
-- ✅ Métodos de pago configurables
-- ✅ Historial completo de operaciones
-
-### 💰 **Finanzas y Cripto**
-- ✅ Gestión de Wallets (billeteras)
-- ✅ Ver saldo y transacciones de wallet
-- ✅ Crear y editar wallets
-- ✅ Listar criptomonedas disponibles
-- ✅ Crear/editar criptomonedas (Solo Admin)
-- ✅ Gestión de tipos de cambio (Solo Admin)
-- ✅ Conversión de monedas
-
-### 📊 **Dashboard Interactivo**
-- ✅ KPIs principales (usuarios, transacciones, wallets)
-- ✅ Actividad reciente
-- ✅ Acciones rápidas
-- ✅ Gráficos y estadísticas
-- ✅ Vista personalizada por rol
-
-### 🔔 **Sistema de Notificaciones**
-- ✅ Notificaciones en tiempo real
-- ✅ Historial de notificaciones
-- ✅ Marcar como leídas/no leídas
-- ✅ Snackbars para feedback instantáneo
-
-### 🎨 **Diseño y UX**
-- ✅ Material Design 3
-- ✅ Sidebar responsivo con navegación por roles
-- ✅ Tema personalizado PulsePay (naranja #FF8000)
-- ✅ Animaciones suaves
-- ✅ Diseño mobile-first
-- ✅ Estados vacíos informativos
-- ✅ Scrollbar personalizado
-
----
-
-## 🗂️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 FRONTEND/
 ├── src/
 │   ├── app/
-│   │   ├── autenticador/           # Login, registro, recuperación
+│   │   ├── autenticador/          # Módulo de autenticación
+│   │   │   ├── autenticador.html  # Login
+│   │   │   └── registro/          # Registro de usuarios
 │   │   ├── component/
-│   │   │   ├── comercio/           # Gestión de comercios
-│   │   │   ├── dashboard/          # Dashboard principal
-│   │   │   ├── finanzas/           # Wallets, cripto, tipos cambio
-│   │   │   ├── operaciones/        # Transacciones, planes, métodos pago
-│   │   │   ├── sistema/            # Notificaciones
-│   │   │   └── usuario/            # Gestión de usuarios, perfil
-│   │   ├── guard/                  # Guards de autorización
-│   │   ├── interceptors/           # Interceptor HTTP
-│   │   ├── model/                  # Interfaces y modelos
-│   │   ├── service/                # Servicios HTTP
-│   │   ├── validators/             # Validadores custom
-│   │   ├── environment/            # Variables de entorno
-│   │   ├── app.routes.ts           # Configuración de rutas
-│   │   └── app.component.*         # Componente raíz con sidebar
-│   ├── styles.css                  # Estilos globales
-│   └── index.html
-├── angular.json                    # Configuración de Angular
-├── package.json                    # Dependencias
-└── tsconfig.json                   # Configuración TypeScript
+│   │   │   ├── chatbot/           # Asistente financiero
+│   │   │   ├── dashboard/         # Panel principal
+│   │   │   ├── comercio/          # Gestión de comercios
+│   │   │   ├── usuario/           # Gestión de usuarios
+│   │   │   ├── operaciones/       # Transacciones y métodos de pago
+│   │   │   ├── finanzas/          # Wallets y precios crypto
+│   │   │   └── sistema/           # Notificaciones
+│   │   ├── model/                 # Modelos de datos TypeScript
+│   │   ├── service/               # Servicios Angular
+│   │   ├── guard/                 # Guards de autenticación y roles
+│   │   └── interceptor/           # Interceptor HTTP para JWT
+│   ├── environment/               # Configuraciones de entorno
+│   └── assets/                    # Recursos estáticos
+└── BACKEND/                       # Proyecto Spring Boot (separado)
 ```
 
----
+## Módulos Principales
 
-## 🛠️ Tecnologías Utilizadas
+### 1. Autenticación y Autorización
 
-| Tecnología | Versión | Uso |
-|------------|---------|-----|
-| **Angular** | 19.2.19 | Framework principal |
-| **TypeScript** | ~5.7.3 | Lenguaje de programación |
-| **Angular Material** | ^19.0.0 | Componentes UI |
-| **RxJS** | ~7.8.0 | Programación reactiva |
-| **@auth0/angular-jwt** | ^6.0.0 | Manejo de JWT |
-| **Zone.js** | ~0.15.0 | Change detection |
+**Login Service (`login-service.ts`)**
+- Gestión de tokens JWT en localStorage
+- Verificación de roles (ADMINISTRADOR, COMERCIO, USUARIO)
+- Métodos de autenticación y logout
+- Decodificación de tokens para obtener información del usuario
 
----
+**Auth Guard (`auth.guard.ts`)**
+- Protección de rutas que requieren autenticación
+- Redirección a login si no hay sesión válida
 
-## 🚀 Instalación y Uso
+**Role Guard (`role.guard.ts`)**
+- Control de acceso basado en roles
+- Validación de permisos por ruta
 
-### **Prerrequisitos**
-- Node.js >= 18.x
-- npm >= 9.x
-- Angular CLI 19.x
+**HTTP Interceptor (`http-auth.interceptor.ts`)**
+- Inyección automática de token JWT en headers
+- Manejo de errores 401/403
+- Logout automático en caso de token expirado
 
-### **Instalación**
+### 2. Dashboard
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/Grupo2-1ASI0705-5909/Proyecto_Aplicacion_Web_Frontend.git
+**Componente Principal:**
+- Vista diferenciada por roles (Admin, Comercio, Usuario)
+- KPIs en tiempo real
+- Gráficos de tendencias (SVG personalizados)
+- Distribución de criptomonedas
+- Top usuarios por volumen
+- Actividad reciente
 
-# Navegar al directorio
-cd FRONTEND
+**Características Admin:**
+- Total de usuarios registrados
+- Volumen total de transacciones
+- Ingresos estimados
+- Gráfico de tendencia (últimos 7 días)
+- Distribución por criptomoneda
+- Top 5 usuarios
 
-# Instalar dependencias
-npm install
-```
+**Características Usuario/Comercio:**
+- Patrimonio total en USD
+- Ventas totales (comercio)
+- Acciones rápidas
+- Historial de transacciones
 
-### **Configuración**
+### 3. Gestión de Usuarios
 
-Editar `src/app/environment/environment.ts` con las URLs del backend:
+**Funcionalidades:**
+- CRUD completo de usuarios
+- Validación asíncrona de emails únicos
+- Asignación de roles
+- Perfil de usuario editable
+- Cambio de contraseña
+- Gestión de estado activo/inactivo
 
+**Validaciones:**
+- Email único (validador asíncrono)
+- Formato de email
+- Longitud de contraseña
+- Campos requeridos
+
+### 4. Gestión de Comercios
+
+**Funcionalidades:**
+- Registro de comercios
+- Validación de RUC único
+- Asociación con usuarios
+- Estados activo/inactivo
+- Información fiscal completa
+
+**Datos del Comercio:**
+- Nombre comercial
+- RUC
+- Dirección fiscal
+- Teléfono
+- Email
+- Usuario responsable
+
+### 5. Transacciones
+
+**Flujo de Transacción:**
+1. Selección de wallet del usuario
+2. Selección de comercio destinatario
+3. Entrada de monto en moneda FIAT
+4. Cálculo automático de cripto según tasa actual
+5. Selección de método de pago
+6. Opción de plan de pago (cuotas)
+7. Validación y creación
+
+**Características:**
+- Cálculo de tasas en backend (seguridad)
+- Validación de saldos
+- Generación de cuotas automática
+- Estados de transacción
+- Filtros avanzados (fecha, estado, cripto)
+- Exportación de datos
+
+### 6. Wallets (Billeteras)
+
+**Funcionalidades:**
+- Creación de wallets por criptomoneda
+- Dirección única por wallet
+- Saldo en cripto
+- Conversión a USD en tiempo real
+- Asociación usuario-criptomoneda
+- Historial de transacciones por wallet
+
+**Características:**
+- Validación de dirección de wallet
+- Prevención de duplicados
+- Estados activo/inactivo
+- Cálculo de patrimonio total
+
+### 7. Criptomonedas
+
+**Gestión:**
+- CRUD de criptomonedas soportadas
+- Código (BTC, ETH, etc.)
+- Nombre completo
+- Símbolo
+- Decimales permitidos
+- Estado activo/inactivo
+
+**Top 5 Criptomonedas:**
+- Bitcoin (BTC)
+- Ethereum (ETH)
+- Tether (USDT)
+- Binance Coin (BNB)
+- USD Coin (USDC)
+
+### 8. Tipos de Cambio
+
+**Integración CoinGecko:**
+- Actualización automática cada 10 minutos
+- Precios en tiempo real
+- Conversión cripto-USD y cripto-cripto
+- Caché de tasas
+- Observable para suscripción reactiva
+
+**Servicio (`tipo-cambio.service.ts`):**
 ```typescript
-export const environment = {
+tasasEnTiempoReal$: BehaviorSubject<TipoCambio[]>
+```
+
+**Componente de Precios (`crypto-prices.component.ts`):**
+- Display de precios en tiempo real
+- Actualización automática
+- Indicadores de cambio
+- Integración con CoinGecko API
+
+### 9. Chatbot Financiero
+
+**Arquitectura:**
+
+**Servicio (`chatbot.service.ts`):**
+- Integración con Advice Slip API
+- Búsqueda por palabras clave financieras
+- 60+ keywords relacionadas con finanzas
+- Sistema de fallback en múltiples niveles
+- Manejo robusto de errores
+
+**Palabras Clave Financieras:**
+```
+money, finance, financial, invest, investment, save, saving,
+budget, debt, credit, spend, income, business, profit, bank,
+economy, tax, career, job, work, etc.
+```
+
+**Componente (`chatbot.component.ts`):**
+- Widget flotante (bottom-right)
+- Interfaz conversacional
+- Historial de mensajes
+- Opciones rápidas:
+  - Consejos de ahorro
+  - Consejos de inversión
+  - Seguridad cripto
+  - Presupuesto
+- Procesamiento de intenciones
+- Auto-scroll
+- Input de texto con Enter
+- Botón de reinicio
+
+**UI/UX:**
+- Diseño tipo chat bubble
+- Gradientes naranjas
+- Animaciones suaves
+- Indicador de escritura
+- Timestamps
+- IDs de consejos
+- Responsive
+
+### 10. Métodos de Pago
+
+**Tipos Soportados:**
+- Transferencia bancaria
+- Tarjeta de crédito/débito
+- PayPal
+- Wallet cripto
+- Otros
+
+**Atributos:**
+- Nombre del método
+- Descripción
+- Comisión aplicable
+- Estado activo/inactivo
+
+### 11. Planes de Pago
+
+**Características:**
+- Nombre del plan
+- Número de cuotas (3, 6, 12, 24, etc.)
+- Interés aplicable
+- Descripción
+- Cálculo automático de cuotas
+
+**Integración con Transacciones:**
+- Generación automática de cuotas
+- Fechas de vencimiento
+- Montos por cuota
+- Tracking de pagos
+
+### 12. Notificaciones
+
+**Sistema de Notificaciones:**
+- Mensajes del sistema
+- Alertas de transacciones
+- Recordatorios de cuotas
+- Estados: leída/no leída
+- Filtros por usuario
+- Timestamp de creación
+
+## Servicios Core
+
+### LoginService
+```typescript
+verificar(): boolean
+getToken(): string | null
+getUsuarioActual(): string | null
+isAdmin(): boolean
+isComercio(): boolean
+isCliente(): boolean
+logout(): void
+```
+
+### TransaccionService
+```typescript
+obtenerTodos(): Observable<Transaccion[]>
+obtenerPorId(id): Observable<Transaccion>
+obtenerPorUsuario(usuarioId): Observable<Transaccion[]>
+crear(transaccion): Observable<Transaccion>
+actualizar(transaccion): Observable<Transaccion>
+eliminar(id): Observable<void>
+```
+
+### WalletService
+```typescript
+obtenerTodos(): Observable<Wallet[]>
+obtenerPorUsuario(usuarioId): Observable<Wallet[]>
+crear(wallet): Observable<Wallet>
+actualizar(wallet): Observable<Wallet>
+eliminar(id): Observable<void>
+```
+
+### TipoCambioService
+```typescript
+obtenerTodos(): Observable<TipoCambio[]>
+obtenerPorCodigos(desde, hasta): Observable<TipoCambio>
+actualizarDesdeAPI(): void
+tasasEnTiempoReal$: BehaviorSubject<TipoCambio[]>
+```
+
+### CoinGeckoService
+```typescript
+obtenerPreciosTop5(): Observable<CoinGeckoPriceResponse>
+obtenerPrecio(coinId): Observable<number>
+```
+
+### ChatbotService
+```typescript
+obtenerConsejoFinanciero(): Observable<Advice>
+obtenerConsejoAleatorio(): Observable<Advice>
+buscarConsejo(query): Observable<Advice[]>
+obtenerConsejoPorId(id): Observable<Advice>
+getFinancialKeywords(): string[]
+```
+
+## Modelos de Datos
+
+### Usuario
+```typescript
+{
+  usuarioId: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  password: string;
+  telefono: string;
+  direccion: string;
+  rol: Rol;
+  fechaRegistro: Date;
+  estado: boolean;
+}
+```
+
+### Transaccion
+```typescript
+{
+  transaccionId: number;
+  usuario: Usuario;
+  comercio: Comercio;
+  wallet: Wallet;
+  metodoPago: MetodoPago;
+  planPago: PlanPago;
+  montoTotalFiat: number;
+  montoTotalCripto: number;
+  tasaAplicada: number;
+  codigoMoneda: string;
+  fechaTransaccion: Date;
+  estado: string;
+}
+```
+
+### Wallet
+```typescript
+{
+  walletId: number;
+  usuario: Usuario;
+  criptomoneda: Criptomoneda;
+  direccionWallet: string;
+  saldo: number;
+  fechaCreacion: Date;
+  estado: boolean;
+}
+```
+
+### TipoCambio
+```typescript
+{
+  tipoCambioId: number;
+  desdeCodigo: string;
+  hastaCodigo: string;
+  tasa: number;
+  fechaActualizacion: Date;
+}
+```
+
+## Configuración de Entorno
+
+### environment.ts (Desarrollo)
+```typescript
+{
   production: false,
-  apiUrl: 'http://localhost:8080/api',  // URL base del backend
-  loginUrl: 'http://localhost:8080/login'  // URL de login
-};
+  apiUrl: 'http://localhost:8080/api',
+  loginUrl: 'http://localhost:8080/login',
+  coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
+  adviceSlipApiUrl: 'https://api.adviceslip.com',
+  cryptoPriceUpdateInterval: 600000
+}
 ```
 
-### **Ejecutar en Desarrollo**
-
-```bash
-ng serve
+### environment.prod.ts (Producción)
+```typescript
+{
+  production: true,
+  apiUrl: 'https://tu-dominio.com/api',
+  loginUrl: 'https://tu-dominio.com/login',
+  coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
+  adviceSlipApiUrl: 'https://api.adviceslip.com',
+  cryptoPriceUpdateInterval: 600000
+}
 ```
 
-Navegar a `http://localhost:4200/`
+## Seguridad
 
-### **Build para Producción**
+### JWT (JSON Web Tokens)
+- Tokens almacenados en localStorage
+- Expiración configurable
+- Renovación automática
+- Validación de firma en backend
 
+### Roles y Permisos
+
+**ADMINISTRADOR:**
+- Acceso completo al sistema
+- CRUD de usuarios, comercios, criptomonedas
+- Gestión de tasas de cambio
+- Visualización de todas las transacciones
+- Dashboard con analytics avanzados
+
+**COMERCIO:**
+- Ver sus propias ventas
+- Dashboard de comercio
+- Gestión de perfil
+- Notificaciones de transacciones
+
+**USUARIO:**
+- Crear transacciones
+- Gestionar wallets
+- Ver historial personal
+- Dashboard de usuario
+- Chatbot financiero
+
+### Protección de Rutas
+```typescript
+{
+  path: 'usuarios',
+  component: UsuarioListarComponent,
+  canActivate: [AuthGuard, RoleGuard],
+  data: { roles: ['ADMINISTRADOR'] }
+}
+```
+
+### Encriptación
+- Contraseñas hasheadas con BCrypt en backend
+- HTTPS en producción
+- Headers de seguridad (CORS, CSP)
+
+## Deployment
+
+### Build de Producción
 ```bash
 ng build --configuration production
 ```
 
-Los archivos compilados estarán en `dist/`
+### Variables de Entorno
+Configurar en `environment.prod.ts` antes del build.
+
+### Servidor Web
+- Nginx recomendado
+- Configurar redirect a index.html para SPA
+- HTTPS obligatorio
+- Gzip habilitado
 
 ---
 
-## 🔑 Roles y Permisos
-
-| Funcionalidad | Admin | Cliente | Comercio |
-|---------------|:-----:|:-------:|:--------:|
-| **Dashboard** | ✅ | ✅ | ✅ |
-| **Perfil** | ✅ | ✅ | ✅ |
-| **Usuarios (CRUD)** | ✅ | ❌ | ❌ |
-| **Comercios (Listar)** | ✅ | ❌ | ❌ |
-| **Comercios (Crear/Editar)** | ✅ | ❌ | ✅* |
-| **Transacciones** | ✅ | ✅ | ✅ |
-| **Planes de Pago** | ✅ | ✅ | ✅ |
-| **Métodos de Pago** | ✅ | ✅ | ❌ |
-| **Wallets** | ✅ | ✅ | ✅ |
-| **Criptomonedas (Listar)** | ✅ | ✅ | ✅ |
-| **Criptomonedas (CRUD)** | ✅ | ❌ | ❌ |
-| **Tipos Cambio (Listar)** | ✅ | ✅ | ✅ |
-| **Tipos Cambio (CRUD)** | ✅ | ❌ | ❌ |
-| **Notificaciones** | ✅ | ✅ | ✅ |
-
-*\* Comercio puede editar solo su propio comercio*
-
----
-
-## 📡 Conexión con Backend
-
-El frontend consume una API REST desarrollada en Spring Boot. 
-
-### **Endpoints Principales**
-
-```
-Base URL: http://localhost:8080/api
-
-POST   /login                      # Autenticación
-POST   /usuarios                   # Crear usuario
-GET    /usuarios                   # Listar usuarios
-GET    /transacciones              # Listar transacciones
-POST   /transacciones              # Crear transacción
-GET    /wallets                    # Listar wallets
-GET    /criptomonedas              # Listar criptomonedas
-GET    /tipos-cambio               # Listar tipos de cambio
-...
-```
-
-**Repositorio Backend**: [Proyecto_Aplicacion_Web_Backend](https://github.com/Grupo2-1ASI0705-5909/Proyecto_Aplicacion_Web_Backend)
-
----
-
-## 🎯 Funcionalidades Destacadas
-
-### **1. Sistema de Guards en Cascada**
-```typescript
-// seguridadGuard: Verifica si está logueado
-// roleGuard: Verifica si tiene el rol necesario
-canActivate: [seguridadGuard, roleGuard],
-data: { roles: ['ADMIN', 'ADMINISTRADOR'] }
-```
-
-### **2. Interceptor HTTP Inteligente**
-- Diferencia entre token expirado y falta de permisos
-- Solo cierra sesión cuando el token está realmente expirado
-- Manejo centralizado de errores HTTP (401, 403, 404, 500)
-
-### **3. Validadores Asíncronos**
-- Email único
-- RUC único
-- Validación en tiempo real contra el backend
-
-### **4. Sidebar Dinámico**
-- Se muestra/oculta automáticamente según autenticación
-- Menú adaptado al rol del usuario
-- Secciones expandibles
-
----
-
-## 📝 Scripts Disponibles
-
-```bash
-# Desarrollo
-npm start              # ng serve
-
-# Build
-npm run build         # ng build
-npm run watch         # ng build --watch
-
-# Testing
-npm test              # ng test
-```
-
----
-
-## 🐛 Mejoras Pendientes
-
-### **Alta Prioridad**
-- [ ] Implementar internacionalización (i18n) para múltiples idiomas
-- [ ] Agregar tests unitarios (actualmente 0% cobertura)
-- [ ] Agregar tests E2E con Cypress o Playwright
-- [ ] Implementar lazy loading en módulos para mejorar rendimiento
-- [ ] Agregar PWA (Progressive Web App) capabilities
-- [ ] Implementar refresh token automático
-
-### **Media Prioridad**
-- [ ] Agregar gráficos con Chart.js o ApexCharts
-- [ ] Implementar exportación a PDF/Excel de reportes
-- [ ] Agregar filtros avanzados en listas
-- [ ] Mejorar accesibilidad (ARIA labels, navegación teclado)
-- [ ] Agregar modo oscuro (dark theme)
-- [ ] Implementar notificaciones push
-- [ ] Agregar búsqueda global en navbar
-
-### **Baja Prioridad**
-- [ ] Agregar animaciones más complejas
-- [ ] Implementar drag & drop en tablas
-- [ ] Agregar tooltips informativos
-- [ ] Mejorar estados de carga (skeleton screens)
-- [ ] Agregar tutorial interactivo para nuevos usuarios
-- [ ] Implementar shortcuts de teclado
-
-### **Optimizaciones Técnicas**
-- [ ] Implementar OnPush change detection strategy
-- [ ] Lazy load de imágenes
-- [ ] Reducir bundle size (tree shaking)
-- [ ] Implementar Service Workers
-- [ ] Agregar error boundary global
-- [ ] Implementar logs centralizados
-
-### **Seguridad**
-- [ ] Implementar Content Security Policy (CSP)
-- [ ] Agregar rate limiting visual
-- [ ] Implementar 2FA (autenticación de dos factores)
-- [ ] Agregar logs de auditoría en frontend
-- [ ] Sanitización mejorada de inputs
-
----
-
-## 📸 Capturas de Pantalla
-
-> *Próximamente: se agregarán capturas del dashboard, login, y principales funcionalidades*
-
----
-
-## 👨‍💻 Equipo de Desarrollo
-
-**Grupo 2 - 1ASI0705-5909**
-
-Curso: Arquitectura de Aplicaciones Web
-
----
-
-## 📄 Licencia
-
-Este proyecto es parte de un trabajo académico.
-
----
-
-## 🔗 Enlaces Relacionados
-
-- [Repositorio Backend](https://github.com/Grupo2-1ASI0705-5909/Proyecto_Aplicacion_Web_Backend)
-- [Angular Documentation](https://angular.dev)
-- [Material Design](https://material.angular.io)
-
----
-
-<div align="center">
-
-**Hecho con ❤️ usando Angular**
-
-</div>
+**Última actualización:** 2025-12-04  
+**Versión:** 1.0.0  
+**Tecnología:** Angular 18 + Spring Boot 3

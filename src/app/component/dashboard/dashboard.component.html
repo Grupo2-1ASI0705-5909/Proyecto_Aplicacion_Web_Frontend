@@ -18,7 +18,7 @@
 
     <!-- Row 1: KPIs Principales -->
     <div class="kpi-grid-admin">
-      <div class="kpi-card-bi card-blue">
+      <div class="kpi-card-bi card-orange">
         <div class="kpi-bi-icon"><mat-icon>group</mat-icon></div>
         <div class="kpi-bi-content">
           <span class="kpi-bi-label">Usuarios Registrados</span>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="kpi-card-bi card-orange">
+      <div class="kpi-card-bi card-blue">
         <div class="kpi-bi-icon"><mat-icon>receipt_long</mat-icon></div>
         <div class="kpi-bi-content">
           <span class="kpi-bi-label">Transacciones Hoy</span>
@@ -58,7 +58,7 @@
     <!-- Row 2: Gráficos -->
     <div class="charts-grid">
 
-      <!-- Gráfico de Tendencia (Line Chart SVG) -->
+      <!-- Gráfico de Tendencia -->
       <div class="chart-card card-pulsepay">
         <div class="chart-header">
           <h3 class="chart-title">Tendencia de Transacciones</h3>
@@ -66,30 +66,23 @@
         </div>
 
         <div class="chart-container">
-          <!-- SVG con viewBox fijo para evitar desbordes -->
           <svg viewBox="0 0 500 150" class="line-chart-svg" preserveAspectRatio="none">
-            <!-- Area Fill -->
-            <path [attr.d]="fillChartPath" fill="rgba(33, 150, 243, 0.1)" stroke="none" />
-
-            <!-- Line Path -->
-            <path [attr.d]="lineChartPath" fill="none" stroke="#2196f3" stroke-width="3" stroke-linecap="round"
+            <path [attr.d]="fillChartPath" fill="rgba(255, 107, 53, 0.1)" stroke="none" />
+            <path [attr.d]="lineChartPath" fill="none" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"
               stroke-linejoin="round" />
-
-            <!-- Points -->
-            <circle *ngFor="let p of tendenciaData" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#fff" stroke="#2196f3"
+            <circle *ngFor="let p of tendenciaData" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#fff" stroke="#ff6b35"
               stroke-width="2">
               <title>{{ p.fecha }}: {{ p.monto | currency:'USD' }}</title>
             </circle>
           </svg>
 
-          <!-- Labels X-Axis -->
           <div class="chart-labels">
             <span *ngFor="let p of tendenciaData">{{ p.fecha | date:'dd/MM' }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Gráfico de Distribución (Lista Limpia) -->
+      <!-- Gráfico de Distribución -->
       <div class="chart-card card-pulsepay">
         <div class="chart-header">
           <h3 class="chart-title">Distribución por Cripto</h3>
@@ -112,7 +105,6 @@
               <span class="crypto-amount">{{ c.monto | currency:'USD':'symbol':'1.0-0' }}</span>
             </div>
 
-            <!-- Empty State -->
             <div class="empty-chart" *ngIf="distribucionCripto.length === 0">
               <p>No hay datos disponibles</p>
             </div>
@@ -123,7 +115,6 @@
 
     <!-- Row 3: Top Usuarios y Recientes -->
     <div class="bottom-grid">
-      <!-- Top Usuarios -->
       <div class="table-card card-pulsepay">
         <h3 class="section-title">Top 5 Usuarios (Volumen)</h3>
         <table mat-table [dataSource]="topUsuarios" class="mat-elevation-z0 full-width-table">
@@ -150,7 +141,6 @@
         </table>
       </div>
 
-      <!-- Actividad Reciente (Reused) -->
       <div class="recent-activity-admin card-pulsepay">
         <div class="section-header">
           <h3 class="section-title">Actividad Reciente</h3>
@@ -173,12 +163,12 @@
 
   </div>
 
-  <!-- VISTA COMERCIO / CLIENTE (Original Logic) -->
+  <!-- VISTA COMERCIO / CLIENTE -->
   <div class="kpi-grid" *ngIf="!isAdmin">
 
-    <!-- KPI 2: Ventas Totales (Solo Comercio) -->
+    <!-- KPI: Ventas Totales (Solo Comercio) -->
     <div class="kpi-card card-pulsepay" *ngIf="isComercio">
-      <div class="kpi-icon" style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">
         <mat-icon>store</mat-icon>
       </div>
       <div class="kpi-content">
@@ -192,9 +182,9 @@
       </button>
     </div>
 
-    <!-- KPI 3: Mi Patrimonio (Solo Cliente) -->
+    <!-- KPI: Mi Patrimonio (Solo Cliente) -->
     <div class="kpi-card card-pulsepay" *ngIf="!isAdmin && !isComercio">
-      <div class="kpi-icon" style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);">
+      <div class="kpi-icon" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">
         <mat-icon>account_balance_wallet</mat-icon>
       </div>
       <div class="kpi-content">

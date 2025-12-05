@@ -8,6 +8,8 @@ import { Router, RouterLink, RouterOutlet, NavigationEnd } from '@angular/router
 import { LoginService } from './service/login-service';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
+import { ChatbotComponent } from './component/chatbot/chatbot.component';
+
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,8 @@ import { filter } from 'rxjs';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    MatIcon
+    MatIcon,
+    ChatbotComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

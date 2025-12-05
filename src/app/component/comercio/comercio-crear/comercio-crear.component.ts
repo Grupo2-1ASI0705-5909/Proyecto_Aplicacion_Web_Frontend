@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ComercioService } from '../../../service/comercio.service';
 import { LoginService } from '../../../service/login-service';
+import { UsuarioService } from '../../../service/usuario.service';
 import { rucUnicoValidator } from '../../../validators/ruc-async.validator';
 
 @Component({
@@ -34,7 +35,8 @@ export class ComercioCrearComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private usuarioService: UsuarioService
   ) {
     this.form = this.fb.group({
       nombreComercial: ['', [Validators.required, Validators.maxLength(100)]],
@@ -50,9 +52,45 @@ export class ComercioCrearComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Obtener ID del usuario logueado
-    this.usuarioIdActual = this.loginService.getUsuarioId();
+    // Obtener email del usuario logueado
+    const email = this.loginService.getUsuarioActual();
+    const isComercio = this.loginService.isComercio();
 
+    if (email) {
+      // Obtener el ID del usuario mediante su email
+      this.usuarioService.obtenerPorEmail(email).subscribe(usuario => {
+        if (usuario && usuario.usuarioId) {
+          this.usuarioIdActual = usuario.usuarioId;
+          // Asignar usuario ID al formulario
+          this.form.patchValue({ usuarioId: this.usuarioIdActual });
+
+          // Si es COMERCIO, intentar cargar su comercio existente
+          if (isComercio) {
+            this.comercioService.obtenerPorUsuario(this.usuarioIdActual).subscribe(comercios => {
+              if (comercios && comercios.length > 0) {
+                // Tiene un comercio, cargar sus datos automáticamente
+                const comercio = comercios[0];
+                this.esEdicion = true;
+                this.idEditar = comercio.comercioId!;
+                this.cargarDatos(this.idEditar);
+
+                // Agregar validador asíncrono para edición
+                this.form.get('ruc')?.setAsyncValidators([
+                  rucUnicoValidator(this.comercioService, this.idEditar)
+                ]);
+              } else {
+                // No tiene comercio, permitir crear uno nuevo
+                this.form.get('ruc')?.setAsyncValidators([
+                  rucUnicoValidator(this.comercioService)
+                ]);
+              }
+            });
+          }
+        }
+      });
+    }
+
+    // Manejar rutas con ID para edición (para ADMIN)
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -65,16 +103,12 @@ export class ComercioCrearComponent implements OnInit {
         ]);
 
         this.cargarDatos(this.idEditar);
-      } else {
+      } else if (!isComercio) {
+        // Solo para ADMIN y otros roles que no sean COMERCIO
         // Agregar validador asíncrono para creación
         this.form.get('ruc')?.setAsyncValidators([
           rucUnicoValidator(this.comercioService)
         ]);
-      }
-
-      // Asignar usuario ID al formulario
-      if (this.usuarioIdActual) {
-        this.form.patchValue({ usuarioId: this.usuarioIdActual });
       }
     });
   }

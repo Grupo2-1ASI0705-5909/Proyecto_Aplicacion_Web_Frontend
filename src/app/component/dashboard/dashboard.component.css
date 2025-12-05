@@ -10,24 +10,24 @@
 }
 
 .dashboard-header {
+  margin: 8px 0 0 0;
+  font-size: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: #1a237e;
-  margin: 0;
-  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0 0 8px 0;
 }
 
 .page-subtitle {
-  color: #616161;
-  margin: 8px 0 0 0;
-  font-size: 16px;
+  font-size: 14px;
+  color: #757575;
+  margin: 0;
 }
 
 /* --- ADMIN BI DASHBOARD STYLES --- */
@@ -57,7 +57,7 @@
 }
 
 .card-blue {
-  border-left: 4px solid #2196f3;
+  border-left: 4px solid #ff6b35;
 }
 
 .card-green {
@@ -371,7 +371,7 @@
   width: 40px;
   height: 40px;
   background: #fff;
-  color: #2196f3;
+  color: #ff6b35;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -468,7 +468,7 @@
   align-self: flex-start;
   margin-top: 16px;
   padding: 0;
-  color: #2196f3;
+  color: #ff6b35;
 }
 
 /* Quick Actions */
@@ -576,4 +576,9 @@
   height: 48px;
   margin-bottom: 16px;
   opacity: 0.5;
+}
+
+/* Crypto section */
+.crypto-section {
+  margin: 32px 0;
 }
